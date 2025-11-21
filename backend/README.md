@@ -5,7 +5,7 @@ FastAPI backend with Clean Architecture.
 ## Installation
 
 ```bash
-# Create virtual environment
+# Create virtual environmentt
 python -m venv venv
 
 # Activate virtual environment (Windows)
@@ -61,6 +61,7 @@ app/
 ## Architecture
 
 This backend follows Clean Architecture with:
+
 - **Domain Layer**: Core business logic
 - **Application Layer**: Use cases
 - **Infrastructure Layer**: Database & external services
