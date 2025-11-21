@@ -1,0 +1,30 @@
+{
+  "name": "ictu-openagri",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "install:all": "cd backend && pip install -r requirements.txt && cd ../frontend && npm install",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload",
+    "dev:frontend": "cd frontend && npm run dev",
+    "lint:frontend": "cd frontend && npm run lint",
+    "format:frontend": "cd frontend && npm run format"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "frontend/**/*.{ts,tsx}": [
+      "cd frontend && eslint --fix",
+      "cd frontend && prettier --write"
+    ],
+    "frontend/**/*.{css,json}": [
+      "cd frontend && prettier --write"
+    ],
+    "backend/**/*.py": [
+      "cd backend && black",
+      "cd backend && isort"
+    ]
+  }
+}
