@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ictu-openagri-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./ictu_openagri.db
+      - CORS_ORIGINS=["http://localhost:3000","http://localhost"]
+      - ENVIRONMENT=development
+    volumes:
+      - ./backend:/app
+      - backend-data:/app/data
+    networks:
+      - ictu-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ictu-openagri-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - ictu-network
+    restart: unless-stopped
+
+volumes:
+  backend-data:
+    driver: local
+
+networks:
+  ictu-network:
+    driver: bridge
