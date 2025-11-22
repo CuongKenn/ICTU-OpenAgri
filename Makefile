@@ -33,7 +33,7 @@ dev:
 	@powershell -Command "Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd frontend; npm run dev'"
 
 dev-docker:
-	docker-compose -f docker-compose.dev.yml up --build
+	docker-compose -f docker-compose.yml up --build
 
 build:
 	docker-compose build
