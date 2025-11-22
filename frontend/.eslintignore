@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+*.config.js
+*.config.ts
+vite.config.ts
+coverage
+.env
+.env.*
+public
