@@ -1,25 +1,26 @@
 name: openagri_app
 description: OpenAgri Login Application with MVVM Pattern
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # State Management
   provider: ^6.1.1
-  
+
   # UI Components
   cupertino_icons: ^1.0.2
-  
+  dio: ^5.9.0
+
   # Authentication (Optional - for future implementation)
   # firebase_auth: ^4.15.3
   # google_sign_in: ^6.1.6
-  
+
   # HTTP Client (for API calls)
   # dio: ^5.4.0
   # http: ^1.1.2
@@ -31,14 +32,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/image/
 #    - assets/fonts/
-  
-  # fonts:
-  #   - family: Roboto
-  #     fonts:
-  #       - asset: assets/fonts/Roboto-Regular.ttf
-  #       - asset: assets/fonts/Roboto-Bold.ttf
-  #         weight: 700
+
+# fonts:
+#   - family: Roboto
+#     fonts:
+#       - asset: assets/fonts/Roboto-Regular.ttf
+#       - asset: assets/fonts/Roboto-Bold.ttf
+#         weight: 700

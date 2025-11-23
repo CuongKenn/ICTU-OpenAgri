@@ -1,16 +1,25 @@
 import '../models/user.dart';
+import 'api_service.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
   factory AuthService() => _instance;
   AuthService._internal();
 
+  final ApiService _apiService = ApiService();
   User? _currentUser;
   User? get currentUser => _currentUser;
 
   // Login
   Future<User> login(String emailOrUsername, String password) async {
     try {
+      // Example API call:
+      // final response = await _apiService.post('/auth/login', data: {
+      //   'username': emailOrUsername,
+      //   'password': password,
+      // });
+      // _currentUser = User.fromJson(response.data);
+      
       await Future.delayed(const Duration(seconds: 2));
 
       _currentUser = User(
@@ -34,13 +43,13 @@ class AuthService {
     required String password,
   }) async {
     try {
-      // TODO: Implement actual API call
-      // Example:
-      // final response = await dio.post('/api/auth/register', data: {
-      //   'fullName': fullName,
+      // Example API call:
+      // final response = await _apiService.post('/auth/register', data: {
+      //   'full_name': fullName,
       //   'email': email,
       //   'password': password,
       // });
+      // _currentUser = User.fromJson(response.data);
 
       await Future.delayed(const Duration(seconds: 2));
 
