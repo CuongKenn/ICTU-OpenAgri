@@ -32,7 +32,7 @@ def get_access_token() -> str:
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f"Authentication failed: {str(e)}. Check your COPERNICUS_USERNAME and COPERNICUS_PASSWORD.")
 
-def search_sentinel_products(bbox: List[float], date: str, platformname='SENTINEL-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
+def search_sentinel_products(bbox: List[float], date_start: str, date_end: str, platformname='SENTINEL-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
     """Search Copernicus Data Space Ecosystem (CDSE) via OData API."""
     if not settings.COPERNICUS_USERNAME or not settings.COPERNICUS_PASSWORD:
         raise RuntimeError('COPERNICUS_USERNAME/PASSWORD not set')
@@ -41,12 +41,14 @@ def search_sentinel_products(bbox: List[float], date: str, platformname='SENTINE
     headers = {'Authorization': f'Bearer {token}'}
     
     try:
-        date_obj = datetime.datetime.fromisoformat(date)
+        start_obj = datetime.datetime.fromisoformat(date_start)
+        end_obj = datetime.datetime.fromisoformat(date_end)
     except ValueError:
-        date_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
+        start_obj = datetime.datetime.strptime(date_start, '%Y-%m-%d')
+        end_obj = datetime.datetime.strptime(date_end, '%Y-%m-%d')
         
-    date_from = date_obj.strftime('%Y-%m-%dT%H:%M:%S.000Z')
-    date_to = (date_obj + datetime.timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    date_from = start_obj.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    date_to = end_obj.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     # Construct OData Filter
     filter_query = (
