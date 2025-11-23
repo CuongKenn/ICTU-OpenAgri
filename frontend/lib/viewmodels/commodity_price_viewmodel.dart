@@ -34,7 +34,7 @@ class CommodityPriceViewModel extends ChangeNotifier {
         startDate: startDate,
         endDate: endDate,
       );
-      _commodities = response.data;
+      _commodities = response.commodities;
       _error = null;
     } catch (e) {
       _error = e.toString();

@@ -1,19 +1,16 @@
 class PricePoint {
   final String date;
   final double price;
-  final String market;
 
   PricePoint({
     required this.date,
     required this.price,
-    required this.market,
   });
 
   factory PricePoint.fromJson(Map<String, dynamic> json) {
     return PricePoint(
       date: json['date'] as String,
       price: (json['price'] as num).toDouble(),
-      market: json['market'] as String,
     );
   }
 }
