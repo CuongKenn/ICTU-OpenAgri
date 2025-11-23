@@ -10,7 +10,6 @@ class PricePoint(BaseModel):
     """Điểm giá tại một ngày cụ thể."""
     date: str  # YYYY-MM-DD
     price: float
-    market: str
 
 
 class CommodityPriceDTO(BaseModel):
