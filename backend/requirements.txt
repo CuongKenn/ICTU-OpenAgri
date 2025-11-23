@@ -18,3 +18,4 @@ pytest-cov==4.1.0
 rasterio
 numpy
 requests
+matplotlib
