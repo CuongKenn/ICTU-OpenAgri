@@ -19,7 +19,9 @@ def search_sentinel_products(bbox: List[float], date: str, platformname='Sentine
     if not settings.COPERNICUS_USERNAME or not settings.COPERNICUS_PASSWORD:
         raise RuntimeError('COPERNICUS_USERNAME/PASSWORD not set')
 
-    api = SentinelAPI(settings.COPERNICUS_USERNAME, settings.COPERNICUS_PASSWORD, 'https://apihub.copernicus.eu/apihub')
+    # Copernicus Open Access Hub (apihub) is deprecated.
+    # Using Copernicus Data Space Ecosystem (CDSE) endpoint.
+    api = SentinelAPI(settings.COPERNICUS_USERNAME, settings.COPERNICUS_PASSWORD, 'https://catalogue.dataspace.copernicus.eu/odata/v1')
     footprint = bbox_to_wkt(bbox)
     
     try:
