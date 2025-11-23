@@ -4,6 +4,8 @@ import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
 import 'package:openagri_app/views/login_view.dart';
 import 'package:provider/provider.dart';
 import 'package:openagri_app/views/commodity_prices_list_view.dart';
+import 'package:openagri_app/views/dashboard_view.dart';
+import 'package:openagri_app/views/settings_view.dart';
 import 'screens/home_screen.dart';
 
 void main() {
@@ -36,6 +38,8 @@ class AgriTechApp extends StatelessWidget {
         routes: {
           '/login': (context) => const LoginView(),
           '/commodity-prices': (context) => const CommodityPricesListView(),
+          '/dashboard': (context) => const DashboardView(),
+          '/settings': (context) => const SettingsView(),
         },
       ),
     );
