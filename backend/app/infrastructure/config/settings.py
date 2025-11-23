@@ -34,6 +34,12 @@ class Settings(BaseSettings):
     # Environment
     ENVIRONMENT: str = "development"
 
+    # Sentinel
+    COPERNICUS_USERNAME: str = ""
+    COPERNICUS_PASSWORD: str = ""
+    OUTPUT_DIR: str = "./output"
+    MAX_PRODUCTS: int = 2
+
 
 @lru_cache()
 def get_settings() -> Settings:
