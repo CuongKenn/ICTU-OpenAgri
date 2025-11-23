@@ -75,10 +75,17 @@ def search_sentinel_products(bbox: List[float], date: str, platformname='Sentine
     results = response.json()
     products = {}
     for item in results.get('value', []):
+        cloud_cover = 100.0
+        for attr in item.get('Attributes', []):
+            if attr['Name'] == 'cloudCover':
+                cloud_cover = float(attr['Value'])
+                break
+
         products[item['Id']] = {
             'uuid': item['Id'],
             'title': item['Name'],
-            'ingestiondate': item['ContentDate']['Start']
+            'ingestiondate': item['ContentDate']['Start'],
+            'cloud_cover': cloud_cover
         }
         
     return None, products

@@ -20,12 +20,25 @@ class CalculateNDVIUseCase:
             if not products:
                 raise HTTPException(status_code=404, detail='No Sentinel-2 product found for this bbox/date')
             
-            # pick first product
-            # In a real app, we might want to let the user choose or pick the best one based on cloud cover etc.
-            first_uuid, prod = next(iter(products.items()))
+            # pick best product (lowest cloud cover)
+            best_product_uuid = None
+            best_product_info = None
+            min_cloud_cover = 101.0
+
+            for uuid_val, info in products.items():
+                if info['cloud_cover'] < min_cloud_cover:
+                    min_cloud_cover = info['cloud_cover']
+                    best_product_uuid = uuid_val
+                    best_product_info = info
             
+            if not best_product_info:
+                 # Fallback to first if something goes wrong
+                 best_product_uuid, best_product_info = next(iter(products.items()))
+
+            print(f"Selected product: {best_product_info['title']} with cloud cover {best_product_info['cloud_cover']}%")
+
             # Download
-            out = download_product(api, prod, out_dir=settings.OUTPUT_DIR)
+            out = download_product(api, best_product_info, out_dir=settings.OUTPUT_DIR)
             
             # find bands
             red_path, nir_path = find_band_paths(out)
