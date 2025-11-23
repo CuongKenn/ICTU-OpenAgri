@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -46,47 +47,55 @@ class DashboardView extends StatelessWidget {
 
   // Top Bar
   Widget _buildTopBar() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          bottom: BorderSide(color: Colors.grey[100]!),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Builder(
+      builder: (context) {
+        final authService = AuthService();
+        final currentUser = authService.currentUser;
+        final displayName = currentUser?.displayName ?? currentUser?.email ?? 'Người dùng';
+
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: BorderSide(color: Colors.grey[100]!),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Xin chào,',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Color(0xFF666666),
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Xin chào,',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF666666),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    displayName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1A1A1A),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 4),
-              Text(
-                'Nông Dân Hiếu',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A1A1A),
-                ),
+              Row(
+                children: [
+                  _buildIconButton('🔔'),
+                  const SizedBox(width: 12),
+                  _buildIconButton('👤'),
+                ],
               ),
             ],
           ),
-          Row(
-            children: [
-              _buildIconButton('🔔'),
-              const SizedBox(width: 12),
-              _buildIconButton('👤'),
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -806,45 +815,52 @@ class DashboardView extends StatelessWidget {
 
   // Bottom Nav
   Widget _buildBottomNav() {
-    return Container(
-      height: 70,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Colors.grey[200]!),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem('🏠', 'Trang chủ', true),
-          _buildNavItem('📊', 'Thống kê', false),
-          _buildNavItem('📅', 'Lịch', false),
-          _buildNavItem('💰', 'Giá', false),
-          _buildNavItem('⚙️', 'Cài đặt', false),
-        ],
-      ),
+    return Builder(
+      builder: (context) {
+        return Container(
+          height: 70,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(color: Colors.grey[200]!),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(context, '🏠', 'Trang chủ', true, null),
+              _buildNavItem(context, '📊', 'Thống kê', false, null),
+              _buildNavItem(context, '📅', 'Lịch', false, null),
+              _buildNavItem(context, '💰', 'Giá', false, '/commodity-prices'),
+              _buildNavItem(context, '⚙️', 'Cài đặt', false, '/settings'),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildNavItem(String icon, String label, bool isActive) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          icon,
-          style: const TextStyle(fontSize: 24),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w500,
-            color: isActive ? const Color(0xFF13EC5B) : const Color(0xFF9CA3AF),
+  Widget _buildNavItem(BuildContext context, String icon, String label, bool isActive, String? route) {
+    return InkWell(
+      onTap: route != null ? () => Navigator.pushNamed(context, route) : null,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            icon,
+            style: const TextStyle(fontSize: 24),
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: isActive ? const Color(0xFF13EC5B) : const Color(0xFF9CA3AF),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
