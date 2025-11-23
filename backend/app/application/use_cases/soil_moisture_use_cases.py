@@ -1,3 +1,4 @@
+import datetime
 import os
 import uuid
 from fastapi import HTTPException
@@ -16,8 +17,16 @@ class CalculateSoilMoistureUseCase:
             raise HTTPException(status_code=400, detail='bbox must be [minx,miny,maxx,maxy]')
         
         try:
+            # Calculate end date (next day) for single date request
+            try:
+                date_obj = datetime.datetime.fromisoformat(req.date)
+            except ValueError:
+                date_obj = datetime.datetime.strptime(req.date, '%Y-%m-%d')
+            
+            date_end = (date_obj + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+
             # search products (Sentinel-1)
-            api, products = search_sentinel_products(req.bbox, req.date, platformname='SENTINEL-1')
+            api, products = search_sentinel_products(req.bbox, req.date, date_end, platformname='SENTINEL-1')
             if not products:
                 raise HTTPException(status_code=404, detail='No Sentinel-1 product found for this bbox/date')
             
