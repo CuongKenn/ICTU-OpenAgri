@@ -1,15 +1,16 @@
 """
 User-related use cases.
 """
-from typing import Optional, List
+from typing import Optional
 from app.application.use_cases.base import BaseUseCase
 from app.domain.entities.user import User
 from app.domain.repositories.user_repository import UserRepository
-from app.application.dto.user_dto import CreateUserDTO, UserDTO, UpdateUserDTO
+from app.application.dto.user_dto import CreateUserDTO, UserDTO, UserLoginDTO, TokenDTO
+from app.infrastructure.security.jwt import get_password_hash, verify_password, create_access_token
 
 
 class CreateUserUseCase(BaseUseCase[CreateUserDTO, UserDTO]):
-    """Use case for creating a new user."""
+    """Use case for creating a new user (Register)."""
     
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
@@ -25,6 +26,7 @@ class CreateUserUseCase(BaseUseCase[CreateUserDTO, UserDTO]):
         user = User(
             email=input_dto.email,
             username=input_dto.username,
+            hashed_password=get_password_hash(input_dto.password),
             full_name=input_dto.full_name,
             is_active=True,
             is_superuser=False
@@ -36,70 +38,33 @@ class CreateUserUseCase(BaseUseCase[CreateUserDTO, UserDTO]):
         return UserDTO.from_entity(created_user)
 
 
-class GetUserByIdUseCase(BaseUseCase[int, Optional[UserDTO]]):
-    """Use case for getting a user by ID."""
+class LoginUserUseCase(BaseUseCase[UserLoginDTO, TokenDTO]):
+    """Use case for user login."""
     
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
     
-    async def execute(self, user_id: int) -> Optional[UserDTO]:
-        """Get user by ID."""
-        user = await self.user_repository.get_by_id(user_id)
-        return UserDTO.from_entity(user) if user else None
-
-
-class GetAllUsersUseCase(BaseUseCase[dict, List[UserDTO]]):
-    """Use case for getting all users."""
-    
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
-    
-    async def execute(self, params: dict) -> List[UserDTO]:
-        """Get all users with pagination."""
-        skip = params.get('skip', 0)
-        limit = params.get('limit', 100)
+    async def execute(self, input_dto: UserLoginDTO) -> TokenDTO:
+        """Authenticate user and return token."""
+        user = await self.user_repository.get_by_email(input_dto.email)
+        if not user or not verify_password(input_dto.password, user.hashed_password):
+            raise ValueError("Incorrect email or password")
         
-        users = await self.user_repository.get_all(skip=skip, limit=limit)
-        return [UserDTO.from_entity(user) for user in users]
+        if not user.is_active:
+            raise ValueError("Inactive user")
+            
+        access_token = create_access_token(subject=user.id)
+        return TokenDTO(access_token=access_token, token_type="bearer")
 
 
-class UpdateUserUseCase(BaseUseCase[tuple[int, UpdateUserDTO], Optional[UserDTO]]):
-    """Use case for updating a user."""
+class LogoutUserUseCase(BaseUseCase[None, bool]):
+    """Use case for user logout."""
     
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
-    
-    async def execute(self, input_data: tuple[int, UpdateUserDTO]) -> Optional[UserDTO]:
-        """Update a user."""
-        user_id, update_dto = input_data
-        
-        # Get existing user
-        existing_user = await self.user_repository.get_by_id(user_id)
-        if not existing_user:
-            return None
-        
-        # Update fields
-        if update_dto.email:
-            existing_user.email = update_dto.email
-        if update_dto.username:
-            existing_user.username = update_dto.username
-        if update_dto.full_name is not None:
-            existing_user.full_name = update_dto.full_name
-        if update_dto.is_active is not None:
-            existing_user.is_active = update_dto.is_active
-        
-        # Save updates
-        updated_user = await self.user_repository.update(user_id, existing_user)
-        
-        return UserDTO.from_entity(updated_user) if updated_user else None
+    async def execute(self, input_dto: None = None) -> bool:
+        """
+        Logout user.
+        Since we use stateless JWT, we don't need to do anything on server side
+        unless we implement a blacklist. For now, just return True.
+        """
+        return True
 
-
-class DeleteUserUseCase(BaseUseCase[int, bool]):
-    """Use case for deleting a user."""
-    
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
-    
-    async def execute(self, user_id: int) -> bool:
-        """Delete a user."""
-        return await self.user_repository.delete(user_id)
