@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   
@@ -51,6 +53,19 @@ class SignUpViewModel extends ChangeNotifier {
     return null;
   }
 
+  // Validate phone number
+  String? validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Vui lòng nhập số điện thoại';
+    }
+    // Vietnamese phone number: 10 digits, starts with 0
+    final phoneRegex = RegExp(r'^0[0-9]{9}$');
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)';
+    }
+    return null;
+  }
+
   // Validate password
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
@@ -86,12 +101,13 @@ class SignUpViewModel extends ChangeNotifier {
     // Validate all inputs
     final nameError = validateFullName(fullNameController.text);
     final emailError = validateEmail(emailController.text);
+    final phoneError = validatePhone(phoneController.text);
     final passwordError = validatePassword(passwordController.text);
     final confirmPasswordError = validateConfirmPassword(confirmPasswordController.text);
     
-    if (nameError != null || emailError != null || 
+    if (nameError != null || emailError != null || phoneError != null ||
         passwordError != null || confirmPasswordError != null) {
-      _errorMessage = nameError ?? emailError ?? passwordError ?? confirmPasswordError;
+      _errorMessage = nameError ?? emailError ?? phoneError ?? passwordError ?? confirmPasswordError;
       notifyListeners();
       return;
     }
@@ -100,15 +116,16 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // TODO: Implement actual sign up API call
-      // Example:
-      // final response = await authService.register(
-      //   fullName: fullNameController.text,
-      //   email: emailController.text,
-      //   password: passwordController.text,
-      // );
+      // Import AuthService
+      final authService = AuthService();
       
-      await Future.delayed(const Duration(seconds: 2)); // Simulate API call
+      // Call actual register method
+      await authService.register(
+        fullName: fullNameController.text,
+        email: emailController.text,
+        phoneNumber: phoneController.text,
+        password: passwordController.text,
+      );
       
       // If successful
       if (context.mounted) {
@@ -120,16 +137,11 @@ class SignUpViewModel extends ChangeNotifier {
           ),
         );
         
-        // Navigate to login or home
-        Navigator.pop(context); // Go back to login screen
-        // Or navigate to home:
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (_) => HomeScreen()),
-        // );
+        // Navigate to login screen
+        Navigator.pop(context);
       }
     } catch (e) {
-      _errorMessage = 'Đăng ký thất bại. Email có thể đã được sử dụng.';
+      _errorMessage = 'Đăng ký thất bại. ${e.toString()}';
       notifyListeners();
     } finally {
       _isLoading = false;
@@ -152,6 +164,7 @@ class SignUpViewModel extends ChangeNotifier {
   void dispose() {
     fullNameController.dispose();
     emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
