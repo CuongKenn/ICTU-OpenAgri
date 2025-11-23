@@ -55,7 +55,12 @@ def compute_ndvi(red_path: str, nir_path: str, out_path: str, resampling=Resampl
 
         # write to GeoTIFF
         profile = r_red.meta.copy()
-        profile.update(count=1, dtype=rasterio.float32, compress='lzw')
+        profile.update(
+            driver='GTiff',
+            count=1, 
+            dtype=rasterio.float32, 
+            compress='lzw'
+        )
         
         with rasterio.open(out_path, 'w', **profile) as dst:
             dst.write(ndvi.astype(rasterio.float32), 1)
