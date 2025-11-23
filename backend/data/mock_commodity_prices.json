@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "last_updated": "2024-01-15T10:00:00Z",
+    "source": "mock_data",
+    "description": "Mock data cho giá nông sản Việt Nam - Sẽ được thay thế bằng API thật sau"
+  },
+  "commodities": [
+    {
+      "id": "rice_5_percent",
+      "name": "Gạo 5% tấm",
+      "name_en": "Rice 5% broken",
+      "unit": "VND/kg",
+      "category": "lúa_gạo",
+      "prices": [
+        {"date": "2024-01-01", "price": 12500, "market": "Hà Nội"},
+        {"date": "2024-01-02", "price": 12600, "market": "Hà Nội"},
+        {"date": "2024-01-03", "price": 12550, "market": "Hà Nội"},
+        {"date": "2024-01-04", "price": 12700, "market": "Hà Nội"},
+        {"date": "2024-01-05", "price": 12800, "market": "Hà Nội"},
+        {"date": "2024-01-06", "price": 12750, "market": "Hà Nội"},
+        {"date": "2024-01-07", "price": 12900, "market": "Hà Nội"},
+        {"date": "2024-01-08", "price": 12850, "market": "Hà Nội"},
+        {"date": "2024-01-09", "price": 13000, "market": "Hà Nội"},
+        {"date": "2024-01-10", "price": 13100, "market": "Hà Nội"},
+        {"date": "2024-01-11", "price": 13050, "market": "Hà Nội"},
+        {"date": "2024-01-12", "price": 13200, "market": "Hà Nội"},
+        {"date": "2024-01-13", "price": 13150, "market": "Hà Nội"},
+        {"date": "2024-01-14", "price": 13300, "market": "Hà Nội"},
+        {"date": "2024-01-15", "price": 13250, "market": "Hà Nội"}
+      ]
+    },
+    {
+      "id": "coffee_robusta",
+      "name": "Cà phê Robusta",
+      "name_en": "Robusta Coffee",
+      "unit": "VND/kg",
+      "category": "cà_phê",
+      "prices": [
+        {"date": "2024-01-01", "price": 58000, "market": "Đắk Lắk"},
+        {"date": "2024-01-02", "price": 58200, "market": "Đắk Lắk"},
+        {"date": "2024-01-03", "price": 58500, "market": "Đắk Lắk"},
+        {"date": "2024-01-04", "price": 58300, "market": "Đắk Lắk"},
+        {"date": "2024-01-05", "price": 59000, "market": "Đắk Lắk"},
+        {"date": "2024-01-06", "price": 58800, "market": "Đắk Lắk"},
+        {"date": "2024-01-07", "price": 59200, "market": "Đắk Lắk"},
+        {"date": "2024-01-08", "price": 59500, "market": "Đắk Lắk"},
+        {"date": "2024-01-09", "price": 59300, "market": "Đắk Lắk"},
+        {"date": "2024-01-10", "price": 59800, "market": "Đắk Lắk"},
+        {"date": "2024-01-11", "price": 60000, "market": "Đắk Lắk"},
+        {"date": "2024-01-12", "price": 59800, "market": "Đắk Lắk"},
+        {"date": "2024-01-13", "price": 60200, "market": "Đắk Lắk"},
+        {"date": "2024-01-14", "price": 60500, "market": "Đắk Lắk"},
+        {"date": "2024-01-15", "price": 60300, "market": "Đắk Lắk"}
+      ]
+    },
+    {
+      "id": "pepper_black",
+      "name": "Hồ tiêu đen",
+      "name_en": "Black Pepper",
+      "unit": "VND/kg",
+      "category": "hồ_tiêu",
+      "prices": [
+        {"date": "2024-01-01", "price": 85000, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-02", "price": 85200, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-03", "price": 84800, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-04", "price": 85500, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-05", "price": 86000, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-06", "price": 85800, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-07", "price": 86200, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-08", "price": 86500, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-09", "price": 86300, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-10", "price": 86800, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-11", "price": 87000, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-12", "price": 87200, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-13", "price": 87500, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-14", "price": 87300, "market": "Bà Rịa - Vũng Tàu"},
+        {"date": "2024-01-15", "price": 87800, "market": "Bà Rịa - Vũng Tàu"}
+      ]
+    },
+    {
+      "id": "rubber_latex",
+      "name": "Cao su latex",
+      "name_en": "Rubber Latex",
+      "unit": "VND/kg",
+      "category": "cao_su",
+      "prices": [
+        {"date": "2024-01-01", "price": 42000, "market": "Bình Dương"},
+        {"date": "2024-01-02", "price": 41800, "market": "Bình Dương"},
+        {"date": "2024-01-03", "price": 42200, "market": "Bình Dương"},
+        {"date": "2024-01-04", "price": 42500, "market": "Bình Dương"},
+        {"date": "2024-01-05", "price": 42800, "market": "Bình Dương"},
+        {"date": "2024-01-06", "price": 42600, "market": "Bình Dương"},
+        {"date": "2024-01-07", "price": 43000, "market": "Bình Dương"},
+        {"date": "2024-01-08", "price": 43200, "market": "Bình Dương"},
+        {"date": "2024-01-09", "price": 43500, "market": "Bình Dương"},
+        {"date": "2024-01-10", "price": 43300, "market": "Bình Dương"},
+        {"date": "2024-01-11", "price": 43800, "market": "Bình Dương"},
+        {"date": "2024-01-12", "price": 44000, "market": "Bình Dương"},
+        {"date": "2024-01-13", "price": 44200, "market": "Bình Dương"},
+        {"date": "2024-01-14", "price": 44500, "market": "Bình Dương"},
+        {"date": "2024-01-15", "price": 44300, "market": "Bình Dương"}
+      ]
+    },
+    {
+      "id": "cashew_nut",
+      "name": "Điều nhân",
+      "name_en": "Cashew Nut",
+      "unit": "VND/kg",
+      "category": "điều",
+      "prices": [
+        {"date": "2024-01-01", "price": 185000, "market": "Bình Phước"},
+        {"date": "2024-01-02", "price": 186000, "market": "Bình Phước"},
+        {"date": "2024-01-03", "price": 187500, "market": "Bình Phước"},
+        {"date": "2024-01-04", "price": 188000, "market": "Bình Phước"},
+        {"date": "2024-01-05", "price": 189000, "market": "Bình Phước"},
+        {"date": "2024-01-06", "price": 190000, "market": "Bình Phước"},
+        {"date": "2024-01-07", "price": 191000, "market": "Bình Phước"},
+        {"date": "2024-01-08", "price": 192000, "market": "Bình Phước"},
+        {"date": "2024-01-09", "price": 193000, "market": "Bình Phước"},
+        {"date": "2024-01-10", "price": 194000, "market": "Bình Phước"},
+        {"date": "2024-01-11", "price": 195000, "market": "Bình Phước"},
+        {"date": "2024-01-12", "price": 194500, "market": "Bình Phước"},
+        {"date": "2024-01-13", "price": 196000, "market": "Bình Phước"},
+        {"date": "2024-01-14", "price": 197000, "market": "Bình Phước"},
+        {"date": "2024-01-15", "price": 198000, "market": "Bình Phước"}
+      ]
+    },
+    {
+      "id": "dragon_fruit",
+      "name": "Thanh long",
+      "name_en": "Dragon Fruit",
+      "unit": "VND/kg",
+      "category": "trái_cây",
+      "prices": [
+        {"date": "2024-01-01", "price": 25000, "market": "Bình Thuận"},
+        {"date": "2024-01-02", "price": 25500, "market": "Bình Thuận"},
+        {"date": "2024-01-03", "price": 26000, "market": "Bình Thuận"},
+        {"date": "2024-01-04", "price": 25800, "market": "Bình Thuận"},
+        {"date": "2024-01-05", "price": 26200, "market": "Bình Thuận"},
+        {"date": "2024-01-06", "price": 26500, "market": "Bình Thuận"},
+        {"date": "2024-01-07", "price": 26800, "market": "Bình Thuận"},
+        {"date": "2024-01-08", "price": 27000, "market": "Bình Thuận"},
+        {"date": "2024-01-09", "price": 27200, "market": "Bình Thuận"},
+        {"date": "2024-01-10", "price": 27500, "market": "Bình Thuận"},
+        {"date": "2024-01-11", "price": 27300, "market": "Bình Thuận"},
+        {"date": "2024-01-12", "price": 27800, "market": "Bình Thuận"},
+        {"date": "2024-01-13", "price": 28000, "market": "Bình Thuận"},
+        {"date": "2024-01-14", "price": 28200, "market": "Bình Thuận"},
+        {"date": "2024-01-15", "price": 28500, "market": "Bình Thuận"}
+      ]
+    }
+  ]
+}
+

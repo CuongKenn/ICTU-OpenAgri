@@ -20,13 +20,18 @@ dependencies:
   latlong2: ^0.9.1
   geolocator: ^14.0.2
 
+  # HTTP Client (for API calls)
+  http: ^1.1.2
+  
+  # Internationalization and formatting
+  intl: ^0.18.1
+  
+  # Charts
+  fl_chart: ^0.66.0
+
   # Authentication (Optional - for future implementation)
   # firebase_auth: ^4.15.3
   # google_sign_in: ^6.1.6
-
-  # HTTP Client (for API calls)
-  # dio: ^5.4.0
-  # http: ^1.1.2
 
 dev_dependencies:
   flutter_test:
