@@ -1,7 +1,8 @@
 import os
 import datetime
+import requests
+import zipfile
 from typing import List, Optional, Tuple, Dict, Any
-from sentinelsat import SentinelAPI
 from app.infrastructure.config.settings import get_settings
 
 settings = get_settings()
@@ -10,53 +11,116 @@ if not os.path.exists(settings.OUTPUT_DIR):
     os.makedirs(settings.OUTPUT_DIR, exist_ok=True)
 
 def bbox_to_wkt(bbox: List[float]) -> str:
-    """Convert bbox [minx,miny,maxx,maxy] to WKT POLYGON"""
+    """Convert bbox [minx,miny,maxx,maxy] to OData geography POLYGON"""
     minx, miny, maxx, maxy = bbox
-    return f"POLYGON(({minx} {miny}, {minx} {maxy}, {maxx} {maxy}, {maxx} {miny}, {minx} {miny}))"
+    # OData geography literal
+    return f"geography'SRID=4326;POLYGON(({minx} {miny}, {minx} {maxy}, {maxx} {maxy}, {maxx} {miny}, {minx} {miny}))'"
 
-def search_sentinel_products(bbox: List[float], date: str, platformname='Sentinel-2', processinglevel='Level-2A') -> Tuple[SentinelAPI, Dict[str, Any]]:
-    """Search Copernicus Open Access Hub via sentinelsat for given bbox and date (YYYY-MM-DD)."""
+def get_access_token() -> str:
+    """Get Access Token from CDSE Identity Provider"""
+    token_url = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
+    data = {
+        'client_id': 'cdse-public',
+        'username': settings.COPERNICUS_USERNAME,
+        'password': settings.COPERNICUS_PASSWORD,
+        'grant_type': 'password'
+    }
+    try:
+        response = requests.post(token_url, data=data)
+        response.raise_for_status()
+        return response.json()['access_token']
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Authentication failed: {str(e)}. Check your COPERNICUS_USERNAME and COPERNICUS_PASSWORD.")
+
+def search_sentinel_products(bbox: List[float], date: str, platformname='Sentinel-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
+    """Search Copernicus Data Space Ecosystem (CDSE) via OData API."""
     if not settings.COPERNICUS_USERNAME or not settings.COPERNICUS_PASSWORD:
         raise RuntimeError('COPERNICUS_USERNAME/PASSWORD not set')
 
-    # Copernicus Open Access Hub (apihub) is deprecated.
-    # Using Copernicus Data Space Ecosystem (CDSE) endpoint.
-    api = SentinelAPI(settings.COPERNICUS_USERNAME, settings.COPERNICUS_PASSWORD, 'https://catalogue.dataspace.copernicus.eu/odata/v1')
-    footprint = bbox_to_wkt(bbox)
+    token = get_access_token()
+    headers = {'Authorization': f'Bearer {token}'}
     
     try:
         date_obj = datetime.datetime.fromisoformat(date)
     except ValueError:
-        # Fallback if date string is not ISO format or just YYYY-MM-DD
         date_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
         
-    date_from = date_obj.strftime('%Y%m%d')
-    date_to = (date_obj + datetime.timedelta(days=1)).strftime('%Y%m%d')
+    date_from = date_obj.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    date_to = (date_obj + datetime.timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
-    products = api.query(footprint,
-                         platformname=platformname,
-                         processinglevel=processinglevel,
-                         date=(date_from, date_to))
+    # Construct OData Filter
+    filter_query = (
+        f"Collection/Name eq 'SENTINEL-2' "
+        f"and ContentDate/Start ge {date_from} "
+        f"and ContentDate/Start le {date_to} "
+        f"and OData.CSC.Intersects(area={bbox_to_wkt(bbox)})"
+    )
     
-    # sort by ingestiondate
-    products_sorted = sorted(products.items(), key=lambda kv: kv[1]['ingestiondate'], reverse=True)
-    selected = products_sorted[:settings.MAX_PRODUCTS]
-    return api, {k:v for k,v in selected}
+    if processinglevel == 'Level-2A':
+        filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'productType' and att/Value eq 'S2MSI2A')"
 
-def download_product(api: SentinelAPI, product_info: dict, out_dir: Optional[str]=None) -> str:
-    """Download product and return path to SAFE folder or zip"""
+    url = "https://catalogue.dataspace.copernicus.eu/odata/v1/Products"
+    params = {
+        '$filter': filter_query,
+        '$top': settings.MAX_PRODUCTS,
+        '$orderby': 'ContentDate/Start desc'
+    }
+    
+    print(f"Searching CDSE: {url} with params {params}")
+    response = requests.get(url, params=params, headers=headers)
+    
+    if response.status_code != 200:
+        raise RuntimeError(f"Search failed: {response.status_code} {response.text}")
+        
+    results = response.json()
+    products = {}
+    for item in results.get('value', []):
+        products[item['Id']] = {
+            'uuid': item['Id'],
+            'title': item['Name'],
+            'ingestiondate': item['ContentDate']['Start']
+        }
+        
+    return None, products
+
+def download_product(api: Any, product_info: dict, out_dir: Optional[str]=None) -> str:
+    """Download product from CDSE and unzip it."""
     out_dir = out_dir or settings.OUTPUT_DIR
     uuid = product_info['uuid']
     title = product_info['title']
-    print(f"Downloading {title} ...")
+    print(f"Downloading {title} ({uuid}) ...")
     
-    # Check if already downloaded
-    # This is a basic check, sentinelsat might handle this but good to be explicit or handle existing files
-    path = api.download(uuid, directory_path=out_dir)
+    token = get_access_token()
+    headers = {'Authorization': f'Bearer {token}'}
     
-    # sentinelsat returns a dict of files
-    # We return the directory path or zip path
-    if isinstance(path, dict):
-        # path may include 'path'
-        return path.get('path') or out_dir
-    return path
+    # Download URL
+    url = f"https://zipper.dataspace.copernicus.eu/odata/v1/Products({uuid})/$value"
+    
+    local_zip = os.path.join(out_dir, f"{title}.zip")
+    extract_path = os.path.join(out_dir, title + ".SAFE")
+    
+    if os.path.exists(extract_path):
+        print(f"Product already exists at {extract_path}")
+        return extract_path
+
+    if not os.path.exists(local_zip):
+        print(f"Downloading to {local_zip}...")
+        with requests.get(url, headers=headers, stream=True) as r:
+            r.raise_for_status()
+            with open(local_zip, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192): 
+                    f.write(chunk)
+    
+    print(f"Extracting {local_zip}...")
+    with zipfile.ZipFile(local_zip, 'r') as zip_ref:
+        zip_ref.extractall(out_dir)
+        
+    possible_path = os.path.join(out_dir, title + ".SAFE")
+    if os.path.exists(possible_path):
+        return possible_path
+        
+    for item in os.listdir(out_dir):
+        if item.endswith(".SAFE") and title in item:
+             return os.path.join(out_dir, item)
+             
+    return extract_path
