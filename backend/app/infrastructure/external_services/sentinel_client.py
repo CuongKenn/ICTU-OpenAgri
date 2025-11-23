@@ -32,7 +32,7 @@ def get_access_token() -> str:
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f"Authentication failed: {str(e)}. Check your COPERNICUS_USERNAME and COPERNICUS_PASSWORD.")
 
-def search_sentinel_products(bbox: List[float], date: str, platformname='Sentinel-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
+def search_sentinel_products(bbox: List[float], date: str, platformname='SENTINEL-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
     """Search Copernicus Data Space Ecosystem (CDSE) via OData API."""
     if not settings.COPERNICUS_USERNAME or not settings.COPERNICUS_PASSWORD:
         raise RuntimeError('COPERNICUS_USERNAME/PASSWORD not set')
@@ -50,14 +50,18 @@ def search_sentinel_products(bbox: List[float], date: str, platformname='Sentine
 
     # Construct OData Filter
     filter_query = (
-        f"Collection/Name eq 'SENTINEL-2' "
+        f"Collection/Name eq '{platformname}' "
         f"and ContentDate/Start ge {date_from} "
         f"and ContentDate/Start le {date_to} "
         f"and OData.CSC.Intersects(area={bbox_to_wkt(bbox)})"
     )
     
-    if processinglevel == 'Level-2A':
+    if platformname == 'SENTINEL-2' and processinglevel == 'Level-2A':
         filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'productType' and att/Value eq 'S2MSI2A')"
+    elif platformname == 'SENTINEL-1':
+        # Filter for GRD products (Ground Range Detected) and IW mode (Interferometric Wide Swath)
+        filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'productType' and att/Value eq 'GRD')"
+        filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'sensorOperationalMode' and att/Value eq 'IW')"
 
     url = "https://catalogue.dataspace.copernicus.eu/odata/v1/Products"
     params = {
@@ -75,11 +79,13 @@ def search_sentinel_products(bbox: List[float], date: str, platformname='Sentine
     results = response.json()
     products = {}
     for item in results.get('value', []):
-        cloud_cover = 100.0
-        for attr in item.get('Attributes', []):
-            if attr['Name'] == 'cloudCover':
-                cloud_cover = float(attr['Value'])
-                break
+        cloud_cover = 0.0
+        if platformname == 'SENTINEL-2':
+            cloud_cover = 100.0
+            for attr in item.get('Attributes', []):
+                if attr['Name'] == 'cloudCover':
+                    cloud_cover = float(attr['Value'])
+                    break
 
         products[item['Id']] = {
             'uuid': item['Id'],
