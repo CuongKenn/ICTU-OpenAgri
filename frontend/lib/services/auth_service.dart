@@ -11,22 +11,31 @@ class AuthService {
   User? _currentUser;
   User? get currentUser => _currentUser;
 
-  // Login
-  Future<User> login(String emailOrUsername, String password) async {
+  // Login - supports email, phone number, or username
+  Future<User> login(String emailOrPhoneOrUsername, String password) async {
     try {
       // Example API call:
       // final response = await _apiService.post('/auth/login', data: {
-      //   'username': emailOrUsername,
+      //   'username': emailOrPhoneOrUsername,
       //   'password': password,
       // });
       // _currentUser = User.fromJson(response.data);
       
       await Future.delayed(const Duration(seconds: 2));
 
+      // Detect input type
+      bool isEmail = emailOrPhoneOrUsername.contains('@');
+      bool isPhone = RegExp(r'^0[0-9]{9}$').hasMatch(emailOrPhoneOrUsername);
+
       _currentUser = User(
         id: '123',
-        email: emailOrUsername.contains('@') ? emailOrUsername : '$emailOrUsername@example.com',
-        username: emailOrUsername.contains('@') ? null : emailOrUsername,
+        email: isEmail 
+            ? emailOrPhoneOrUsername 
+            : isPhone 
+                ? 'user@example.com' 
+                : '$emailOrPhoneOrUsername@example.com',
+        username: !isEmail && !isPhone ? emailOrPhoneOrUsername : null,
+        phoneNumber: isPhone ? emailOrPhoneOrUsername : null,
         displayName: 'Test User',
         createdAt: DateTime.now(),
       );
@@ -41,6 +50,7 @@ class AuthService {
   Future<User> register({
     required String fullName,
     required String email,
+    required String phoneNumber,
     required String password,
   }) async {
     try {
@@ -48,6 +58,7 @@ class AuthService {
       // final response = await _apiService.post('/auth/register', data: {
       //   'full_name': fullName,
       //   'email': email,
+      //   'phone_number': phoneNumber,
       //   'password': password,
       // });
       // _currentUser = User.fromJson(response.data);
@@ -61,6 +72,7 @@ class AuthService {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         email: email,
         displayName: fullName,
+        phoneNumber: phoneNumber,
         createdAt: DateTime.now(),
       );
 
