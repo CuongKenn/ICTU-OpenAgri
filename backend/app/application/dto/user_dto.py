@@ -11,6 +11,7 @@ class CreateUserDTO(BaseModel):
     """DTO for creating a user."""
     email: EmailStr
     username: str
+    password: str
     full_name: Optional[str] = None
 
 
@@ -20,6 +21,18 @@ class UpdateUserDTO(BaseModel):
     username: Optional[str] = None
     full_name: Optional[str] = None
     is_active: Optional[bool] = None
+
+
+class UserLoginDTO(BaseModel):
+    """DTO for user login."""
+    email: EmailStr
+    password: str
+
+
+class TokenDTO(BaseModel):
+    """DTO for token response."""
+    access_token: str
+    token_type: str
 
 
 class UserDTO(BaseModel):
