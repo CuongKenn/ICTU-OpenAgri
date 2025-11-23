@@ -10,15 +10,15 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        title: Row(
+        title: const Row(
           children: [
             Icon(
               Icons.agriculture,
-              color: const Color(0xFF0BDA50),
+              color: Color(0xFF0BDA50),
               size: 32,
             ),
-            const SizedBox(width: 12),
-            const Text(
+            SizedBox(width: 12),
+            Text(
               'AgriTech',
               style: TextStyle(
                 fontSize: 20,
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               height: 500,
               decoration: BoxDecoration(
-                color: const Color(0xFF0BDA50).withOpacity(0.2),
+                color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
               ),
               child: Center(
                 child: Padding(
@@ -97,13 +97,13 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Features Section
-            Padding(
-              padding: const EdgeInsets.all(40.0),
+            const Padding(
+              padding: EdgeInsets.all(40.0),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Lợi Ích Chính Cho Người Nông Dân Hiện Đại',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -112,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                       color: Color(0xFF111827),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
                   Wrap(
                     spacing: 20,
                     runSpacing: 20,
@@ -121,31 +121,34 @@ class HomeScreen extends StatelessWidget {
                       _FeatureCard(
                         icon: Icons.api,
                         title: 'API Dữ liệu Mở',
-                        description: 'Dễ dàng tích hợp và chia sẻ dữ liệu nông nghiệp.',
+                        description:
+                            'Dễ dàng tích hợp và chia sẻ dữ liệu nông nghiệp.',
                       ),
                       _FeatureCard(
                         icon: Icons.pest_control,
                         title: 'Cảnh báo Sâu bệnh',
-                        description: 'Nhận cảnh báo kịp thời để ngăn ngừa dịch hại.',
+                        description:
+                            'Nhận cảnh báo kịp thời để ngăn ngừa dịch hại.',
                       ),
                       _FeatureCard(
                         icon: Icons.science,
                         title: 'Phân tích Đất',
-                        description: 'Hiểu rõ sức khỏe của đất để tối ưu hóa phân bón.',
+                        description:
+                            'Hiểu rõ sức khỏe của đất để tối ưu hóa phân bón.',
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            
+
             // CTA Section
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(60.0),
               margin: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: const Color(0xFF0BDA50).withOpacity(0.1),
+                color: const Color(0xFF0BDA50).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -172,7 +175,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // Footer
             Container(
               width: double.infinity,
@@ -211,7 +214,7 @@ class _FeatureCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: const Color(0xFF0BDA50).withOpacity(0.2),
+          color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
         ),
       ),
       child: Column(

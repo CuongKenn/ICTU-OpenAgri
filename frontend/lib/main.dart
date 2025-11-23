@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
 import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
 import 'package:openagri_app/views/login_view.dart';
+import 'package:provider/provider.dart';
 import 'package:openagri_app/views/commodity_prices_list_view.dart';
 import 'screens/home_screen.dart';
 
@@ -27,7 +27,7 @@ class AgriTechApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFF0BDA50),
             primary: const Color(0xFF0BDA50),
-            background: const Color(0xFFF5F8F6),
+            surface: const Color(0xFFF5F8F6),
           ),
           fontFamily: 'Inter',
           useMaterial3: true,

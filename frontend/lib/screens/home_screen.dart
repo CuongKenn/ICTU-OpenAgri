@@ -56,27 +56,12 @@ class _AgriTechAppBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: CustomPaint(
-                  painter: _LogoPainter(),
-                ),
-              ),
-              const SizedBox(width: 16),
-              const Text(
-                'AgriTech',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF111827),
-                  letterSpacing: -0.015,
-                ),
-              ),
+              // SizedBox(height: 10,),
+              Image.asset("assets/image/OpenAgri.png"),
               if (isDesktop) const SizedBox(width: 40),
               if (isDesktop)
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     _NavLink(title: 'Trang Chủ'),
                     _NavLink(title: 'Tính Năng'),
                     _NavLink(title: 'Bảng Giá'),
@@ -117,9 +102,9 @@ class _AgriTechAppBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Icon(Icons.dashboard, size: 16),
                       SizedBox(width: 8),
                       Text(
@@ -148,31 +133,31 @@ class _AgriTechAppBar extends StatelessWidget {
   }
 }
 
-class _LogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF0BDA50)
-      ..style = PaintingStyle.fill;
-
-    final path = Path();
-    final w = size.width;
-    final h = size.height;
-
-    path.moveTo(w * 0.88, h * 0.92);
-    path.cubicTo(w * 0.88, h * 0.92, w * 0.75, h * 0.71, w * 0.86, h * 0.5);
-    path.cubicTo(w * 0.98, h * 0.27, w * 0.88, h * 0.08, w * 0.88, h * 0.08);
-    path.lineTo(w * 0.15, h * 0.08);
-    path.cubicTo(w * 0.15, h * 0.08, w * 0.24, h * 0.27, w * 0.12, h * 0.5);
-    path.cubicTo(w * 0.02, h * 0.71, w * 0.15, h * 0.92, w * 0.15, h * 0.92);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
+// class _LogoPainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final paint = Paint()
+//       ..color = const Color(0xFF0BDA50)
+//       ..style = PaintingStyle.fill;
+//
+//     final path = Path();
+//     final w = size.width;
+//     final h = size.height;
+//
+//     path.moveTo(w * 0.88, h * 0.92);
+//     path.cubicTo(w * 0.88, h * 0.92, w * 0.75, h * 0.71, w * 0.86, h * 0.5);
+//     path.cubicTo(w * 0.98, h * 0.27, w * 0.88, h * 0.08, w * 0.88, h * 0.08);
+//     path.lineTo(w * 0.15, h * 0.08);
+//     path.cubicTo(w * 0.15, h * 0.08, w * 0.24, h * 0.27, w * 0.12, h * 0.5);
+//     path.cubicTo(w * 0.02, h * 0.71, w * 0.15, h * 0.92, w * 0.15, h * 0.92);
+//     path.close();
+//
+//     canvas.drawPath(path, paint);
+//   }
+//
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+// }
 
 class _NavLink extends StatelessWidget {
   final String title;
@@ -225,7 +210,9 @@ class _MobileDrawer extends StatelessWidget {
           ListTile(title: const Text('Bảng Giá'), onTap: () {}),
           ListTile(title: const Text('Liên Hệ'), onTap: () {}),
           const Divider(),
-          ListTile(title: const Text('Đăng Nhập'), onTap: () => Navigator.pushNamed(context, '/login')),
+          ListTile(
+              title: const Text('Đăng Nhập'),
+              onTap: () => Navigator.pushNamed(context, '/login')),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
@@ -268,9 +255,8 @@ class _HeroSection extends StatelessWidget {
             child: Container(
               constraints: const BoxConstraints(minHeight: 480),
               decoration: BoxDecoration(
-                borderRadius: isSmall
-                    ? BorderRadius.circular(12)
-                    : BorderRadius.zero,
+                borderRadius:
+                    isSmall ? BorderRadius.circular(12) : BorderRadius.zero,
                 image: const DecorationImage(
                   image: NetworkImage(
                     'https://lh3.googleusercontent.com/aida-public/AB6AXuDRqqZpQIhFgC3S9-LVPhAQzUP0urF1gNv31Wa9avYv08ichaxJoGgqFlFZ4vuvWwyV_xnEyCgAOHYGKzvuQQgFdboP7_TTaEXGU4JIjwZgOhxnZOp1eyimuJgn_Z8fE_wCXG7Rx7kGPLFfLRTzVeBznCDYqZq9582c-1d6RIu_Db8sGMftbQVZB8R9lE3AQijGfObOTWo1AKJiJI9o-mYiwHLPMj9VkgAFccPV9YRCSSd-hqh5VI38cNtMY69XKmXuV9CaPs35ELc',
@@ -280,9 +266,8 @@ class _HeroSection extends StatelessWidget {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: isSmall
-                      ? BorderRadius.circular(12)
-                      : BorderRadius.zero,
+                  borderRadius:
+                      isSmall ? BorderRadius.circular(12) : BorderRadius.zero,
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -345,8 +330,8 @@ class _HeroSection extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.dashboard, size: 20),
-                              SizedBox(width: 8),
+                              const Icon(Icons.dashboard, size: 20),
+                              const SizedBox(width: 8),
                               Text(
                                 'Truy Cập Dashboard',
                                 style: TextStyle(
@@ -632,7 +617,8 @@ class _DataVisualizationSection extends StatelessWidget {
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 64, bottom: 12, left: 16, right: 16),
+                padding:
+                    EdgeInsets.only(top: 64, bottom: 12, left: 16, right: 16),
                 child: Text(
                   'Trực Quan Hóa Dữ Liệu Nông Trại Của Bạn',
                   textAlign: TextAlign.center,
@@ -646,7 +632,8 @@ class _DataVisualizationSection extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final isWide = constraints.maxWidth > 700;
@@ -694,10 +681,10 @@ class _SoilMoistureCard extends StatelessWidget {
           color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
         ),
       ),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Độ Ẩm Đất Thời Gian Thực',
             style: TextStyle(
               fontSize: 16,
@@ -706,8 +693,8 @@ class _SoilMoistureCard extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: 8),
+          Text(
             '68%',
             style: TextStyle(
               fontSize: 32,
@@ -716,9 +703,9 @@ class _SoilMoistureCard extends StatelessWidget {
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Row(
-            children: const [
+            children: [
               Text(
                 '7 ngày qua',
                 style: TextStyle(
@@ -739,11 +726,11 @@ class _SoilMoistureCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           SizedBox(
             height: 180,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: EdgeInsets.symmetric(horizontal: 12),
               child: Column(
                 children: [
                   Expanded(
@@ -751,13 +738,20 @@ class _SoilMoistureCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _BarColumn(label: 'T2', heightPercent: 40, isActive: false),
-                        _BarColumn(label: 'T3', heightPercent: 50, isActive: false),
-                        _BarColumn(label: 'T4', heightPercent: 90, isActive: true),
-                        _BarColumn(label: 'T5', heightPercent: 60, isActive: false),
-                        _BarColumn(label: 'T6', heightPercent: 70, isActive: false),
-                        _BarColumn(label: 'T7', heightPercent: 65, isActive: false),
-                        _BarColumn(label: 'CN', heightPercent: 68, isActive: false),
+                        _BarColumn(
+                            label: 'T2', heightPercent: 40, isActive: false),
+                        _BarColumn(
+                            label: 'T3', heightPercent: 50, isActive: false),
+                        _BarColumn(
+                            label: 'T4', heightPercent: 90, isActive: true),
+                        _BarColumn(
+                            label: 'T5', heightPercent: 60, isActive: false),
+                        _BarColumn(
+                            label: 'T6', heightPercent: 70, isActive: false),
+                        _BarColumn(
+                            label: 'T7', heightPercent: 65, isActive: false),
+                        _BarColumn(
+                            label: 'CN', heightPercent: 68, isActive: false),
                       ],
                     ),
                   ),
@@ -863,8 +857,8 @@ class _CropHealthCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Text(
                 '30 ngày qua',
                 style: TextStyle(
@@ -897,9 +891,9 @@ class _CropHealthCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
+                  children: [
                     Text(
                       'Tuần 1',
                       style: TextStyle(
@@ -954,7 +948,20 @@ class _LineChartPainter extends CustomPainter {
     final h = size.height;
 
     final dataPoints = [
-      0.73, 0.14, 0.27, 0.62, 0.22, 0.68, 0.41, 0.81, 0.30, 1.0, 0.01, 0.54, 0.86, 0.17,
+      0.73,
+      0.14,
+      0.27,
+      0.62,
+      0.22,
+      0.68,
+      0.41,
+      0.81,
+      0.30,
+      1.0,
+      0.01,
+      0.54,
+      0.86,
+      0.17,
     ];
 
     final path = Path();

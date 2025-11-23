@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/login_viewmodel.dart';
+import 'dashboard_view.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -17,51 +18,51 @@ class LoginView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Logo and Title
                 _buildHeader(),
-                
+
                 // Welcome Text
                 _buildWelcomeText(),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Email/Username Field
                 _buildEmailField(),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Password Field
                 _buildPasswordField(),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Forgot Password
                 _buildForgotPassword(),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Error Message
                 _buildErrorMessage(),
-                
+
                 // Login Button
                 _buildLoginButton(),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Divider
                 _buildDivider(),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Google Sign In Button
                 _buildGoogleSignInButton(),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Sign Up Link
                 _buildSignUpLink(),
-                
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -72,8 +73,12 @@ class LoginView extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-
-    return Center(child: Image.asset("assets/image/OpenAgri.png",width: 120,height: 120,));
+    return Center(
+        child: Image.asset(
+      "assets/image/OpenAgri.png",
+      width: 120,
+      height: 120,
+    ));
   }
 
   Widget _buildWelcomeText() {
@@ -293,7 +298,14 @@ class LoginView extends StatelessWidget {
           child: ElevatedButton(
             onPressed: viewModel.isLoading
                 ? null
-                : () => viewModel.login(context),
+                : () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DashboardView(),
+                      ),
+                    );
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF00C853),
               foregroundColor: Colors.white,
@@ -377,7 +389,7 @@ class LoginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Google Icon
-               Image.asset("assets/image/google.png"),
+                Image.asset("assets/image/google.png"),
                 const SizedBox(width: 12),
                 const Text(
                   'Đăng nhập với Google',
