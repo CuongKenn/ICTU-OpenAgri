@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
+import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
 import 'package:openagri_app/views/login_view.dart';
 import 'package:provider/provider.dart';
-
+import 'package:openagri_app/views/commodity_prices_list_view.dart';
 import 'screens/home_screen.dart';
 
 void main() {
@@ -17,6 +18,7 @@ class AgriTechApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
       ],
       child: MaterialApp(
         title: 'AgriTech - Nông Nghiệp Thông Minh',
@@ -33,6 +35,7 @@ class AgriTechApp extends StatelessWidget {
         home: const HomeScreen(),
         routes: {
           '/login': (context) => const LoginView(),
+          '/commodity-prices': (context) => const CommodityPricesListView(),
         },
       ),
     );

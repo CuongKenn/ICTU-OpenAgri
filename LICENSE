@@ -1,6 +1,21 @@
 MIT License
 
-Copyright (c) 2025 CuongKenn
+Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+
+================================================================================
+ICTU-OpenAgri - Agricultural Technology Platform
+================================================================================
+
+Project: ICTU-OpenAgri
+Description: An open-source agricultural technology platform providing 
+             real-time commodity price tracking, market analysis, and 
+             agricultural information services for farmers and stakeholders.
+Repository: https://github.com/CuongKenn/ICTU-OpenAgri
+Maintainer: CuongKenn
+
+================================================================================
+LICENSE TERMS
+================================================================================
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +34,88 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+================================================================================
+ADDITIONAL TERMS AND CLARIFICATIONS
+================================================================================
+
+1. ATTRIBUTION
+   - When using this software in derivative works, please provide appropriate
+     credit to the original authors and link back to the original repository.
+   - Commercial use is permitted, but attribution is appreciated.
+
+2. CONTRIBUTIONS
+   - Contributions to this project are welcome and will be licensed under the
+     same MIT License.
+   - By contributing, you agree that your contributions will be licensed under
+     the MIT License.
+
+3. THIRD-PARTY COMPONENTS
+   - This software may include third-party libraries and components, each with
+     their own licenses. Please refer to the respective LICENSE files in the
+     dependencies.
+   - Flutter Framework: BSD 3-Clause License
+   - FastAPI: MIT License
+   - Other dependencies: See package.json and requirements.txt
+
+4. DATA AND CONTENT
+   - Agricultural data and market prices provided through this platform may be
+     subject to separate terms and conditions from data providers.
+   - Users are responsible for ensuring compliance with data usage terms.
+
+5. DISCLAIMER OF LIABILITY
+   - This software is provided for informational and educational purposes.
+   - The authors and contributors are not responsible for any financial
+     decisions made based on information provided by this software.
+   - Agricultural market data may not be real-time or accurate. Users should
+     verify information from official sources.
+
+6. SUPPORT AND WARRANTY
+   - This software is provided "as-is" without any warranty or guarantee of
+     support.
+   - Bug reports and feature requests can be submitted via GitHub Issues.
+   - Community support is available through GitHub Discussions.
+
+================================================================================
+USAGE GUIDELINES
+================================================================================
+
+You are free to:
+  ✓ Use this software for personal, educational, or commercial purposes
+  ✓ Modify the source code to suit your needs
+  ✓ Distribute original or modified versions
+  ✓ Include this software in proprietary applications
+  ✓ Use this software in academic research and publications
+
+You must:
+  ✓ Include the original copyright notice and license text
+  ✓ State significant changes made to the software (if redistributing)
+
+You cannot:
+  ✗ Hold the authors liable for any damages
+  ✗ Use the authors' names to endorse derived products without permission
+  ✗ Remove or modify the license and copyright notices
+
+================================================================================
+CONTACT INFORMATION
+================================================================================
+
+For questions, suggestions, or collaboration opportunities:
+- GitHub: https://github.com/CuongKenn/ICTU-OpenAgri
+- Issues: https://github.com/CuongKenn/ICTU-OpenAgri/issues
+- Email: [Contact through GitHub profile]
+
+================================================================================
+VERSION HISTORY
+================================================================================
+
+v1.0.0 (2025) - Initial release
+- Core agricultural commodity price tracking functionality
+- Binance-style UI for price visualization
+- Real-time market data integration
+- User authentication and dashboard
+
+================================================================================
+
+Last Updated: January 2025
+License Version: MIT (Extended)

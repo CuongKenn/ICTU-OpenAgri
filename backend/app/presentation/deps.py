@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.config.settings import get_settings
 from app.infrastructure.database.database import get_db
 from app.infrastructure.repositories.user_repository_impl import SQLAlchemyUserRepository
+from app.infrastructure.repositories.farm_repository_impl import SQLAlchemyFarmRepository
 from app.domain.entities.user import User
 
 settings = get_settings()
@@ -17,6 +18,10 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/users/logi
 def get_user_repository(db: AsyncSession = Depends(get_db)) -> SQLAlchemyUserRepository:
     """Dependency to get user repository."""
     return SQLAlchemyUserRepository(db)
+
+def get_farm_repository(db: AsyncSession = Depends(get_db)) -> SQLAlchemyFarmRepository:
+    """Dependency to get farm repository."""
+    return SQLAlchemyFarmRepository(db)
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),

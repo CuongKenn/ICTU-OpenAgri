@@ -475,6 +475,13 @@ class _FeatureGrid extends StatelessWidget {
         description:
             'Theo dõi sức khỏe và sự phát triển của cây trồng từ xa với hình ảnh độ phân giải cao.',
       ),
+      _FeatureData(
+        icon: Icons.attach_money,
+        title: 'Giá Nông Sản',
+        description:
+            'Theo dõi giá cả thị trường nông sản theo thời gian thực và xu hướng giá.',
+        route: '/commodity-prices',
+      ),
     ];
 
     return LayoutBuilder(
@@ -503,6 +510,7 @@ class _FeatureGrid extends StatelessWidget {
               icon: feature.icon,
               title: feature.title,
               description: feature.description,
+              route: feature.route,
             );
           },
         );
@@ -515,11 +523,13 @@ class _FeatureData {
   final IconData icon;
   final String title;
   final String description;
+  final String? route;
 
   _FeatureData({
     required this.icon,
     required this.title,
     required this.description,
+    this.route,
   });
 }
 
@@ -527,54 +537,60 @@ class _FeatureCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
+  final String? route;
 
   const _FeatureCard({
     required this.icon,
     required this.title,
     required this.description,
+    this.route,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
+    return InkWell(
+      onTap: route != null ? () => Navigator.pushNamed(context, route!) : null,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            color: const Color(0xFF0BDA50),
-            size: 28,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF111827),
-              height: 1.2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: const Color(0xFF0BDA50),
+              size: 28,
             ),
-          ),
-          const SizedBox(height: 4),
-          Expanded(
-            child: Text(
-              description,
+            const SizedBox(height: 12),
+            Text(
+              title,
               style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF4B5563),
-                height: 1.5,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF111827),
+                height: 1.2,
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Expanded(
+              child: Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF4B5563),
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

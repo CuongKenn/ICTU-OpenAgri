@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../views/signup_view.dart';
+import '../screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../views/signup_view.dart';
@@ -74,6 +76,14 @@ class LoginViewModel extends ChangeNotifier {
             duration: Duration(seconds: 2),
           ),
         );
+        
+        // Navigate to HomeScreen after successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
       }
     } catch (e) {
       _errorMessage = 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
@@ -97,6 +107,14 @@ class LoginViewModel extends ChangeNotifier {
             content: Text('Đăng nhập Google thành công!'),
             backgroundColor: Colors.green,
             duration: Duration(seconds: 2),
+          ),
+        );
+        
+        // Navigate to HomeScreen after successful Google login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
           ),
         );
       }
