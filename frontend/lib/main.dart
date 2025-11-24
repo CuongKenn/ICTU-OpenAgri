@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:openagri_app/viewmodels/login_viewmodel.dart';
 import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
-import 'package:openagri_app/views/login_view.dart';
-import 'package:provider/provider.dart';
+import 'package:openagri_app/viewmodels/login_viewmodel.dart';
 import 'package:openagri_app/views/commodity_prices_list_view.dart';
 import 'package:openagri_app/views/dashboard_view.dart';
+import 'package:openagri_app/views/login_view.dart';
 import 'package:openagri_app/views/settings_view.dart';
+import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
@@ -20,13 +20,25 @@ class AgriTechApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AgriSmart - Nông Nghiệp Thông Minh',
-      debugShowCheckedModeBanner: false,
-      theme: _buildLightTheme(),
-      darkTheme: _buildDarkTheme(),
-      themeMode: ThemeMode.light,
-      home: const HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
+      ],
+      child: MaterialApp(
+        title: 'AgriSmart - Nông Nghiệp Thông Minh',
+        debugShowCheckedModeBanner: false,
+        theme: _buildLightTheme(),
+        darkTheme: _buildDarkTheme(),
+        themeMode: ThemeMode.light,
+        home: const HomeScreen(),
+        routes: {
+          '/login': (context) => const LoginView(),
+          '/commodity-prices': (context) => const CommodityPricesListView(),
+          '/dashboard': (context) => const DashboardView(),
+          '/settings': (context) => const SettingsView(),
+        },
+      ),
     );
   }
 
@@ -194,31 +206,6 @@ class AgriTechApp extends StatelessWidget {
         ),
         bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
         bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF9ca3af)),
-      ),
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LoginViewModel()),
-        ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
-      ],
-      child: MaterialApp(
-        title: 'AgriTech - Nông Nghiệp Thông Minh',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF0BDA50),
-            primary: const Color(0xFF0BDA50),
-            surface: const Color(0xFFF5F8F6),
-          ),
-          fontFamily: 'Inter',
-          useMaterial3: true,
-        ),
-        home: const HomeScreen(),
-        routes: {
-          '/login': (context) => const LoginView(),
-          '/commodity-prices': (context) => const CommodityPricesListView(),
-          '/dashboard': (context) => const DashboardView(),
-          '/settings': (context) => const SettingsView(),
-        },
       ),
     );
   }

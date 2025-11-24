@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../viewmodels/commodity_price_viewmodel.dart';
+import 'package:provider/provider.dart';
+
 import '../models/commodity_price.dart';
+import '../viewmodels/commodity_price_viewmodel.dart';
 
 class CommodityPriceDetailView extends StatelessWidget {
   const CommodityPriceDetailView({super.key});
@@ -13,7 +14,8 @@ class CommodityPriceDetailView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Chi Tiết Giá', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Chi Tiết Giá',
+            style: TextStyle(fontWeight: FontWeight.w600)),
         backgroundColor: const Color(0xFF00C853),
         foregroundColor: Colors.white,
         elevation: 0,
@@ -53,9 +55,11 @@ class CommodityPriceDetailView extends StatelessWidget {
 
           final detail = viewModel.selectedCommodity!;
           final commodity = detail.commodity;
-          final priceFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
+          final priceFormat = NumberFormat.currency(
+              locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
           final isPositive = (commodity.priceChangePercent24h ?? 0) >= 0;
-          final changeColor = isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935);
+          final changeColor =
+              isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935);
 
           return SingleChildScrollView(
             child: Column(
@@ -87,7 +91,8 @@ class CommodityPriceDetailView extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(6),
@@ -118,16 +123,19 @@ class CommodityPriceDetailView extends StatelessWidget {
                           ),
                           const SizedBox(width: 16),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 7),
                             decoration: BoxDecoration(
-                              color: changeColor.withOpacity(0.15),
+                              color: changeColor.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
-                                  isPositive ? Icons.arrow_upward : Icons.arrow_downward,
+                                  isPositive
+                                      ? Icons.arrow_upward
+                                      : Icons.arrow_downward,
                                   color: changeColor,
                                   size: 18,
                                 ),
@@ -221,7 +229,8 @@ class CommodityPriceDetailView extends StatelessWidget {
                           children: [
                             // Table Header
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
                               decoration: BoxDecoration(
                                 color: Colors.grey[50],
                                 borderRadius: const BorderRadius.only(
@@ -230,7 +239,8 @@ class CommodityPriceDetailView extends StatelessWidget {
                                 ),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Ngày',
@@ -252,20 +262,26 @@ class CommodityPriceDetailView extends StatelessWidget {
                               ),
                             ),
                             // Table Rows
-                            ...detail.priceHistory.reversed.take(10).map((price) {
+                            ...detail.priceHistory.reversed
+                                .take(10)
+                                .map((price) {
                               return Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 14),
                                 decoration: BoxDecoration(
                                   border: Border(
-                                    top: BorderSide(color: Colors.grey[200]!, width: 1),
+                                    top: BorderSide(
+                                        color: Colors.grey[200]!, width: 1),
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       DateFormat('dd/MM/yyyy').format(
-                                        DateFormat('yyyy-MM-dd').parse(price.date),
+                                        DateFormat('yyyy-MM-dd')
+                                            .parse(price.date),
                                       ),
                                       style: const TextStyle(
                                         fontSize: 14,
@@ -339,7 +355,9 @@ class CommodityPriceDetailView extends StatelessWidget {
               reservedSize: 55, // Tăng khoảng cách để số không bị cắt
               interval: (maxY - minY) / 5,
               getTitlesWidget: (value, meta) {
-                if (value == minY || value == maxY) return const SizedBox.shrink();
+                if (value == minY || value == maxY) {
+                  return const SizedBox.shrink();
+                }
                 return Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Text(
@@ -386,8 +404,10 @@ class CommodityPriceDetailView extends StatelessWidget {
               },
             ),
           ),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
         lineBarsData: [
@@ -395,7 +415,8 @@ class CommodityPriceDetailView extends StatelessWidget {
             spots: spots,
             isCurved: true,
             curveSmoothness: 0.35,
-            color: isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935),
+            color:
+                isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935),
             barWidth: 2,
             isStrokeCapRound: true,
             // Hiển thị chấm tròn ở điểm cuối cùng
@@ -419,8 +440,14 @@ class CommodityPriceDetailView extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  (isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935)).withOpacity(0.25),
-                  (isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935)).withOpacity(0.0),
+                  (isPositive
+                          ? const Color(0xFF00C853)
+                          : const Color(0xFFE53935))
+                      .withValues(alpha: 0.25),
+                  (isPositive
+                          ? const Color(0xFF00C853)
+                          : const Color(0xFFE53935))
+                      .withValues(alpha: 0.0),
                 ],
               ),
             ),
@@ -431,7 +458,7 @@ class CommodityPriceDetailView extends StatelessWidget {
         lineTouchData: LineTouchData(
           handleBuiltInTouches: true,
           touchTooltipData: LineTouchTooltipData(
-            tooltipBgColor: Colors.blueGrey.shade800,
+            getTooltipColor: (touchedSpot) => Colors.blueGrey.shade800,
             tooltipRoundedRadius: 8,
             getTooltipItems: (List<LineBarSpot> touchedSpots) {
               return touchedSpots.map((LineBarSpot touchedSpot) {
@@ -449,7 +476,9 @@ class CommodityPriceDetailView extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0).format(touchedSpot.y),
+                        text: NumberFormat.currency(
+                                locale: 'vi_VN', symbol: '₫', decimalDigits: 0)
+                            .format(touchedSpot.y),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -464,11 +493,12 @@ class CommodityPriceDetailView extends StatelessWidget {
             },
           ),
           // Thêm đường gióng (crosshair) khi chạm vào
-          getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
+          getTouchedSpotIndicator:
+              (LineChartBarData barData, List<int> spotIndexes) {
             return spotIndexes.map((spotIndex) {
               return TouchedSpotIndicatorData(
                 FlLine(
-                  color: Colors.grey.withOpacity(0.5),
+                  color: Colors.grey.withValues(alpha: 0.5),
                   strokeWidth: 1,
                   dashArray: [5, 5], // Đường nét đứt
                 ),
@@ -507,9 +537,9 @@ class _StatsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.2), width: 1),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
