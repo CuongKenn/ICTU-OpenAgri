@@ -23,6 +23,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
 
   String activeControlTab = 'filter';
   DateTime selectedDate = DateTime(2024, 9);
+  String selectedDataLayer = 'Tất cả';
   bool showCropType = true;
   bool showHealth = true;
 
@@ -107,36 +108,119 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   Widget _buildMobileLayout() {
     return Column(
       children: [
-        // 1. MAP SECTION (Top) - Chiếm 50% màn hình
+        // 1. MAP SECTION (Top) - Chiếm 55% màn hình
         Expanded(
-          flex: 5,
+          flex: 55,
           child: Stack(
             children: [
               _buildMapSection(isMobile: true),
-              // Nút mở bảng điều khiển đè lên map (góc dưới phải)
+              // Mode selector overlay (centered)
               Positioned(
-                bottom: 16,
-                right: 16,
+                top: 16,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildModeChip('NDVI', 'NDVI', Icons.eco),
+                        const SizedBox(width: 4),
+                        _buildModeChip('Độ ẩm', 'Soil Moisture', Icons.water_drop),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // Nút mở bảng điều khiển đè lên map (góc dưới trái)
+              Positioned(
+                bottom: 20,
+                left: 16,
                 child: FloatingActionButton(
                   onPressed: () => _showControlPanelBottomSheet(),
                   backgroundColor: const Color(0xFF0BDA50),
-                  child: const Icon(Icons.tune, color: Colors.white),
+                  elevation: 4,
+                  child: const Icon(Icons.tune, color: Colors.white, size: 24),
+                ),
+              ),
+              // Zoom controls (góc dưới phải)
+              Positioned(
+                bottom: 20,
+                right: 16,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          _mapController.move(
+                            _mapController.camera.center,
+                            _mapController.camera.zoom + 1,
+                          );
+                        },
+                        color: const Color(0xFF4A5C52),
+                      ),
+                      Container(height: 1, color: Colors.grey.shade200),
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          _mapController.move(
+                            _mapController.camera.center,
+                            _mapController.camera.zoom - 1,
+                          );
+                        },
+                        color: const Color(0xFF4A5C52),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         ),
 
-        // 2. INFO SECTION - Chiếm 50% màn hình
+        // 2. INFO SECTION - Chiếm 45% màn hình
         Expanded(
-          flex: 5,
+          flex: 45,
           child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFF5F8F6),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5F8F6),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, -2),
+                ),
+              ],
             ),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -144,7 +228,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                     child: Container(
                       width: 40,
                       height: 4,
-                      margin: const EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(2),
@@ -154,16 +238,16 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                   const Text(
                     'Thông số Vệ tinh',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF111813),
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildSatelliteDataCard(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
                   _buildChartCard(),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -178,72 +262,155 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.35,
-        maxChildSize: 0.9,
-        builder: (context, scrollController) => Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 16,
-                offset: const Offset(0, -4),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              // Drag handle
-              Container(
-                width: 48,
-                height: 5,
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD1D5DB),
-                  borderRadius: BorderRadius.circular(3),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) => DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          minChildSize: 0.35,
+          maxChildSize: 0.9,
+          builder: (context, scrollController) => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 16,
+                  offset: const Offset(0, -4),
                 ),
-              ),
-              // Title
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Bảng điều khiển',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF111813),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Color(0xFF6B7280)),
-                      onPressed: () => Navigator.pop(context),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              // Content - scrollable
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 8,
+              ],
+            ),
+            child: Column(
+              children: [
+                // Drag handle
+                Container(
+                  width: 48,
+                  height: 5,
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD1D5DB),
+                    borderRadius: BorderRadius.circular(3),
                   ),
-                  child: _buildSidebar(isMobile: true),
+                ),
+                // Title
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Bảng điều khiển',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF111813),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Color(0xFF6B7280)),
+                        onPressed: () => Navigator.pop(context),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                // Content - scrollable
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 8,
+                    ),
+                    child: _buildSidebar(isMobile: true, setModalState: setModalState),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showDatePicker(StateSetter? setModalState) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      helpText: 'Chọn tháng/năm',
+    );
+    
+    if (picked != null && picked != selectedDate) {
+      if (setModalState != null) {
+        setModalState(() {
+          setState(() {
+            selectedDate = picked;
+          });
+        });
+      } else {
+        setState(() {
+          selectedDate = picked;
+        });
+      }
+    }
+  }
+
+  void _showDataLayerPicker(StateSetter? setModalState) {
+    final layers = ['Tất cả', 'NDVI', 'Độ ẩm đất', 'Nhiệt độ bề mặt', 'EVI'];
+    
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Chọn lớp dữ liệu',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF111813),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ...layers.map((layer) => ListTile(
+              leading: Icon(
+                selectedDataLayer == layer ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                color: selectedDataLayer == layer ? const Color(0xFF0BDA50) : Colors.grey,
+              ),
+              title: Text(
+                layer,
+                style: TextStyle(
+                  fontWeight: selectedDataLayer == layer ? FontWeight.bold : FontWeight.normal,
+                  color: selectedDataLayer == layer ? const Color(0xFF0BDA50) : const Color(0xFF111813),
                 ),
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
+              onTap: () {
+                if (setModalState != null) {
+                  setModalState(() {
+                    setState(() {
+                      selectedDataLayer = layer;
+                    });
+                  });
+                } else {
+                  setState(() {
+                    selectedDataLayer = layer;
+                  });
+                }
+                Navigator.pop(context);
+              },
+            )),
+            const SizedBox(height: 8),
+          ],
         ),
       ),
     );
@@ -288,28 +455,38 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                 markers: fields.map((field) {
                   return Marker(
                     point: field.center,
-                    width: 40,
-                    height: 40,
-                    child: GestureDetector(
-                      onTap: () => setState(() => selectedField = field),
+                    width: 50,
+                    height: 50,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedField = field;
+                          _mapController.move(field.center, 16.0);
+                        });
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: mapMode == 'NDVI'
                               ? _getNDVIColor(field.ndviValue)
                               : _getMoistureColor(field.ndviValue * 100),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
+                          border: Border.all(
+                            color: selectedField?.id == field.id 
+                                ? Colors.yellow 
+                                : Colors.white,
+                            width: selectedField?.id == field.id ? 3 : 2,
+                          ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
-                              blurRadius: 6,
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 8,
                             ),
                           ],
                         ),
                         child: const Icon(
                           Icons.eco,
                           color: Colors.white,
-                          size: 20,
+                          size: 24,
                         ),
                       ),
                     ),
@@ -319,75 +496,35 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             ],
           ),
 
-          // Mode Selector (Centered Top)
-          Positioned(
-            top: 16,
-            left: 16,
-            right: isMobile ? 70 : 16, // Tránh nút filter trên mobile
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildModeChip('NDVI', 'NDVI', Icons.eco),
-                    _buildModeChip('Độ ẩm', 'Moisture', Icons.water_drop),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // Zoom Controls
-          Positioned(
-            bottom: isMobile ? 40 : 24,
-            right: 16,
-            child: Column(
-              children: [
-                _buildMapButton(Icons.add, () {
-                  _mapController.move(
-                    _mapController.camera.center,
-                    _mapController.camera.zoom + 1,
-                  );
-                }),
-                const SizedBox(height: 12),
-                _buildMapButton(Icons.remove, () {
-                  _mapController.move(
-                    _mapController.camera.center,
-                    _mapController.camera.zoom - 1,
-                  );
-                }),
-              ],
-            ),
-          ),
+          // No old controls here anymore - using new overlay system
         ],
       ),
     );
   }
 
   // ============ SIDEBAR (CONTROL PANEL) ============
-  Widget _buildSidebar({required bool isMobile}) {
-    // Trên mobile, không cần container border vì đã nằm trong bottom sheet
+  Widget _buildSidebar({required bool isMobile, StateSetter? setModalState}) {
     if (isMobile) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildControlTabs(),
+          _buildControlTabs(setModalState: setModalState),
           const SizedBox(height: 20),
-          if (activeControlTab == 'filter') _buildFilterContent(),
-          if (activeControlTab == 'layers') _buildLayersContent(),
+          if (activeControlTab == 'filter') _buildFilterContent(setModalState: setModalState),
+          if (activeControlTab == 'layers') _buildLayersContent(setModalState: setModalState),
           if (activeControlTab == 'legend') _buildLegendContent(),
+          const SizedBox(height: 24),
+          const Text(
+            'Chọn vùng trồng',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF111813),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...fields.map((field) => _buildFieldSelectorItem(field)),
         ],
       );
     }
@@ -631,67 +768,78 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
 
   // Helper methods
 
-  Widget _buildControlTabs() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Row(
-        children: [
-          _buildTab('Bộ lọc', 'filter', Icons.filter_alt),
-          _buildTab('Lớp bản đồ', 'layers', Icons.layers),
-          _buildTab('Chú giải', 'legend', Icons.info_outline),
-        ],
-      ),
+  Widget _buildControlTabs({StateSetter? setModalState}) {
+    return Row(
+      children: [
+        _buildTab('Bộ lọc', 'filter', Icons.filter_alt, setModalState: setModalState),
+        _buildTab('Lớp bản đồ', 'layers', Icons.layers, setModalState: setModalState),
+        _buildTab('Chú giải', 'legend', Icons.info_outline, setModalState: setModalState),
+      ],
     );
   }
 
-  Widget _buildTab(String label, String value, IconData icon) {
+  Widget _buildTab(String label, String value, IconData icon, {StateSetter? setModalState}) {
     final isActive = activeControlTab == value;
     return Expanded(
-      child: GestureDetector(
-        onTap: () => setState(() => activeControlTab = value),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          decoration: BoxDecoration(
-            color: isActive ? const Color(0xFF0BDA50) : Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isActive
-                  ? const Color(0xFF0BDA50)
-                  : const Color(0xFFE5E7EB),
-              width: 1.5,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            print('Tab tapped: $value'); // Debug
+            if (setModalState != null) {
+              setModalState(() {
+                activeControlTab = value;
+              });
+            } else {
+              setState(() {
+                activeControlTab = value;
+              });
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            decoration: BoxDecoration(
+              color: isActive ? const Color(0xFF0BDA50) : Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isActive
+                    ? const Color(0xFF0BDA50)
+                    : const Color(0xFFE5E7EB),
+                width: 1.5,
+              ),
+              boxShadow: isActive
+                  ? [
+                      BoxShadow(
+                        color: const Color(0xFF0BDA50).withOpacity(0.25),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
-            boxShadow: isActive
-                ? [
-                    BoxShadow(
-                      color: const Color(0xFF0BDA50).withValues(alpha: 0.25),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ]
-                : null,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 18,
-                color: isActive ? Colors.white : const Color(0xFF6B7280),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
-                    color: isActive ? Colors.white : const Color(0xFF6B7280),
-                  ),
-                  overflow: TextOverflow.ellipsis,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 18,
+                  color: isActive ? Colors.white : const Color(0xFF6B7280),
                 ),
-              ),
-            ],
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
+                      color: isActive ? Colors.white : const Color(0xFF6B7280),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -733,13 +881,23 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   }
 
   String _getMapTileUrl() {
-    if (mapLayerType == 'Street') {
-      return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+    switch (mapLayerType) {
+      case 'Street':
+        return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      case 'Terrain':
+        // Using ESRI World Topo Map - reliable and free
+        return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
+      case 'Satellite':
+      default:
+        // Using ESRI World Imagery
+        return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     }
-    if (mapLayerType == 'Terrain') {
-      return 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
-    }
-    return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  }
+
+  String _getHealthStatus(double ndvi) {
+    if (ndvi >= 0.7) return 'Sức khỏe tốt';
+    if (ndvi >= 0.5) return 'Trung bình';
+    return 'Yếu';
   }
 
   Color _getNDVIColor(double value) {
@@ -754,48 +912,33 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
     return const Color(0xFF93C5FD);
   }
 
-  Widget _buildMapButton(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 8,
-            ),
-          ],
-        ),
-        child: Icon(icon, size: 22, color: const Color(0xFF111813)),
-      ),
-    );
-  }
-
   // ... [Control Panel Helpers] ...
-  Widget _buildFilterContent() {
+  Widget _buildFilterContent({StateSetter? setModalState}) {
+    final dateText = 'Tháng ${selectedDate.month}/${selectedDate.year}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildFilterItem('Thời gian', 'Tháng 9/2024', Icons.calendar_today),
+        _buildFilterItem('Thời gian', dateText, Icons.calendar_today, 
+          onTap: () => _showDatePicker(setModalState)),
         const SizedBox(height: 16),
-        _buildFilterItem('Lớp dữ liệu', 'Tất cả', Icons.layers),
+        _buildFilterItem('Lớp dữ liệu', selectedDataLayer, Icons.layers,
+          onTap: () => _showDataLayerPicker(setModalState)),
       ],
     );
   }
 
-  Widget _buildFilterItem(String label, String value, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F8F6),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
-      ),
-      child: Row(
+  Widget _buildFilterItem(String label, String value, IconData icon, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF5F8F6),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+        ),
+        child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
@@ -833,23 +976,38 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           const Icon(Icons.chevron_right, color: Color(0xFFD1D5DB)),
         ],
       ),
+      ),
     );
   }
 
-  Widget _buildLayersContent() {
+  Widget _buildLayersContent({StateSetter? setModalState}) {
     return Column(
       children: [
-        _buildMapLayerOption('Satellite', 'Vệ tinh', Icons.satellite_alt),
-        _buildMapLayerOption('Street', 'Đường phố', Icons.map),
-        _buildMapLayerOption('Terrain', 'Địa hình', Icons.terrain),
+        _buildMapLayerOption('Satellite', 'Vệ tinh', Icons.satellite_alt, setModalState: setModalState),
+        _buildMapLayerOption('Street', 'Đường phố', Icons.map, setModalState: setModalState),
+        _buildMapLayerOption('Terrain', 'Địa hình', Icons.terrain, setModalState: setModalState),
       ],
     );
   }
 
-  Widget _buildMapLayerOption(String type, String label, IconData icon) {
+  Widget _buildMapLayerOption(String type, String label, IconData icon, {StateSetter? setModalState}) {
     final isSelected = mapLayerType == type;
     return GestureDetector(
-      onTap: () => setState(() => mapLayerType = type),
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        print('Layer tapped: $type'); // Debug
+        if (setModalState != null) {
+          setModalState(() {
+            setState(() {
+              mapLayerType = type;
+            });
+          });
+        } else {
+          setState(() {
+            mapLayerType = type;
+          });
+        }
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
@@ -860,6 +1018,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             color: isSelected
                 ? const Color(0xFF0BDA50)
                 : const Color(0xFFE5E7EB),
+            width: 2,
           ),
         ),
         child: Row(
@@ -867,18 +1026,20 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             Icon(
               icon,
               color: isSelected ? const Color(0xFF0BDA50) : Colors.grey,
+              size: 24,
             ),
             const SizedBox(width: 12),
             Text(
               label,
               style: TextStyle(
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: isSelected ? const Color(0xFF0BDA50) : Colors.black,
               ),
             ),
             const Spacer(),
             if (isSelected)
-              const Icon(Icons.check_circle, color: Color(0xFF0BDA50)),
+              const Icon(Icons.check_circle, color: Color(0xFF0BDA50), size: 24),
           ],
         ),
       ),
@@ -913,5 +1074,259 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
         ],
       ),
     );
+  }
+
+  // Field selector item for control panel
+  Widget _buildFieldSelectorItem(CropField field) {
+    final isSelected = selectedField?.id == field.id;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedField = field;
+          _mapController.move(field.center, 16.0);
+        });
+        if (MediaQuery.of(context).size.width <= 1024) {
+          Navigator.pop(context); // Close bottom sheet
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFF0FDF4) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF0BDA50) : const Color(0xFFE5E7EB),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: _getCropColor(field.cropType).withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                _getCropIcon(field.cropType),
+                color: _getCropColor(field.cropType),
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    field.name,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: isSelected ? const Color(0xFF0BDA50) : const Color(0xFF111813),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      Icon(Icons.terrain, size: 12, color: Colors.grey[600]),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${field.area.toStringAsFixed(1)} ha',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: _getNDVIColor(field.ndviValue).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'NDVI: ${field.ndviValue.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: _getNDVIColor(field.ndviValue),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check_circle, color: Color(0xFF0BDA50), size: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Detailed data row for satellite info
+  Widget _buildDetailedDataRow({
+    required IconData icon,
+    required Color iconColor,
+    required String satellite,
+    required String metric,
+    required String value,
+    required String status,
+    required Color statusColor,
+    required String date,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: iconColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: iconColor, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      satellite,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF6B7280),
+                      ),
+                    ),
+                    Text(
+                      metric,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF9CA3AF),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111813),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  status,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(Icons.access_time, size: 12, color: Colors.grey[500]),
+              const SizedBox(width: 4),
+              Text(
+                date,
+                style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Metric box for trends and resolution
+  Widget _buildMetricBox(String label, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper methods for crop icons and colors
+  IconData _getCropIcon(String cropType) {
+    switch (cropType) {
+      case 'Lúa':
+        return Icons.grass;
+      case 'Cây ăn trái':
+        return Icons.park;
+      case 'Rau màu':
+        return Icons.eco;
+      default:
+        return Icons.agriculture;
+    }
+  }
+
+  Color _getCropColor(String cropType) {
+    switch (cropType) {
+      case 'Lúa':
+        return const Color(0xFFFBBF24);
+      case 'Cây ăn trái':
+        return const Color(0xFF10B981);
+      case 'Rau màu':
+        return const Color(0xFF3B82F6);
+      default:
+        return const Color(0xFF0BDA50);
+    }
   }
 }
