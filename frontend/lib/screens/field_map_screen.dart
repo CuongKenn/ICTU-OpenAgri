@@ -18,16 +18,77 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
   List<LatLng> newFieldPoints = [];
   bool isDrawingMode = false;
 
+  // Form data for new field
+  String newFieldName = '';
+  String newFieldCropType = 'Lúa';
+  double newFieldArea = 0.0;
+
   @override
   void initState() {
     super.initState();
     fields = CropField.getMockFields();
   }
 
+  void _startDrawingMode() {
+    setState(() {
+      isDrawingMode = true;
+      newFieldPoints.clear();
+      selectedField = null;
+    });
+  }
+
+  void _cancelDrawing() {
+    setState(() {
+      isDrawingMode = false;
+      newFieldPoints.clear();
+    });
+  }
+
+  void _addPointToField(LatLng point) {
+    if (!isDrawingMode || newFieldPoints.length >= 4) return;
+
+    setState(() {
+      newFieldPoints.add(point);
+
+      // Nếu đã có đủ 4 điểm, hiện form nhập thông tin
+      if (newFieldPoints.length == 4) {
+        _showFieldInfoDialog();
+      }
+    });
+  }
+
+  double _calculateArea(List<LatLng> points) {
+    if (points.length < 3) return 0.0;
+
+    // Shoelace formula để tính diện tích polygon
+    double area = 0.0;
+    for (int i = 0; i < points.length; i++) {
+      int j = (i + 1) % points.length;
+      area += points[i].latitude * points[j].longitude;
+      area -= points[j].latitude * points[i].longitude;
+    }
+    area = (area.abs() / 2.0);
+
+    // Convert to hectares (approximation: 1 degree ≈ 111km)
+    area = area * 111 * 111 * 100; // Convert to hectares
+    return area;
+  }
+
+  LatLng _calculateCenter(List<LatLng> points) {
+    double lat = 0.0;
+    double lng = 0.0;
+    for (var point in points) {
+      lat += point.latitude;
+      lng += point.longitude;
+    }
+    return LatLng(lat / points.length, lng / points.length);
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isDesktop = width > 1024;
+    final isMobile = width <= 768;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F8F6),
@@ -35,15 +96,30 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
       body: SafeArea(
         child: isDesktop ? _buildDesktopLayout() : _buildMobileLayout(),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _showAddFieldDialog,
-        backgroundColor: const Color(0xFF0BDA50),
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text(
-          'Thêm Vùng Trồng',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
+      floatingActionButton: isMobile && !isDrawingMode
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: FloatingActionButton(
+                onPressed: _startDrawingMode,
+                backgroundColor: const Color(0xFF0BDA50),
+                elevation: 4,
+                child: const Icon(Icons.draw, color: Colors.white, size: 24),
+              ),
+            )
+          : !isMobile
+          ? FloatingActionButton.extended(
+              onPressed: _startDrawingMode,
+              backgroundColor: const Color(0xFF0BDA50),
+              icon: const Icon(Icons.draw, color: Colors.white),
+              label: const Text(
+                'Vẽ Vùng Trồng',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          : null,
     );
   }
 
@@ -84,95 +160,222 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
   }
 
   Widget _buildMobileLayout() {
-    return Column(
+    return Stack(
       children: [
-        // MAP SECTION
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.45,
-          child: _buildMapSection(),
+        Column(
+          children: [
+            // MAP SECTION - Full screen khi đang vẽ
+            Expanded(flex: isDrawingMode ? 7 : 6, child: _buildMapSection()),
+            // FIELD LIST - Ẩn khi đang vẽ
+            if (!isDrawingMode)
+              Expanded(flex: 4, child: _buildFieldList())
+            else
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Chọn 4 điểm trên bản đồ',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF111813),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${newFieldPoints.length}/4 điểm đã chọn',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFF608a6e),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: _cancelDrawing,
+                          icon: const Icon(Icons.close, size: 18),
+                          label: const Text('Hủy'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
-        // FIELD LIST
-        Expanded(child: _buildFieldList()),
       ],
     );
   }
 
   Widget _buildMapSection() {
+    // Kết hợp existing fields và newFieldPoints để hiển thị
+    List<Polygon> allPolygons = fields.map((field) {
+      final isSelected = selectedField?.id == field.id;
+      return Polygon(
+        points: field.polygonPoints,
+        color: _getCropColor(field.cropType).withValues(alpha: 0.4),
+        borderColor: isSelected ? Colors.white : _getCropColor(field.cropType),
+        borderStrokeWidth: isSelected ? 3 : 2,
+      );
+    }).toList();
+
+    // Thêm polygon đang vẽ (nếu có ít nhất 2 điểm)
+    if (isDrawingMode && newFieldPoints.length >= 2) {
+      allPolygons.add(
+        Polygon(
+          points: newFieldPoints,
+          color: const Color(0xFF0BDA50).withValues(alpha: 0.3),
+          borderColor: const Color(0xFF0BDA50),
+          borderStrokeWidth: 3,
+        ),
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(isDrawingMode ? 0 : 16),
         boxShadow: [
           BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(isDrawingMode ? 0 : 16),
         child: Stack(
           children: [
             FlutterMap(
               mapController: _mapController,
               options: MapOptions(
                 initialCenter: const LatLng(10.033333, 105.783333),
-                initialZoom: 14.0,
-                onTap: (_, __) => setState(() => selectedField = null),
+                initialZoom: 13.0,
+                minZoom: 5.0,
+                maxZoom: 18.0,
+                keepAlive: true,
+                onTap: (tapPosition, latLng) {
+                  if (isDrawingMode) {
+                    _addPointToField(latLng);
+                  } else {
+                    setState(() => selectedField = null);
+                  }
+                },
               ),
               children: [
                 TileLayer(
                   urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   userAgentPackageName: 'com.agritech.app',
                 ),
-                PolygonLayer(
-                  polygons: fields.map((field) {
-                    final isSelected = selectedField?.id == field.id;
-                    return Polygon(
-                      points: field.polygonPoints,
-                      color: _getCropColor(
-                        field.cropType,
-                      ).withValues(alpha: 0.4),
-                      borderColor: isSelected
-                          ? Colors.white
-                          : _getCropColor(field.cropType),
-                      borderStrokeWidth: isSelected ? 3 : 2,
-                    );
-                  }).toList(),
-                ),
+                PolygonLayer(polygons: allPolygons),
                 MarkerLayer(
-                  markers: fields.map((field) {
-                    return Marker(
-                      point: field.center,
-                      width: 40,
-                      height: 40,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() => selectedField = field);
-                          _mapController.move(field.center, 16);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: _getCropColor(field.cropType),
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                blurRadius: 4,
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            _getCropIcon(field.cropType),
-                            color: Colors.white,
-                            size: 20,
+                  markers: [
+                    // Markers cho existing fields
+                    ...fields.map((field) {
+                      return Marker(
+                        point: field.center,
+                        width: 40,
+                        height: 40,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (!isDrawingMode) {
+                              setState(() => selectedField = field);
+                              _mapController.move(field.center, 16);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: _getCropColor(field.cropType),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              _getCropIcon(field.cropType),
+                              color: Colors.white,
+                              size: 20,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }),
+                    // Markers cho các điểm đang vẽ
+                    if (isDrawingMode)
+                      ...newFieldPoints.asMap().entries.map((entry) {
+                        return Marker(
+                          point: entry.value,
+                          width: 40,
+                          height: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF0BDA50),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 3),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 6,
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${entry.key + 1}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                  ],
                 ),
               ],
             ),
+            // Zoom controls
             Positioned(
-              bottom: 16,
+              bottom: isDrawingMode ? 100 : 16,
               right: 16,
               child: Column(
                 children: [
@@ -189,41 +392,116 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
                       _mapController.camera.zoom - 1,
                     );
                   }),
+                  if (isDrawingMode && newFieldPoints.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    _buildMapButton(Icons.undo, () {
+                      setState(() {
+                        if (newFieldPoints.isNotEmpty) {
+                          newFieldPoints.removeLast();
+                        }
+                      });
+                    }),
+                  ],
                 ],
               ),
             ),
+            // Drawing mode indicator (top)
+            if (isDrawingMode)
+              Positioned(
+                top: 12,
+                left: 12,
+                right: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0BDA50),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.2),
+                        blurRadius: 12,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.touch_app,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Chế độ vẽ vùng trồng',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Chạm ${4 - newFieldPoints.length} điểm còn lại',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.95),
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMapButton(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 8,
-            ),
-          ],
+  Widget _buildMapButton(IconData icon, VoidCallback onTap, {Color? color}) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          width: 48,
+          height: 48,
+          padding: const EdgeInsets.all(12),
+          child: Icon(icon, size: 24, color: color ?? const Color(0xFF4A5C52)),
         ),
-        child: Icon(icon, size: 20),
       ),
     );
   }
 
   Widget _buildFieldList() {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width <= 768;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(isMobile ? 24 : 16),
+          bottom: Radius.circular(isMobile ? 0 : 16),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -234,20 +512,75 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (isMobile)
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
           Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Row(
               children: [
-                const Text(
-                  'Danh sách Vùng trồng',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Vùng trồng của bạn',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF111813),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${fields.length} vùng đang quản lý',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF608a6e),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '${fields.length} vùng đang quản lý',
-                  style: const TextStyle(color: Color(0xFF608a6e)),
-                ),
+                if (!isMobile)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0FDF4),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.eco,
+                          size: 16,
+                          color: Color(0xFF0BDA50),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '${fields.where((f) => f.ndviValue >= 0.7).length} khỏe mạnh',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0BDA50),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
@@ -336,30 +669,68 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
     );
   }
 
-  void _showAddFieldDialog() {
+  void _showFieldInfoDialog() {
     final nameController = TextEditingController();
-    final areaController = TextEditingController();
-    String cropType = 'Lúa';
+    final calculatedArea = _calculateArea(newFieldPoints);
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Thêm Vùng Trồng Mới'),
+        title: const Text('Thông tin Vùng trồng'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0FDF4),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check_circle, color: Color(0xFF0BDA50)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Vùng trồng đã được vẽ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            'Diện tích ước tính: ${calculatedArea.toStringAsFixed(2)} ha',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF608a6e),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
                   labelText: 'Tên vùng trồng *',
+                  hintText: 'VD: Vùng lúa A1',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.terrain),
                 ),
+                autofocus: true,
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: cropType,
+                initialValue: newFieldCropType,
                 decoration: const InputDecoration(
                   labelText: 'Loại cây trồng',
                   border: OutlineInputBorder(),
@@ -371,26 +742,23 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
                     value: 'Cây ăn trái',
                     child: Text('Cây ăn trái'),
                   ),
+                  DropdownMenuItem(
+                    value: 'Cây công nghiệp',
+                    child: Text('Cây công nghiệp'),
+                  ),
                   DropdownMenuItem(value: 'Rau màu', child: Text('Rau màu')),
                 ],
-                onChanged: (v) => cropType = v ?? 'Lúa',
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: areaController,
-                decoration: const InputDecoration(
-                  labelText: 'Diện tích (ha)',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.square_foot),
-                ),
-                keyboardType: TextInputType.number,
+                onChanged: (v) => setState(() => newFieldCropType = v ?? 'Lúa'),
               ),
             ],
           ),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pop(context);
+              _cancelDrawing();
+            },
             child: const Text('Hủy'),
           ),
           ElevatedButton(
@@ -404,47 +772,28 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
                 return;
               }
 
-              // Create new field with random location near existing fields
+              final center = _calculateCenter(newFieldPoints);
               final newField = CropField(
                 id: DateTime.now().millisecondsSinceEpoch.toString(),
                 name: nameController.text,
-                cropType: cropType,
-                area: double.tryParse(areaController.text) ?? 1.0,
+                cropType: newFieldCropType,
+                area: calculatedArea,
                 ndviValue: 0.5,
                 trendDirection: 'stable',
                 lastUpdated: DateTime.now(),
                 ndviHistory: NDVIDataPoint.getMockData(),
                 imageUrl: '',
-                center: LatLng(
-                  10.033333 + (fields.length * 0.001),
-                  105.783333 + (fields.length * 0.001),
-                ),
-                polygonPoints: [
-                  LatLng(
-                    10.033333 + (fields.length * 0.001),
-                    105.783333 + (fields.length * 0.001),
-                  ),
-                  LatLng(
-                    10.034333 + (fields.length * 0.001),
-                    105.783333 + (fields.length * 0.001),
-                  ),
-                  LatLng(
-                    10.034333 + (fields.length * 0.001),
-                    105.784333 + (fields.length * 0.001),
-                  ),
-                  LatLng(
-                    10.033333 + (fields.length * 0.001),
-                    105.784333 + (fields.length * 0.001),
-                  ),
-                ],
+                center: center,
+                polygonPoints: List.from(newFieldPoints),
               );
 
               setState(() {
                 fields.add(newField);
                 selectedField = newField;
+                isDrawingMode = false;
+                newFieldPoints.clear();
               });
 
-              _mapController.move(newField.center, 16);
               Navigator.pop(context);
 
               ScaffoldMessenger.of(context).showSnackBar(
