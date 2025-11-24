@@ -21,17 +21,12 @@ dependencies:
   provider: ^6.1.1
 
   # UI Components
-  cupertino_icons: ^1.0.2
   dio: ^5.9.0
   flutter_map: ^8.2.2
-  latlong2: ^0.9.1
   geolocator: ^14.0.2
 
   # HTTP Client (for API calls)
   http: ^1.1.2
-  
-  # Internationalization and formatting
-  intl: ^0.18.1
 
   # Authentication (Optional - for future implementation)
   # firebase_auth: ^4.15.3
