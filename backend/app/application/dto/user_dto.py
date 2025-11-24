@@ -29,6 +29,12 @@ class UserLoginDTO(BaseModel):
     password: str
 
 
+class ChangePasswordDTO(BaseModel):
+    """DTO for changing password."""
+    current_password: str
+    new_password: str
+
+
 class TokenDTO(BaseModel):
     """DTO for token response."""
     access_token: str
