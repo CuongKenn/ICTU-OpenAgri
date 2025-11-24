@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../viewmodels/commodity_price_viewmodel.dart';
+import 'package:provider/provider.dart';
+
 import '../models/commodity_price.dart';
+import '../viewmodels/commodity_price_viewmodel.dart';
 import 'commodity_price_detail_view.dart';
 
 class CommodityPricesListView extends StatefulWidget {
   const CommodityPricesListView({super.key});
 
   @override
-  State<CommodityPricesListView> createState() => _CommodityPricesListViewState();
+  State<CommodityPricesListView> createState() =>
+      _CommodityPricesListViewState();
 }
 
 class _CommodityPricesListViewState extends State<CommodityPricesListView> {
@@ -17,7 +19,8 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = Provider.of<CommodityPriceViewModel>(context, listen: false);
+      final viewModel =
+          Provider.of<CommodityPriceViewModel>(context, listen: false);
       viewModel.loadCommodities();
       viewModel.loadCategories();
     });
@@ -28,7 +31,8 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Thị Trường Nông Sản', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Thị Trường Nông Sản',
+            style: TextStyle(fontWeight: FontWeight.w600)),
         backgroundColor: const Color(0xFF00C853),
         foregroundColor: Colors.white,
         elevation: 0,
@@ -36,7 +40,8 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
       body: Consumer<CommodityPriceViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.isLoading && viewModel.commodities.isEmpty) {
-            return const Center(child: CircularProgressIndicator(color: Color(0xFF00C853)));
+            return const Center(
+                child: CircularProgressIndicator(color: Color(0xFF00C853)));
           }
 
           if (viewModel.error != null && viewModel.commodities.isEmpty) {
@@ -70,7 +75,8 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
               if (viewModel.categories.isNotEmpty)
                 Container(
                   color: Colors.grey[50],
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -101,10 +107,11 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
                     ),
                   ),
                 ),
-              
+
               // Table Header
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   border: Border(
@@ -152,7 +159,7 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
                   ],
                 ),
               ),
-              
+
               // Commodity List
               Expanded(
                 child: ListView.separated(
@@ -214,9 +221,11 @@ class _CommodityRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final priceFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
+    final priceFormat =
+        NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
     final isPositive = (commodity.priceChangePercent24h ?? 0) >= 0;
-    final changeColor = isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935);
+    final changeColor =
+        isPositive ? const Color(0xFF00C853) : const Color(0xFFE53935);
 
     return InkWell(
       onTap: () {
@@ -224,8 +233,8 @@ class _CommodityRow extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider(
-              create: (_) => CommodityPriceViewModel()
-                ..loadCommodityDetail(commodity.id),
+              create: (_) =>
+                  CommodityPriceViewModel()..loadCommodityDetail(commodity.id),
               child: const CommodityPriceDetailView(),
             ),
           ),
@@ -246,9 +255,9 @@ class _CommodityRow extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(width: 16),
-            
+
             // Current Price - fixed width for alignment
             SizedBox(
               width: 110,
@@ -262,16 +271,17 @@ class _CommodityRow extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(width: 16),
-            
+
             // Price Change - fixed width for alignment
             SizedBox(
               width: 80,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: changeColor.withOpacity(0.1),
+                  color: changeColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../views/signup_view.dart';
-import '../screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/home_screen.dart';
 import '../views/signup_view.dart';
 import 'signup_viewmodel.dart';
 
@@ -76,7 +75,7 @@ class LoginViewModel extends ChangeNotifier {
             duration: Duration(seconds: 2),
           ),
         );
-        
+
         // Navigate to HomeScreen after successful login
         Navigator.pushReplacement(
           context,
@@ -109,7 +108,7 @@ class LoginViewModel extends ChangeNotifier {
             duration: Duration(seconds: 2),
           ),
         );
-        
+
         // Navigate to HomeScreen after successful Google login
         Navigator.pushReplacement(
           context,
