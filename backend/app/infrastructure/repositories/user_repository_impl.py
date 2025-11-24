@@ -79,6 +79,7 @@ class SQLAlchemyUserRepository(UserRepository):
         
         model.email = entity.email
         model.username = entity.username
+        model.hashed_password = entity.hashed_password
         model.full_name = entity.full_name
         model.is_active = entity.is_active
         model.is_superuser = entity.is_superuser
