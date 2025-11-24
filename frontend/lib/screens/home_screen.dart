@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'satellite_monitoring_screen.dart';
+import 'dashboard_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -56,16 +58,43 @@ class _AgriTechAppBar extends StatelessWidget {
         children: [
           Row(
             children: [
+              SizedBox(
+                width: 24,
+                height: 24,
+                child: CustomPaint(painter: _LogoPainter()),
+              ),
+              const SizedBox(width: 16),
+              const Text(
+                'AgriTech',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111827),
+                  letterSpacing: -0.015,
+                ),
+              ),
               // SizedBox(height: 10,),
               Image.asset("assets/image/OpenAgri.png"),
               if (isDesktop) const SizedBox(width: 40),
               if (isDesktop)
                 const Row(
                   children: [
-                    _NavLink(title: 'Trang Chủ'),
-                    _NavLink(title: 'Tính Năng'),
-                    _NavLink(title: 'Bảng Giá'),
-                    _NavLink(title: 'Liên Hệ'),
+                    _NavLink(title: 'Trang Chủ', onTap: () {}),
+                    _NavLink(title: 'Tính Năng', onTap: () {}),
+                    _NavLink(
+                      title: 'Giám sát Vệ tinh',
+                      icon: Icons.satellite_alt,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const SatelliteMonitoringScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _NavLink(title: 'Bảng Giá', onTap: () {}),
+                    _NavLink(title: 'Liên Hệ', onTap: () {}),
                   ],
                 ),
             ],
@@ -81,15 +110,18 @@ class _AgriTechAppBar extends StatelessWidget {
                   ),
                   child: const Text(
                     'Đăng Nhập',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const DashboardScreen(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0BDA50),
                     foregroundColor: const Color(0xFF111827),
@@ -161,24 +193,33 @@ class _AgriTechAppBar extends StatelessWidget {
 
 class _NavLink extends StatelessWidget {
   final String title;
-  const _NavLink({required this.title});
+  final VoidCallback onTap;
+  final IconData? icon;
+
+  const _NavLink({required this.title, required this.onTap, this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: TextButton(
-        onPressed: () {},
+        onPressed: onTap,
         style: TextButton.styleFrom(
           foregroundColor: const Color(0xFF1F2937),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 16),
+              const SizedBox(width: 6),
+            ],
+            Text(
+              title,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+          ],
         ),
       ),
     );
@@ -211,12 +252,41 @@ class _MobileDrawer extends StatelessWidget {
           ListTile(title: const Text('Liên Hệ'), onTap: () {}),
           const Divider(),
           ListTile(
+            leading: const Icon(Icons.satellite_alt, color: Color(0xFF0BDA50)),
+            title: const Text('Giám sát Vệ tinh'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SatelliteMonitoringScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.map, color: Color(0xFF0BDA50)),
+            title: const Text('Bản đồ Vùng trồng'),
+            onTap: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Tính năng đang phát triển')),
+              );
+            },
+          ),
+          const Divider(),
               title: const Text('Đăng Nhập'),
               onTap: () => Navigator.pushNamed(context, '/login')),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const DashboardScreen(),
+                  ),
+                );
+              },
               icon: const Icon(Icons.dashboard),
               label: const Text('Truy Cập Dashboard'),
               style: ElevatedButton.styleFrom(
@@ -271,10 +341,7 @@ class _HeroSection extends StatelessWidget {
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0x33000000),
-                      Color(0x99000000),
-                    ],
+                    colors: [Color(0x33000000), Color(0x99000000)],
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
@@ -314,7 +381,13 @@ class _HeroSection extends StatelessWidget {
                       runSpacing: 12,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const DashboardScreen(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF0BDA50),
                             foregroundColor: const Color(0xFF111827),
@@ -344,8 +417,18 @@ class _HeroSection extends StatelessWidget {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const SatelliteMonitoringScreen(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(
+                              0xFFF5F8F6,
+                            ).withValues(alpha: 0.9),
                             backgroundColor:
                                 const Color(0xFFF5F8F6).withValues(alpha: 0.9),
                             foregroundColor: const Color(0xFF1F2937),
@@ -358,13 +441,20 @@ class _HeroSection extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: Text(
-                            'Khám Phá Tính Năng',
-                            style: TextStyle(
-                              fontSize: isSmall ? 16 : 14,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.015,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.satellite_alt, size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Giám sát Vệ tinh',
+                                style: TextStyle(
+                                  fontSize: isSmall ? 16 : 14,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.015,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -446,10 +536,22 @@ class _FeatureGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final features = [
       _FeatureData(
-        icon: Icons.api,
-        title: 'API Dữ liệu Mở',
+        icon: Icons.satellite_alt,
+        title: 'Giám sát Vệ tinh',
         description:
-            'Dễ dàng tích hợp và chia sẻ dữ liệu nông nghiệp trên các công cụ của bạn.',
+            'Theo dõi sức khỏe (Sentinel-2) và độ ẩm đất (Sentinel-1) từ xa.',
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Tính năng đang phát triển')),
+          );
+        },
+      ),
+      _FeatureData(
+        icon: Icons.map_outlined,
+        title: 'Bản đồ Vùng trồng',
+        description:
+            'Quản lý diện tích, vị trí và thông tin chi tiết từng vùng trồng.',
+        onTap: () {},
       ),
       _FeatureData(
         icon: Icons.bug_report,
@@ -470,10 +572,10 @@ class _FeatureGrid extends StatelessWidget {
             'Công cụ thông minh lên lịch gieo trồng và thu hoạch để đạt năng suất tối đa.',
       ),
       _FeatureData(
-        icon: Icons.satellite_alt,
-        title: 'Giám sát Vệ tinh',
+        icon: Icons.api,
+        title: 'API Dữ liệu Mở',
         description:
-            'Theo dõi sức khỏe và sự phát triển của cây trồng từ xa với hình ảnh độ phân giải cao.',
+            'Dễ dàng tích hợp và chia sẻ dữ liệu nông nghiệp trên các công cụ của bạn.',
       ),
       _FeatureData(
         icon: Icons.attach_money,
@@ -510,6 +612,7 @@ class _FeatureGrid extends StatelessWidget {
               icon: feature.icon,
               title: feature.title,
               description: feature.description,
+              onTap: feature.onTap,
               route: feature.route,
             );
           },
@@ -523,31 +626,109 @@ class _FeatureData {
   final IconData icon;
   final String title;
   final String description;
+  final VoidCallback? onTap;
   final String? route;
 
   _FeatureData({
     required this.icon,
     required this.title,
     required this.description,
+    this.onTap,
     this.route,
   });
 }
 
-class _FeatureCard extends StatelessWidget {
+class _FeatureCard extends StatefulWidget {
   final IconData icon;
   final String title;
   final String description;
+  final VoidCallback? onTap;
   final String? route;
 
   const _FeatureCard({
     required this.icon,
     required this.title,
     required this.description,
+    this.onTap,
     this.route,
   });
 
   @override
+  State<_FeatureCard> createState() => _FeatureCardState();
+}
+
+class _FeatureCardState extends State<_FeatureCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: _isHovered && widget.onTap != null
+                  ? const Color(0xFF0BDA50)
+                  : const Color(0xFF0BDA50).withValues(alpha: 0.2),
+              width: _isHovered && widget.onTap != null ? 2 : 1,
+            ),
+            boxShadow: _isHovered && widget.onTap != null
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : [],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(widget.icon, color: const Color(0xFF0BDA50), size: 28),
+                  if (widget.onTap != null)
+                    Icon(
+                      Icons.arrow_forward,
+                      color: _isHovered
+                          ? const Color(0xFF0BDA50)
+                          : const Color(0xFF0BDA50).withValues(alpha: 0.5),
+                      size: 20,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                widget.title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111827),
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Expanded(
+                child: Text(
+                  widget.description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF4B5563),
+                    height: 1.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
     return InkWell(
       onTap: route != null ? () => Navigator.pushNamed(context, route!) : null,
       borderRadius: BorderRadius.circular(8),
@@ -617,6 +798,12 @@ class _DataVisualizationSection extends StatelessWidget {
           child: Column(
             children: [
               const Padding(
+                padding: EdgeInsets.only(
+                  top: 64,
+                  bottom: 12,
+                  left: 16,
+                  right: 16,
+                ),
                 padding:
                     EdgeInsets.only(top: 64, bottom: 12, left: 16, right: 16),
                 child: Text(
@@ -632,6 +819,10 @@ class _DataVisualizationSection extends StatelessWidget {
                 ),
               ),
               Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 24,
+                ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: LayoutBuilder(
@@ -739,6 +930,40 @@ class _SoilMoistureCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _BarColumn(
+                          label: 'T2',
+                          heightPercent: 40,
+                          isActive: false,
+                        ),
+                        _BarColumn(
+                          label: 'T3',
+                          heightPercent: 50,
+                          isActive: false,
+                        ),
+                        _BarColumn(
+                          label: 'T4',
+                          heightPercent: 90,
+                          isActive: true,
+                        ),
+                        _BarColumn(
+                          label: 'T5',
+                          heightPercent: 60,
+                          isActive: false,
+                        ),
+                        _BarColumn(
+                          label: 'T6',
+                          heightPercent: 70,
+                          isActive: false,
+                        ),
+                        _BarColumn(
+                          label: 'T7',
+                          heightPercent: 65,
+                          isActive: false,
+                        ),
+                        _BarColumn(
+                          label: 'CN',
+                          heightPercent: 68,
+                          isActive: false,
+                        ),
                             label: 'T2', heightPercent: 40, isActive: false),
                         _BarColumn(
                             label: 'T3', heightPercent: 50, isActive: false),
@@ -857,6 +1082,7 @@ class _CropHealthCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
+          Row(
           const Row(
             children: [
               Text(
@@ -1058,10 +1284,7 @@ class _CTASection extends StatelessWidget {
                   child: const Text(
                     'Tham gia cùng hàng ngàn nông dân hiện đại và đưa việc quản lý nông nghiệp của bạn lên một tầm cao mới. Bắt đầu dùng thử miễn phí ngay hôm nay.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF374151),
-                    ),
+                    style: TextStyle(fontSize: 16, color: Color(0xFF374151)),
                   ),
                 ),
                 const SizedBox(height: 32),

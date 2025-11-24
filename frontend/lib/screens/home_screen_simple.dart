@@ -12,6 +12,9 @@ class HomeScreen extends StatelessWidget {
         elevation: 1,
         title: const Row(
           children: [
+            Icon(Icons.agriculture, color: const Color(0xFF0BDA50), size: 32),
+            const SizedBox(width: 12),
+            const Text(
             Icon(
               Icons.agriculture,
               color: Color(0xFF0BDA50),
@@ -29,10 +32,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text('Đăng Nhập'),
-          ),
+          TextButton(onPressed: () {}, child: const Text('Đăng Nhập')),
           const SizedBox(width: 8),
           ElevatedButton(
             onPressed: () {},
@@ -88,7 +88,9 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: const Color(0xFF0BDA50),
                           foregroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 16),
+                            horizontal: 24,
+                            vertical: 16,
+                          ),
                         ),
                         child: const Text('Truy Cập Dashboard'),
                       ),
@@ -156,10 +158,7 @@ class HomeScreen extends StatelessWidget {
                   const Text(
                     'Sẵn Sàng Tối Ưu Hóa Nông Trại Của Bạn?',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
@@ -168,7 +167,9 @@ class HomeScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF0BDA50),
                       foregroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 20),
+                        horizontal: 32,
+                        vertical: 20,
+                      ),
                     ),
                     child: const Text('Bắt Đầu Sử Dụng Miễn Phí'),
                   ),
