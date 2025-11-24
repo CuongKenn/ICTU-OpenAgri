@@ -5,7 +5,7 @@ from typing import Optional
 from app.application.use_cases.base import BaseUseCase
 from app.domain.entities.user import User
 from app.domain.repositories.user_repository import UserRepository
-from app.application.dto.user_dto import CreateUserDTO, UserDTO, UserLoginDTO, TokenDTO
+from app.application.dto.user_dto import CreateUserDTO, UserDTO, UserLoginDTO, TokenDTO, ChangePasswordDTO
 from app.infrastructure.security.jwt import get_password_hash, verify_password, create_access_token
 
 
@@ -66,5 +66,26 @@ class LogoutUserUseCase(BaseUseCase[None, bool]):
         Since we use stateless JWT, we don't need to do anything on server side
         unless we implement a blacklist. For now, just return True.
         """
+        return True
+
+
+class ChangePasswordUseCase(BaseUseCase[ChangePasswordDTO, bool]):
+    """Use case for changing user password."""
+    
+    def __init__(self, user_repository: UserRepository, user_id: int):
+        self.user_repository = user_repository
+        self.user_id = user_id
+    
+    async def execute(self, input_dto: ChangePasswordDTO) -> bool:
+        """Change user password."""
+        user = await self.user_repository.get_by_id(self.user_id)
+        if not user:
+            raise ValueError("User not found")
+            
+        if not verify_password(input_dto.current_password, user.hashed_password):
+            raise ValueError("Incorrect current password")
+            
+        user.hashed_password = get_password_hash(input_dto.new_password)
+        await self.user_repository.update(self.user_id, user)
         return True
 
