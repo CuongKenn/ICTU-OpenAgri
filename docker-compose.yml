@@ -12,8 +12,16 @@ services:
       - ENVIRONMENT=development
     volumes:
       - ./backend:/app
+      - /etc/resolv.conf:/etc/resolv.conf:ro
     networks:
       - ictu-network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    extra_hosts:
+      - "rest.soilgrids.org:host-gateway"
+      - "www.gebco.net:host-gateway"
+      - "land.copernicus.eu:host-gateway"
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: unless-stopped
 
@@ -40,3 +48,5 @@ services:
 networks:
   ictu-network:
     driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450
