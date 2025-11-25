@@ -1,11 +1,22 @@
 import logging
 import os
 from typing import Optional
+from dataclasses import dataclass
 import httpx
-from app.domain.entities.landmap_entity import (
-    RasterData,
-    GeoLocation,
-)
+
+@dataclass
+class GeoLocation:
+    """Simple location data class."""
+    latitude: float
+    longitude: float
+
+@dataclass
+class RasterData:
+    """Raster data representation."""
+    data: list
+    crs: str
+    bounds: dict
+    metadata: dict
 
 logger = logging.getLogger(__name__)
 
