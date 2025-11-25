@@ -20,12 +20,14 @@ from app.infrastructure.repositories.landmap_repository_impl import (
     LandMapRepositoryImpl,
     ExternalDataSourceRepositoryImpl,
 )
+from app.application.soil_service import SoilService
+from app.domain.soil_models import SoilDataResponse
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/landmap",
-    tags=["Land Map"],
+    tags=["Land Map & Soil"],
 )
 
 
@@ -43,6 +45,10 @@ def get_classifications_use_case():
 def get_statistics_use_case():
     external_repo = ExternalDataSourceRepositoryImpl()
     return GetAreaStatisticsUseCase(external_repo)
+
+
+def get_soil_service():
+    return SoilService()
 
 
 @router.get("/data", summary="Get Land Map Data")
@@ -188,11 +194,92 @@ async def batch_query(
         )
 
 
+@router.get("/soil/data", response_model=SoilDataResponse, summary="Get Soil Data")
+async def get_soil_data(
+    latitude: float = Query(..., ge=-90, le=90, description="Latitude"),
+    longitude: float = Query(..., ge=-180, le=180, description="Longitude"),
+    depths: Optional[str] = Query(
+        None,
+        description="Comma-separated soil depths in cm (default: 0,10,30,60,100,200)",
+    ),
+    soil_service: SoilService = Depends(get_soil_service),
+) -> SoilDataResponse:
+    """
+    Get soil data (pH, nutrients, texture) from Local Vietnam Database.
+    
+    Note: Data available only for Vietnam (8°N-24°N, 102°E-110°E).
+    Uses open-source CSV data, no external API calls.
+    
+    Args:
+        latitude: Latitude coordinate
+        longitude: Longitude coordinate
+        depths: Optional comma-separated depths (e.g., "0,10,30,60")
+    
+    Returns:
+        SoilDataResponse with soil properties at different depths
+    """
+    try:
+        # Parse depths if provided
+        depth_list = None
+        if depths:
+            try:
+                depth_list = [int(d.strip()) for d in depths.split(",")]
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Depths must be comma-separated integers"
+                )
+
+        soil_data = await soil_service.get_soil_data(
+            latitude=latitude,
+            longitude=longitude,
+            depths=depth_list,
+        )
+        return soil_data
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting soil data: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get soil data: {str(e)}"
+        )
+
+
+@router.get("/soil/recommendations", summary="Get Soil Recommendations")
+async def get_soil_recommendations(
+    latitude: float = Query(..., ge=-90, le=90, description="Latitude"),
+    longitude: float = Query(..., ge=-180, le=180, description="Longitude"),
+    soil_service: SoilService = Depends(get_soil_service),
+) -> dict:
+    """
+    Get soil management recommendations based on soil analysis.
+    
+    Args:
+        latitude: Latitude coordinate
+        longitude: Longitude coordinate
+    
+    Returns:
+        Dictionary with location and recommendations
+    """
+    try:
+        recommendations = await soil_service.get_soil_recommendations(
+            latitude=latitude,
+            longitude=longitude,
+        )
+        return recommendations
+
+    except Exception as e:
+        logger.error(f"Error getting soil recommendations: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get recommendations: {str(e)}"
+        )
+
+
 @router.get("/info", summary="Land Map Information")
 async def get_landmap_info():
     return {
-        "service": "Global Land Map",
-        "description": "Free and open source global land data at 250m resolution",
+        "service": "Global Land Map + Soil Data",
+        "description": "Free and open source global land data at 250m resolution with detailed soil analysis",
         "data_sources": [
             {
                 "name": "Copernicus",
@@ -218,9 +305,18 @@ async def get_landmap_info():
                 "license": "Public Domain",
                 "url": "https://www.usgs.gov/",
             },
+            {
+                "name": "Local Vietnam Soil Database",
+                "types": ["soil_pH", "soil_nutrients", "soil_texture", "bulk_density"],
+                "resolution": "Provincial level (30 provinces)",
+                "coverage": "Vietnam (8°N-24°N, 102°E-110°E)",
+                "license": "CC-BY-4.0 (Open Data)",
+                "url": "backend/data/soil_vietnam.csv",
+                "mutable": True,
+            },
         ],
         "endpoints": [
-            {"path": "/api/v1/landmap/data", "method": "GET", "description": "Get data"},
+            {"path": "/api/v1/landmap/data", "method": "GET", "description": "Get land map data"},
             {
                 "path": "/api/v1/landmap/classifications/{data_type}",
                 "method": "GET",
@@ -235,6 +331,16 @@ async def get_landmap_info():
                 "path": "/api/v1/landmap/batch",
                 "method": "POST",
                 "description": "Batch query",
+            },
+            {
+                "path": "/api/v1/landmap/soil/data",
+                "method": "GET",
+                "description": "Get soil data (pH, nutrients, texture)",
+            },
+            {
+                "path": "/api/v1/landmap/soil/recommendations",
+                "method": "GET",
+                "description": "Get soil management recommendations",
             },
         ],
     }
