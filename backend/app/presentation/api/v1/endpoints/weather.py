@@ -2,7 +2,7 @@
 Weather API endpoints.
 """
 from typing import Optional
-from fastapi import APIRouter, HTTPException, Query, Path, status
+from fastapi import APIRouter, HTTPException, Query, Path, status, Depends
 import logging
 
 from app.application.use_cases.weather_use_cases import (
@@ -19,6 +19,8 @@ from app.infrastructure.external_services.weather_service import (
     OpenMeteoService,
     PhotonGeocodingService
 )
+from app.domain.entities.user import User
+from app.presentation.deps import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +37,8 @@ async def get_weather_forecast(
     latitude: float = Query(..., ge=-90, le=90, description="Location latitude"),
     longitude: float = Query(..., ge=-180, le=180, description="Location longitude"),
     location_name: Optional[str] = Query(None, description="Optional location name"),
-    hours_ahead: int = Query(24, ge=1, le=240, description="Number of hours to forecast")
+    hours_ahead: int = Query(24, ge=1, le=240, description="Number of hours to forecast"),
+    current_user: User = Depends(get_current_user)
 ) -> ForecastResponseDTO:
     """
     Get weather forecast for given coordinates.
@@ -79,7 +82,8 @@ async def get_weather_forecast(
 )
 async def search_locations(
     query: str = Query(..., min_length=1, max_length=100, description="Search query"),
-    limit: int = Query(10, ge=1, le=50, description="Maximum number of results")
+    limit: int = Query(10, ge=1, le=50, description="Maximum number of results"),
+    current_user: User = Depends(get_current_user)
 ) -> LocationSearchResponseDTO:
     """
     Search for locations by name or address.
@@ -115,7 +119,8 @@ async def search_locations(
 )
 async def get_location_details(
     latitude: float = Path(..., ge=-90, le=90, description="Location latitude"),
-    longitude: float = Path(..., ge=-180, le=180, description="Location longitude")
+    longitude: float = Path(..., ge=-180, le=180, description="Location longitude"),
+    current_user: User = Depends(get_current_user)
 ) -> ReverseGeocodeDTO:
     """
     Get location information from coordinates.
