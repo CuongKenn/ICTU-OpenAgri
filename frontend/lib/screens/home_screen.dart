@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
+import 'plant_health_screen.dart';
 import 'satellite_monitoring_screen.dart';
 import 'weather_screen.dart';
-import 'plant_health_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -60,14 +60,13 @@ class _AgriTechAppBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: CustomPaint(painter: _LogoPainter()),
+              Image.asset(
+                "assets/image/OpenAgri.png",
+                height: 40,
               ),
               const SizedBox(width: 16),
               const Text(
-                'AgriTech',
+                'OpenAgri',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -75,8 +74,6 @@ class _AgriTechAppBar extends StatelessWidget {
                   letterSpacing: -0.015,
                 ),
               ),
-              // SizedBox(height: 10,),
-              Image.asset("assets/image/OpenAgri.png"),
               if (isDesktop) const SizedBox(width: 40),
               if (isDesktop)
                 Row(
@@ -176,32 +173,6 @@ class _AgriTechAppBar extends StatelessWidget {
       ),
     );
   }
-}
-
-class _LogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF0BDA50)
-      ..style = PaintingStyle.fill;
-
-    final path = Path();
-    final w = size.width;
-    final h = size.height;
-
-    path.moveTo(w * 0.88, h * 0.92);
-    path.cubicTo(w * 0.88, h * 0.92, w * 0.75, h * 0.71, w * 0.86, h * 0.5);
-    path.cubicTo(w * 0.98, h * 0.27, w * 0.88, h * 0.08, w * 0.88, h * 0.08);
-    path.lineTo(w * 0.15, h * 0.08);
-    path.cubicTo(w * 0.15, h * 0.08, w * 0.24, h * 0.27, w * 0.12, h * 0.5);
-    path.cubicTo(w * 0.02, h * 0.71, w * 0.15, h * 0.92, w * 0.15, h * 0.92);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _NavLink extends StatelessWidget {
