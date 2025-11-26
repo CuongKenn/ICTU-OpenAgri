@@ -1,7 +1,7 @@
 """
 API endpoints cho giá nông sản.
 """
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, Depends
 from typing import Optional
 from app.application.dto.commodity_price_dto import (
     CommodityPriceListResponse,
@@ -12,6 +12,8 @@ from app.application.use_cases.commodity_price_use_cases import (
     GetCommodityPricesUseCase,
     GetCommodityPriceDetailUseCase
 )
+from app.domain.entities.user import User
+from app.presentation.deps import get_current_user
 
 router = APIRouter()
 
@@ -21,7 +23,8 @@ async def get_commodity_prices(
     category: Optional[str] = Query(None, description="Lọc theo danh mục (lúa_gạo, cà_phê, hồ_tiêu, etc.)"),
     start_date: Optional[str] = Query(None, description="Ngày bắt đầu (YYYY-MM-DD)"),
     end_date: Optional[str] = Query(None, description="Ngày kết thúc (YYYY-MM-DD)"),
-    limit: Optional[int] = Query(100, description="Số lượng tối đa")
+    limit: Optional[int] = Query(100, description="Số lượng tối đa"),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Lấy danh sách giá nông sản.
@@ -43,7 +46,10 @@ async def get_commodity_prices(
 
 
 @router.get("/{commodity_id}", response_model=CommodityPriceDetailResponse)
-async def get_commodity_price_detail(commodity_id: str):
+async def get_commodity_price_detail(
+    commodity_id: str,
+    current_user: User = Depends(get_current_user)
+):
     """
     Lấy chi tiết giá một loại nông sản.
     
@@ -57,7 +63,9 @@ async def get_commodity_price_detail(commodity_id: str):
 
 
 @router.get("/categories/list")
-async def get_categories():
+async def get_categories(
+    current_user: User = Depends(get_current_user)
+):
     """
     Lấy danh sách các danh mục nông sản có sẵn.
     """
