@@ -20,3 +20,5 @@ numpy
 requests
 matplotlib
 aiohttp==3.9.1
+tensorflow
+pillow
