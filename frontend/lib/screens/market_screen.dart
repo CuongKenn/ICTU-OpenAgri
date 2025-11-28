@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../models/commodity_price.dart';
+import '../models/api_models.dart';
 import '../viewmodels/commodity_price_viewmodel.dart';
 import '../views/commodity_price_detail_view.dart';
 
@@ -215,7 +215,7 @@ class _MarketScreenState extends State<MarketScreen> {
 }
 
 class _CommodityRow extends StatelessWidget {
-  final CommodityPrice commodity;
+  final CommodityPriceDTO commodity;
 
   const _CommodityRow({required this.commodity});
 
