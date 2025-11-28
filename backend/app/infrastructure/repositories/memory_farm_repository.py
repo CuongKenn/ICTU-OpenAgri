@@ -7,16 +7,16 @@ class InMemoryFarmRepository(FarmRepository):
         self.farms: List[FarmArea] = []
         self._id_counter = 1
 
-    def create(self, farm: FarmArea) -> FarmArea:
+    async def save(self, farm: FarmArea) -> FarmArea:
         farm.id = self._id_counter
         self._id_counter += 1
         self.farms.append(farm)
         return farm
 
-    def get_by_user_id(self, user_id: int) -> List[FarmArea]:
+    async def get_by_user_id(self, user_id: int) -> List[FarmArea]:
         return [f for f in self.farms if f.user_id == user_id]
 
-    def get_by_id(self, farm_id: int) -> Optional[FarmArea]:
+    async def get_by_id(self, farm_id: int) -> Optional[FarmArea]:
         for farm in self.farms:
             if farm.id == farm_id:
                 return farm
