@@ -120,10 +120,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Row(
           children: [
-            Expanded(
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: const Icon(Icons.arrow_back_ios_new,
+                    size: 20, color: Color(0xFF111813)),
+              ),
+            ),
+            const SizedBox(width: 16),
+            const Expanded(
               child: Text(
                 'Dự Báo Thời Tiết',
                 style: TextStyle(
@@ -137,6 +150,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             ),
           ],
         ),
+        const SizedBox(height: 8),
         const Text(
           'Thông tin thời tiết nông nghiệp chi tiết và chính xác',
           style: TextStyle(
