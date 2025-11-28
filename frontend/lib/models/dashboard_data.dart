@@ -19,6 +19,18 @@ class DashboardStats {
     required this.temperature,
   });
 
+  static DashboardStats empty() {
+    return DashboardStats(
+      totalFields: 0,
+      totalArea: 0.0,
+      averageNDVI: 0.0,
+      activeAlerts: 0,
+      soilMoisture: 0.0,
+      weatherCondition: '--',
+      temperature: 0.0,
+    );
+  }
+
   static DashboardStats getMockData() {
     return DashboardStats(
       totalFields: 12,

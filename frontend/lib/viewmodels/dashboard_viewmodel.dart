@@ -8,7 +8,7 @@ import '../services/weather_service.dart';
 class DashboardViewModel extends ChangeNotifier {
   // State
   bool _isLoading = true;
-  DashboardStats _stats = DashboardStats.getMockData();
+  DashboardStats _stats = DashboardStats.empty();
   List<FieldStatus> _fields = [];
   List<ActivityLog> _activities = [];
   WeatherData _weather = WeatherData.getMockData();
@@ -31,8 +31,7 @@ class DashboardViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Load mock data for stats and activities
-      _stats = DashboardStats.getMockData();
+      // Load mock data for activities
       _activities = ActivityLog.getMockList();
 
       // Fetch real farms
@@ -59,13 +58,35 @@ class DashboardViewModel extends ChangeNotifier {
       if (_fields.isNotEmpty && _selectedFarmId == null) {
         _selectedFarmId = _fields.first.id;
       }
+      _updateStats();
     } catch (e) {
       debugPrint('Error fetching farms: $e');
-      _fields = FieldStatus.getMockList(); // Fallback
-      if (_fields.isNotEmpty && _selectedFarmId == null) {
-        _selectedFarmId = _fields.first.id;
-      }
+      _fields = []; // No mock data on error
+      _updateStats();
     }
+  }
+
+  void _updateStats() {
+    double totalArea = 0;
+    double totalNdvi = 0;
+
+    if (_fields.isNotEmpty) {
+      for (var field in _fields) {
+        totalArea += field.area;
+        totalNdvi += field.ndvi;
+      }
+      totalNdvi = totalNdvi / _fields.length;
+    }
+
+    _stats = DashboardStats(
+      totalFields: _fields.length,
+      totalArea: totalArea,
+      averageNDVI: totalNdvi,
+      activeAlerts: 0, // Placeholder
+      soilMoisture: 0, // Placeholder
+      weatherCondition: _weather.condition,
+      temperature: _weather.temperature,
+    );
   }
 
   void selectFarm(String id) {
@@ -92,6 +113,7 @@ class DashboardViewModel extends ChangeNotifier {
         position.longitude,
       );
       _weather = _mapToWeatherData(weatherData);
+      _updateStats();
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching weather: $e');
