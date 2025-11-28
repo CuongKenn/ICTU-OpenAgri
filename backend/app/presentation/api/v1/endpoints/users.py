@@ -77,3 +77,13 @@ async def change_password(
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
+
+@router.get("/me", response_model=UserDTO)
+async def read_users_me(
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Get current user.
+    """
+    return current_user
+
