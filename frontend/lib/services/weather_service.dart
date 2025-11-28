@@ -36,6 +36,16 @@ class WeatherService {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
+    // Try to get last known position first for speed
+    try {
+      final lastKnown = await Geolocator.getLastKnownPosition();
+      if (lastKnown != null) {
+        return lastKnown;
+      }
+    } catch (e) {
+      // Ignore error and try current position
+    }
+
     return await Geolocator.getCurrentPosition();
   }
 
