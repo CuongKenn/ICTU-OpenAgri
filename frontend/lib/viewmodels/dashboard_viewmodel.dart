@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../models/api_models.dart';
 import '../models/dashboard_data.dart';
+import '../services/farm_service.dart';
 import '../services/weather_service.dart';
 
 class DashboardViewModel extends ChangeNotifier {
@@ -18,6 +21,7 @@ class DashboardViewModel extends ChangeNotifier {
   WeatherData get weather => _weather;
 
   final WeatherService _weatherService = WeatherService();
+  final FarmService _farmService = FarmService();
 
   // Initialize data
   Future<void> initData() async {
@@ -25,11 +29,12 @@ class DashboardViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Load mock data for stats, fields, and activities
-      // In a real app, these would be API calls too
+      // Load mock data for stats and activities
       _stats = DashboardStats.getMockData();
-      _fields = FieldStatus.getMockList();
       _activities = ActivityLog.getMockList();
+
+      // Fetch real farms
+      await _fetchFarms();
 
       // Stop loading to show UI immediately
       _isLoading = false;
@@ -42,6 +47,27 @@ class DashboardViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> _fetchFarms() async {
+    try {
+      final farmDtos = await _farmService.getMyFarms();
+      _fields = farmDtos.map((dto) => _mapDtoToFieldStatus(dto)).toList();
+    } catch (e) {
+      debugPrint('Error fetching farms: $e');
+      _fields = FieldStatus.getMockList(); // Fallback
+    }
+  }
+
+  FieldStatus _mapDtoToFieldStatus(FarmAreaResponseDTO dto) {
+    return FieldStatus(
+      id: dto.id.toString(),
+      name: dto.name,
+      status: 'healthy', // Default status as backend doesn't provide it yet
+      ndvi: 0.0, // Default
+      area: dto.areaSize ?? 0.0,
+      lastUpdate: 'Hôm nay',
+    );
   }
 
   Future<void> _fetchWeatherData() async {
