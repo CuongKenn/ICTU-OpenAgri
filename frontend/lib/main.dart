@@ -8,6 +8,7 @@ import 'package:openagri_app/viewmodels/login_viewmodel.dart';
 import 'package:openagri_app/viewmodels/satellite_monitoring_viewmodel.dart';
 import 'package:openagri_app/viewmodels/weather_viewmodel.dart';
 import 'package:openagri_app/views/login_view.dart';
+import 'package:openagri_app/views/splash_view.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/main_layout.dart';
@@ -39,7 +40,7 @@ class AgriTechApp extends StatelessWidget {
         theme: _buildLightTheme(),
         darkTheme: _buildDarkTheme(),
         themeMode: ThemeMode.light,
-        home: const LoginView(),
+        home: const SplashView(),
         routes: {
           '/login': (context) => const LoginView(),
           '/home': (context) => const MainLayout(),
