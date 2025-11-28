@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **CI/CD**: Configured GitHub Actions workflow for automated Android release builds.
+  - Automatically builds APK on tag push (`v*`).
+  - Creates GitHub Release and uploads APK artifact.
+
 ## [0.2.0] - 2025-11-28
 
 ### Added
