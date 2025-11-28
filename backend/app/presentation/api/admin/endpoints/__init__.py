@@ -1,0 +1,3 @@
+"""
+Admin endpoints module.
+"""
