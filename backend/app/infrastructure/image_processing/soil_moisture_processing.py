@@ -17,7 +17,7 @@ def find_s1_band_path(safe_path: str, polarization: str = 'vv') -> str:
     
     raise FileNotFoundError(f'Could not find {polarization} band in SAFE product')
 
-def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
+def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> Tuple[str, float]:
     """
     Compute a simple Soil Moisture proxy from Sentinel-1 VV band.
     We convert the raw DN to dB (Backscatter) which correlates with moisture.
@@ -25,6 +25,7 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
     Note: Real calibration requires the calibration vector from XML, but for visualization
     of relative moisture, this is a starting point.
     """
+    mean_val = 0.0
     with rasterio.open(vv_path) as src:
         # Read the first band
         # S1 images can be large, we might want to downsample for web display
@@ -49,6 +50,9 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
         soil_moisture_index = (db - min_db) / (max_db - min_db)
         soil_moisture_index = np.clip(soil_moisture_index, 0, 1)
         
+        # Calculate mean (ignoring NaNs)
+        mean_val = float(np.nanmean(soil_moisture_index))
+
         # Write output
         profile = src.meta.copy()
         profile.update(
@@ -61,4 +65,4 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
         with rasterio.open(out_path, 'w', **profile) as dst:
             dst.write(soil_moisture_index, 1)
             
-    return out_path
+    return out_path, mean_val
