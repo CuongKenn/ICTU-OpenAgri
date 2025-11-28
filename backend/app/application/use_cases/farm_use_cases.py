@@ -7,7 +7,7 @@ class CreateFarmAreaUseCase:
     def __init__(self, farm_repository: FarmRepository):
         self.farm_repository = farm_repository
 
-    def execute(self, user_id: int, dto: FarmAreaCreateDTO) -> FarmArea:
+    async def execute(self, user_id: int, dto: FarmAreaCreateDTO) -> FarmArea:
         coordinates = [Coordinate(lat=c.lat, lng=c.lng) for c in dto.coordinates]
         
         farm = FarmArea(
@@ -19,11 +19,11 @@ class CreateFarmAreaUseCase:
             user_id=user_id
         )
         
-        return self.farm_repository.create(farm)
+        return await self.farm_repository.save(farm)
 
 class GetUserFarmsUseCase:
     def __init__(self, farm_repository: FarmRepository):
         self.farm_repository = farm_repository
 
-    def execute(self, user_id: int) -> List[FarmArea]:
-        return self.farm_repository.get_by_user_id(user_id)
+    async def execute(self, user_id: int) -> List[FarmArea]:
+        return await self.farm_repository.get_by_user_id(user_id)
