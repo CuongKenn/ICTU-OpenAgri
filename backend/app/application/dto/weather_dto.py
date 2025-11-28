@@ -25,6 +25,7 @@ class HourlyWeatherDTO(BaseModel):
     weather_code: int
     wind_speed_10m: float
     precipitation: float
+    soil_moisture_0_to_1cm: Optional[float] = 0.0
     
     class Config:
         from_attributes = True
