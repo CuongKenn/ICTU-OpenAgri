@@ -12,6 +12,9 @@ class CropField {
   final String imageUrl;
   final List<LatLng> polygonPoints; // Real coordinates for the field
   final LatLng center;
+  final double soilMoisture;
+  final String soilMoistureStatus;
+  final String ndviStatus;
 
   CropField({
     required this.id,
@@ -25,6 +28,9 @@ class CropField {
     required this.imageUrl,
     required this.polygonPoints,
     required this.center,
+    this.soilMoisture = 0.0,
+    this.soilMoistureStatus = 'Chưa có dữ liệu',
+    this.ndviStatus = 'Chưa có dữ liệu',
   });
 
   // Mock data for demonstration (Located in Vietnam, Mekong Delta example)
