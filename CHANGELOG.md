@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Backend**: Implemented **Soil Moisture** calculation from Sentinel-1 satellite data.
+  - Added logic to calculate mean soil moisture value (0-100%) for a specific area.
+  - Updated API to return both visual map and numeric value.
+- **Frontend**: Integrated real **Soil Moisture** data into Satellite Monitoring screen.
+  - Replaced weather-based mock data with actual Sentinel-1 analysis.
+  - Added soil moisture status indicators (Thiếu nước, Đủ ẩm, Dư nước).
+- **Frontend**: Integrated real soil moisture data into Dashboard charts.
 - **Frontend**: Implemented **Plant Health Monitoring** feature.
   - Added disease detection and analysis screen.
   - Integrated into app navigation.
@@ -43,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Backend**: **Performance Optimization** - Optimized satellite image processing.
+  - Now reads only the specific bounding box (window) of the user's farm instead of the entire satellite image.
+  - Significantly reduced processing time and memory usage for Soil Moisture analysis.
+- **Frontend**: Improved UI visibility for Map controls.
+  - Increased size and contrast of Zoom In/Out buttons on Satellite and Farm Map screens.
 - **Frontend**: **Major Refactor** - Migrated frontend from React.js to **Flutter**.
   - Updated Dockerfile for Flutter Web.
   - Updated `docker-compose.yml` to support Flutter container.
@@ -59,6 +71,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Android**: Fixed connectivity issues in Release builds.
+  - Added `INTERNET` permission to AndroidManifest.
+  - Enabled `usesCleartextTraffic` to allow HTTP connections to the backend.
+- **Frontend**: Fixed API configuration for Production environment.
+  - Updated Base URL to point to the correct server IP.
+  - Increased API timeout to 300 seconds to accommodate long-running satellite data processing.
 - **Frontend**: Fixed deprecated `withOpacity` usage by replacing with `withValues`.
 - **Frontend**: Resolved syntax errors and updated `fl_chart` API usage.
 - **Backend**: Fixed Sentinel-2 API connection issues (403 Forbidden) by migrating to CDSE OData API.
