@@ -26,9 +26,17 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   bool get showHealth => _showHealth;
 
   // Initialize
-  void initData() {
+  void initData({String? initialFieldId}) {
     _fields = CropField.getMockFields();
-    if (_fields.isNotEmpty) {
+    if (initialFieldId != null) {
+      try {
+        _selectedField = _fields.firstWhere((f) => f.id == initialFieldId);
+      } catch (e) {
+        if (_fields.isNotEmpty) {
+          _selectedField = _fields.first;
+        }
+      }
+    } else if (_fields.isNotEmpty) {
       _selectedField = _fields.first;
     }
     notifyListeners();
