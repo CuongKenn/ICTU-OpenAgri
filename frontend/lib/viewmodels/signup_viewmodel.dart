@@ -6,8 +6,9 @@ class SignUpViewModel extends ChangeNotifier {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
-  
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
@@ -97,17 +98,25 @@ class SignUpViewModel extends ChangeNotifier {
   // Sign up
   Future<void> signUp(BuildContext context) async {
     _errorMessage = null;
-    
+
     // Validate all inputs
     final nameError = validateFullName(fullNameController.text);
     final emailError = validateEmail(emailController.text);
     final phoneError = validatePhone(phoneController.text);
     final passwordError = validatePassword(passwordController.text);
-    final confirmPasswordError = validateConfirmPassword(confirmPasswordController.text);
-    
-    if (nameError != null || emailError != null || phoneError != null ||
-        passwordError != null || confirmPasswordError != null) {
-      _errorMessage = nameError ?? emailError ?? phoneError ?? passwordError ?? confirmPasswordError;
+    final confirmPasswordError =
+        validateConfirmPassword(confirmPasswordController.text);
+
+    if (nameError != null ||
+        emailError != null ||
+        phoneError != null ||
+        passwordError != null ||
+        confirmPasswordError != null) {
+      _errorMessage = nameError ??
+          emailError ??
+          phoneError ??
+          passwordError ??
+          confirmPasswordError;
       notifyListeners();
       return;
     }
@@ -118,7 +127,7 @@ class SignUpViewModel extends ChangeNotifier {
     try {
       // Import AuthService
       final authService = AuthService();
-      
+
       // Call actual register method
       await authService.register(
         fullName: fullNameController.text,
@@ -126,7 +135,7 @@ class SignUpViewModel extends ChangeNotifier {
         phoneNumber: phoneController.text,
         password: passwordController.text,
       );
-      
+
       // If successful
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,7 +145,7 @@ class SignUpViewModel extends ChangeNotifier {
             duration: Duration(seconds: 2),
           ),
         );
-        
+
         // Navigate to login screen
         Navigator.pop(context);
       }
