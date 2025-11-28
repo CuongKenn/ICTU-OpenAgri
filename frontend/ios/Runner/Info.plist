@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open to show local weather and map position.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background to show local weather and map position.</string>
 </dict>
 </plist>
