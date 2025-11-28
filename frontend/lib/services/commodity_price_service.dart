@@ -25,14 +25,16 @@ class CommodityPriceService {
         final jsonData = json.decode(response.body) as Map<String, dynamic>;
         return CommodityPriceListResponse.fromJson(jsonData);
       } else {
-        throw Exception('Failed to load commodity prices: ${response.statusCode}');
+        throw Exception(
+            'Failed to load commodity prices: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Error fetching commodity prices: $e');
     }
   }
 
-  Future<CommodityPriceDetail> getCommodityPriceDetail(String commodityId) async {
+  Future<CommodityPriceDetail> getCommodityPriceDetail(
+      String commodityId) async {
     try {
       final uri = Uri.parse('$baseUrl/$commodityId');
       final response = await http.get(uri);
@@ -41,7 +43,8 @@ class CommodityPriceService {
         final jsonData = json.decode(response.body) as Map<String, dynamic>;
         return CommodityPriceDetail.fromJson(jsonData);
       } else {
-        throw Exception('Failed to load commodity detail: ${response.statusCode}');
+        throw Exception(
+            'Failed to load commodity detail: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Error fetching commodity detail: $e');
@@ -64,4 +67,3 @@ class CommodityPriceService {
     }
   }
 }
-
