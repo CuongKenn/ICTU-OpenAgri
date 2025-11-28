@@ -218,25 +218,25 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.add),
+                        icon: const Icon(Icons.add, size: 28),
                         onPressed: () {
                           _mapController.move(
                             _mapController.camera.center,
                             _mapController.camera.zoom + 1,
                           );
                         },
-                        color: const Color(0xFF4A5C52),
+                        color: Colors.black,
                       ),
-                      Container(height: 1, color: Colors.grey.shade200),
+                      Container(height: 1, width: 40, color: Colors.grey.shade300),
                       IconButton(
-                        icon: const Icon(Icons.remove),
+                        icon: const Icon(Icons.remove, size: 28),
                         onPressed: () {
                           _mapController.move(
                             _mapController.camera.center,
                             _mapController.camera.zoom - 1,
                           );
                         },
-                        color: const Color(0xFF4A5C52),
+                        color: Colors.black,
                       ),
                     ],
                   ),
@@ -816,8 +816,10 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   Widget _buildSatelliteDataCard(SatelliteMonitoringViewModel viewModel) {
     if (viewModel.selectedField == null) return const SizedBox();
 
-    final soilMoisture = (viewModel.selectedField!.ndviValue * 100).toDouble();
+    final soilMoisture = viewModel.selectedField!.soilMoisture;
     final ndvi = viewModel.selectedField!.ndviValue;
+    final soilMoistureStatus = viewModel.selectedField!.soilMoistureStatus;
+    final ndviStatus = viewModel.selectedField!.ndviStatus;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -882,7 +884,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             title: 'Sentinel-2 (Quang học)',
             value: ndvi.toStringAsFixed(2),
             unit: 'NDVI',
-            status: 'Sức khỏe tốt',
+            status: ndviStatus,
             statusColor: viewModel.getNDVIColor(ndvi),
           ),
           const SizedBox(height: 20),
@@ -892,8 +894,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             title: 'Sentinel-1 (Radar)',
             value: soilMoisture.toStringAsFixed(0),
             unit: '%',
-            status: soilMoisture < 40 ? 'Cần tưới' : 'Đủ ẩm',
-            statusColor: soilMoisture < 40 ? Colors.orange : Colors.blue,
+            status: soilMoistureStatus,
+            statusColor: viewModel.getMoistureColor(soilMoisture),
           ),
         ],
       ),
