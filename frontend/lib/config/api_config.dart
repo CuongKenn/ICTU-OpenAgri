@@ -4,15 +4,25 @@ enum Environment { dev, staging, prod }
 
 class ApiConfig {
   static Environment get environment {
-    const env = String.fromEnvironment('ENV', defaultValue: 'dev');
-    switch (env) {
-      case 'prod':
-        return Environment.prod;
-      case 'staging':
-        return Environment.staging;
-      default:
-        return Environment.dev;
+    // 1. Ưu tiên lấy từ tham số dòng lệnh --dart-define=ENV=...
+    const env = String.fromEnvironment('ENV');
+    if (env.isNotEmpty) {
+      switch (env) {
+        case 'prod':
+          return Environment.prod;
+        case 'staging':
+          return Environment.staging;
+        default:
+          return Environment.dev;
+      }
     }
+
+    // 2. Nếu không có tham số, tự động check chế độ build
+    if (kReleaseMode) {
+      return Environment.prod;
+    }
+
+    return Environment.dev;
   }
 
   static String get baseUrl {
@@ -22,7 +32,7 @@ class ApiConfig {
       case Environment.staging:
         return 'https://staging-api.openagri.com/api/v1';
       case Environment.prod:
-        return 'https://api.openagri.com/api/v1';
+        return 'https://api.yoursite.com/api/v1';
     }
   }
 
