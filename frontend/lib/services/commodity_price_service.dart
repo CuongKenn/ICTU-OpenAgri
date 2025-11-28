@@ -1,9 +1,11 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../models/commodity_price.dart';
+import 'package:dio/dio.dart';
+import '../models/api_models.dart';
+import 'api_service.dart';
+import 'auth_service.dart';
 
 class CommodityPriceService {
-  static const String baseUrl = 'http://localhost:8000/api/v1/commodity-prices';
+  final ApiService _apiService = ApiService();
+  final AuthService _authService = AuthService();
 
   Future<CommodityPriceListResponse> getCommodityPrices({
     String? category,
@@ -12,58 +14,56 @@ class CommodityPriceService {
     int? limit,
   }) async {
     try {
-      final uri = Uri.parse(baseUrl).replace(queryParameters: {
-        if (category != null) 'category': category,
-        if (startDate != null) 'start_date': startDate,
-        if (endDate != null) 'end_date': endDate,
-        if (limit != null) 'limit': limit.toString(),
-      });
+      final token = await _authService.getToken();
+      final response = await _apiService.client.get(
+        '/commodity-prices/',
+        queryParameters: {
+          if (category != null) 'category': category,
+          if (startDate != null) 'start_date': startDate,
+          if (endDate != null) 'end_date': endDate,
+          if (limit != null) 'limit': limit,
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
 
-      final response = await http.get(uri);
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body) as Map<String, dynamic>;
-        return CommodityPriceListResponse.fromJson(jsonData);
-      } else {
-        throw Exception(
-            'Failed to load commodity prices: ${response.statusCode}');
-      }
+      return CommodityPriceListResponse.fromJson(response.data);
     } catch (e) {
-      throw Exception('Error fetching commodity prices: $e');
+      throw Exception('Failed to load commodity prices: $e');
     }
   }
 
-  Future<CommodityPriceDetail> getCommodityPriceDetail(
+  Future<CommodityPriceDetailResponse> getCommodityPriceDetail(
       String commodityId) async {
     try {
-      final uri = Uri.parse('$baseUrl/$commodityId');
-      final response = await http.get(uri);
+      final token = await _authService.getToken();
+      final response = await _apiService.client.get(
+        '/commodity-prices/$commodityId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
 
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body) as Map<String, dynamic>;
-        return CommodityPriceDetail.fromJson(jsonData);
-      } else {
-        throw Exception(
-            'Failed to load commodity detail: ${response.statusCode}');
-      }
+      return CommodityPriceDetailResponse.fromJson(response.data);
     } catch (e) {
-      throw Exception('Error fetching commodity detail: $e');
+      throw Exception('Failed to load commodity detail: $e');
     }
   }
 
   Future<List<String>> getCategories() async {
     try {
-      final uri = Uri.parse('$baseUrl/categories/list');
-      final response = await http.get(uri);
+      final token = await _authService.getToken();
+      final response = await _apiService.client.get(
+        '/commodity-prices/categories/list',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
 
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body) as Map<String, dynamic>;
-        return List<String>.from(jsonData['categories'] as List);
-      } else {
-        throw Exception('Failed to load categories: ${response.statusCode}');
-      }
+      return List<String>.from(response.data['categories']);
     } catch (e) {
-      throw Exception('Error fetching categories: $e');
+      throw Exception('Failed to load categories: $e');
     }
   }
 }
