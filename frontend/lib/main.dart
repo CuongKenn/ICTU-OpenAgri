@@ -39,9 +39,10 @@ class AgriTechApp extends StatelessWidget {
         theme: _buildLightTheme(),
         darkTheme: _buildDarkTheme(),
         themeMode: ThemeMode.light,
-        home: const MainLayout(),
+        home: const LoginView(),
         routes: {
           '/login': (context) => const LoginView(),
+          '/home': (context) => const MainLayout(),
         },
       ),
     );
