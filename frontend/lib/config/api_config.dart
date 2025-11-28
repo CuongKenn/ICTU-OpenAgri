@@ -32,7 +32,7 @@ class ApiConfig {
       case Environment.staging:
         return 'https://staging-api.openagri.com/api/v1';
       case Environment.prod:
-        return 'https://api.yoursite.com/api/v1';
+        return 'https://smartlearn.io.vn:8000/api/v1';
     }
   }
 
