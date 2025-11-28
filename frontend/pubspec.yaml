@@ -30,6 +30,8 @@ dependencies:
 
   # Image Picker (for Plant Health feature)
   image_picker: ^1.0.4
+  shared_preferences: ^2.5.3
+  http_parser: ^4.1.2
 
   # Authentication (Optional - for future implementation)
   # firebase_auth: ^4.15.3
