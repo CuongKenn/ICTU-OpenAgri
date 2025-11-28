@@ -8,7 +8,8 @@ import '../models/crop_field.dart';
 import '../viewmodels/satellite_monitoring_viewmodel.dart';
 
 class SatelliteMonitoringScreen extends StatefulWidget {
-  const SatelliteMonitoringScreen({super.key});
+  final String? initialFieldId;
+  const SatelliteMonitoringScreen({super.key, this.initialFieldId});
 
   @override
   State<SatelliteMonitoringScreen> createState() =>
@@ -22,7 +23,9 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<SatelliteMonitoringViewModel>().initData();
+      context
+          .read<SatelliteMonitoringViewModel>()
+          .initData(initialFieldId: widget.initialFieldId);
     });
   }
 
@@ -52,13 +55,31 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Giám sát Vệ tinh Vùng trồng',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-              color: Color(0xFF111813),
-            ),
+          Row(
+            children: [
+              InkWell(
+                onTap: () => Navigator.pop(context),
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: const Icon(Icons.arrow_back, color: Color(0xFF111813)),
+                ),
+              ),
+              const SizedBox(width: 16),
+              const Text(
+                'Giám sát Vệ tinh Vùng trồng',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xFF111813),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           const Text(
@@ -108,6 +129,32 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           child: Stack(
             children: [
               _buildMapSection(viewModel, isMobile: true),
+              // Back button overlay
+              Positioned(
+                top: 16,
+                left: 16,
+                child: SafeArea(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.15),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.black87),
+                      onPressed: () => Navigator.of(context).pop(),
+                      constraints: const BoxConstraints(),
+                      padding: const EdgeInsets.all(8),
+                    ),
+                  ),
+                ),
+              ),
               // Mode selector overlay (centered)
               Positioned(
                 top: 16,
