@@ -45,12 +45,17 @@ class CalculateSoilMoistureUseCase:
             out_tif = os.path.join(settings.OUTPUT_DIR, f'soil_moisture_{uuid.uuid4().hex}.tif')
             
             # Compute
-            compute_soil_moisture_proxy(vv_path, out_tif)
+            _, mean_val = compute_soil_moisture_proxy(vv_path, out_tif)
 
             # Convert to Base64 PNG
             img_base64 = convert_tiff_to_base64_png(out_tif, colormap='Blues', vmin=0, vmax=1)
 
-            return SoilMoistureResponse(status="success", soil_moisture_map=out_tif, image_base64=img_base64)
+            return SoilMoistureResponse(
+                status="success", 
+                soil_moisture_map=out_tif, 
+                image_base64=img_base64,
+                mean_value=mean_val
+            )
             
         except Exception as e:
             print(f"Error in CalculateSoilMoistureUseCase: {e}")
