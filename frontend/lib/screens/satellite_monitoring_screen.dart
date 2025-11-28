@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/crop_field.dart';
-import '../widgets/app_navigation_bar.dart';
 
 class SatelliteMonitoringScreen extends StatefulWidget {
   const SatelliteMonitoringScreen({super.key});
@@ -41,7 +40,6 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F8F6),
-      appBar: const AppNavigationBar(currentIndex: 3),
       body: SafeArea(
         child: isDesktop ? _buildDesktopLayout() : _buildMobileLayout(),
       ),
@@ -121,7 +119,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                 right: 0,
                 child: Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -138,7 +137,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                       children: [
                         _buildModeChip('NDVI', 'NDVI', Icons.eco),
                         const SizedBox(width: 4),
-                        _buildModeChip('Độ ẩm', 'Soil Moisture', Icons.water_drop),
+                        _buildModeChip(
+                            'Độ ẩm', 'Soil Moisture', Icons.water_drop),
                       ],
                     ),
                   ),
@@ -209,7 +209,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           child: Container(
             decoration: BoxDecoration(
               color: const Color(0xFFF5F8F6),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(24)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.05),
@@ -270,7 +271,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           builder: (context, scrollController) => Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(28)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.1),
@@ -324,7 +326,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                       horizontal: 24,
                       vertical: 8,
                     ),
-                    child: _buildSidebar(isMobile: true, setModalState: setModalState),
+                    child: _buildSidebar(
+                        isMobile: true, setModalState: setModalState),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -344,7 +347,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
       lastDate: DateTime.now(),
       helpText: 'Chọn tháng/năm',
     );
-    
+
     if (picked != null && picked != selectedDate) {
       if (setModalState != null) {
         setModalState(() {
@@ -362,7 +365,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
 
   void _showDataLayerPicker(StateSetter? setModalState) {
     final layers = ['Tất cả', 'NDVI', 'Độ ẩm đất', 'Nhiệt độ bề mặt', 'EVI'];
-    
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -383,32 +386,40 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             ),
             const SizedBox(height: 16),
             ...layers.map((layer) => ListTile(
-              leading: Icon(
-                selectedDataLayer == layer ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-                color: selectedDataLayer == layer ? const Color(0xFF0BDA50) : Colors.grey,
-              ),
-              title: Text(
-                layer,
-                style: TextStyle(
-                  fontWeight: selectedDataLayer == layer ? FontWeight.bold : FontWeight.normal,
-                  color: selectedDataLayer == layer ? const Color(0xFF0BDA50) : const Color(0xFF111813),
-                ),
-              ),
-              onTap: () {
-                if (setModalState != null) {
-                  setModalState(() {
-                    setState(() {
-                      selectedDataLayer = layer;
-                    });
-                  });
-                } else {
-                  setState(() {
-                    selectedDataLayer = layer;
-                  });
-                }
-                Navigator.pop(context);
-              },
-            )),
+                  leading: Icon(
+                    selectedDataLayer == layer
+                        ? Icons.radio_button_checked
+                        : Icons.radio_button_unchecked,
+                    color: selectedDataLayer == layer
+                        ? const Color(0xFF0BDA50)
+                        : Colors.grey,
+                  ),
+                  title: Text(
+                    layer,
+                    style: TextStyle(
+                      fontWeight: selectedDataLayer == layer
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      color: selectedDataLayer == layer
+                          ? const Color(0xFF0BDA50)
+                          : const Color(0xFF111813),
+                    ),
+                  ),
+                  onTap: () {
+                    if (setModalState != null) {
+                      setModalState(() {
+                        setState(() {
+                          selectedDataLayer = layer;
+                        });
+                      });
+                    } else {
+                      setState(() {
+                        selectedDataLayer = layer;
+                      });
+                    }
+                    Navigator.pop(context);
+                  },
+                )),
             const SizedBox(height: 8),
           ],
         ),
@@ -439,7 +450,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
               PolygonLayer(
                 polygons: fields.map((field) {
                   final isSelected = selectedField?.id == field.id;
-                  Color overlayColor = mapMode == 'NDVI'
+                  final Color overlayColor = mapMode == 'NDVI'
                       ? _getNDVIColor(field.ndviValue)
                       : _getMoistureColor(field.ndviValue * 100);
 
@@ -471,8 +482,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                               : _getMoistureColor(field.ndviValue * 100),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: selectedField?.id == field.id 
-                                ? Colors.yellow 
+                            color: selectedField?.id == field.id
+                                ? Colors.yellow
                                 : Colors.white,
                             width: selectedField?.id == field.id ? 3 : 2,
                           ),
@@ -511,8 +522,10 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
         children: [
           _buildControlTabs(setModalState: setModalState),
           const SizedBox(height: 20),
-          if (activeControlTab == 'filter') _buildFilterContent(setModalState: setModalState),
-          if (activeControlTab == 'layers') _buildLayersContent(setModalState: setModalState),
+          if (activeControlTab == 'filter')
+            _buildFilterContent(setModalState: setModalState),
+          if (activeControlTab == 'layers')
+            _buildLayersContent(setModalState: setModalState),
           if (activeControlTab == 'legend') _buildLegendContent(),
           const SizedBox(height: 24),
           const Text(
@@ -771,14 +784,18 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   Widget _buildControlTabs({StateSetter? setModalState}) {
     return Row(
       children: [
-        _buildTab('Bộ lọc', 'filter', Icons.filter_alt, setModalState: setModalState),
-        _buildTab('Lớp bản đồ', 'layers', Icons.layers, setModalState: setModalState),
-        _buildTab('Chú giải', 'legend', Icons.info_outline, setModalState: setModalState),
+        _buildTab('Bộ lọc', 'filter', Icons.filter_alt,
+            setModalState: setModalState),
+        _buildTab('Lớp bản đồ', 'layers', Icons.layers,
+            setModalState: setModalState),
+        _buildTab('Chú giải', 'legend', Icons.info_outline,
+            setModalState: setModalState),
       ],
     );
   }
 
-  Widget _buildTab(String label, String value, IconData icon, {StateSetter? setModalState}) {
+  Widget _buildTab(String label, String value, IconData icon,
+      {StateSetter? setModalState}) {
     final isActive = activeControlTab == value;
     return Expanded(
       child: Padding(
@@ -786,7 +803,6 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            print('Tab tapped: $value'); // Debug
             if (setModalState != null) {
               setModalState(() {
                 activeControlTab = value;
@@ -894,12 +910,6 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
     }
   }
 
-  String _getHealthStatus(double ndvi) {
-    if (ndvi >= 0.7) return 'Sức khỏe tốt';
-    if (ndvi >= 0.5) return 'Trung bình';
-    return 'Yếu';
-  }
-
   Color _getNDVIColor(double value) {
     if (value >= 0.7) return const Color(0xFF10B981);
     if (value >= 0.5) return const Color(0xFFFBBF24);
@@ -918,16 +928,17 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildFilterItem('Thời gian', dateText, Icons.calendar_today, 
-          onTap: () => _showDatePicker(setModalState)),
+        _buildFilterItem('Thời gian', dateText, Icons.calendar_today,
+            onTap: () => _showDatePicker(setModalState)),
         const SizedBox(height: 16),
         _buildFilterItem('Lớp dữ liệu', selectedDataLayer, Icons.layers,
-          onTap: () => _showDataLayerPicker(setModalState)),
+            onTap: () => _showDataLayerPicker(setModalState)),
       ],
     );
   }
 
-  Widget _buildFilterItem(String label, String value, IconData icon, {VoidCallback? onTap}) {
+  Widget _buildFilterItem(String label, String value, IconData icon,
+      {VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -939,43 +950,43 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
         ),
         child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, size: 20, color: const Color(0xFF0BDA50)),
             ),
-            child: Icon(icon, size: 20, color: const Color(0xFF0BDA50)),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF6B7280),
-                    fontWeight: FontWeight.w500,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF6B7280),
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF111813),
+                  const SizedBox(height: 2),
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF111813),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.chevron_right, color: Color(0xFFD1D5DB)),
-        ],
-      ),
+            const Icon(Icons.chevron_right, color: Color(0xFFD1D5DB)),
+          ],
+        ),
       ),
     );
   }
@@ -983,19 +994,22 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   Widget _buildLayersContent({StateSetter? setModalState}) {
     return Column(
       children: [
-        _buildMapLayerOption('Satellite', 'Vệ tinh', Icons.satellite_alt, setModalState: setModalState),
-        _buildMapLayerOption('Street', 'Đường phố', Icons.map, setModalState: setModalState),
-        _buildMapLayerOption('Terrain', 'Địa hình', Icons.terrain, setModalState: setModalState),
+        _buildMapLayerOption('Satellite', 'Vệ tinh', Icons.satellite_alt,
+            setModalState: setModalState),
+        _buildMapLayerOption('Street', 'Đường phố', Icons.map,
+            setModalState: setModalState),
+        _buildMapLayerOption('Terrain', 'Địa hình', Icons.terrain,
+            setModalState: setModalState),
       ],
     );
   }
 
-  Widget _buildMapLayerOption(String type, String label, IconData icon, {StateSetter? setModalState}) {
+  Widget _buildMapLayerOption(String type, String label, IconData icon,
+      {StateSetter? setModalState}) {
     final isSelected = mapLayerType == type;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        print('Layer tapped: $type'); // Debug
         if (setModalState != null) {
           setModalState(() {
             setState(() {
@@ -1015,9 +1029,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           color: isSelected ? const Color(0xFFF0FDF4) : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? const Color(0xFF0BDA50)
-                : const Color(0xFFE5E7EB),
+            color:
+                isSelected ? const Color(0xFF0BDA50) : const Color(0xFFE5E7EB),
             width: 2,
           ),
         ),
@@ -1039,7 +1052,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             ),
             const Spacer(),
             if (isSelected)
-              const Icon(Icons.check_circle, color: Color(0xFF0BDA50), size: 24),
+              const Icon(Icons.check_circle,
+                  color: Color(0xFF0BDA50), size: 24),
           ],
         ),
       ),
@@ -1096,7 +1110,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           color: isSelected ? const Color(0xFFF0FDF4) : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0BDA50) : const Color(0xFFE5E7EB),
+            color:
+                isSelected ? const Color(0xFF0BDA50) : const Color(0xFFE5E7EB),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -1125,7 +1140,9 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? const Color(0xFF0BDA50) : const Color(0xFF111813),
+                      color: isSelected
+                          ? const Color(0xFF0BDA50)
+                          : const Color(0xFF111813),
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -1139,9 +1156,11 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: _getNDVIColor(field.ndviValue).withValues(alpha: 0.1),
+                          color: _getNDVIColor(field.ndviValue)
+                              .withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -1159,146 +1178,10 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
               ),
             ),
             if (isSelected)
-              const Icon(Icons.check_circle, color: Color(0xFF0BDA50), size: 24),
+              const Icon(Icons.check_circle,
+                  color: Color(0xFF0BDA50), size: 24),
           ],
         ),
-      ),
-    );
-  }
-
-  // Detailed data row for satellite info
-  Widget _buildDetailedDataRow({
-    required IconData icon,
-    required Color iconColor,
-    required String satellite,
-    required String metric,
-    required String value,
-    required String status,
-    required Color statusColor,
-    required String date,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9FAFB),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: iconColor.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: iconColor, size: 20),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      satellite,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF6B7280),
-                      ),
-                    ),
-                    Text(
-                      metric,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Color(0xFF9CA3AF),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF111813),
-                ),
-              ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: statusColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  status,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.access_time, size: 12, color: Colors.grey[500]),
-              const SizedBox(width: 4),
-              Text(
-                date,
-                style: TextStyle(fontSize: 11, color: Colors.grey[600]),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Metric box for trends and resolution
-  Widget _buildMetricBox(String label, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.grey[600],
-            ),
-          ),
-        ],
       ),
     );
   }
