@@ -1,19 +1,19 @@
 import 'package:flutter/foundation.dart';
-import '../models/commodity_price.dart';
+import '../models/api_models.dart';
 import '../services/commodity_price_service.dart';
 
 class CommodityPriceViewModel extends ChangeNotifier {
   final CommodityPriceService _service = CommodityPriceService();
 
-  List<CommodityPrice> _commodities = [];
-  CommodityPriceDetail? _selectedCommodity;
+  List<CommodityPriceDTO> _commodities = [];
+  CommodityPriceDetailResponse? _selectedCommodity;
   bool _isLoading = false;
   String? _error;
   List<String> _categories = [];
   String? _selectedCategory;
 
-  List<CommodityPrice> get commodities => _commodities;
-  CommodityPriceDetail? get selectedCommodity => _selectedCommodity;
+  List<CommodityPriceDTO> get commodities => _commodities;
+  CommodityPriceDetailResponse? get selectedCommodity => _selectedCommodity;
   bool get isLoading => _isLoading;
   String? get error => _error;
   List<String> get categories => _categories;
