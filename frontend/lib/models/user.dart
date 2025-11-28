@@ -20,10 +20,11 @@ class User {
   // Convert from JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] ?? '',
+      id: json['id']?.toString() ?? '',
       email: json['email'] ?? '',
       username: json['username'],
-      displayName: json['displayName'] ?? json['display_name'],
+      displayName:
+          json['displayName'] ?? json['display_name'] ?? json['full_name'],
       photoUrl: json['photoUrl'] ?? json['photo_url'],
       phoneNumber: json['phoneNumber'] ?? json['phone_number'],
       createdAt: json['createdAt'] != null
