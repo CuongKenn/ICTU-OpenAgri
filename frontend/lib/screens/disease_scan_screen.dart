@@ -1,6 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import '../viewmodels/disease_scan_viewmodel.dart';
 
 class DiseaseScanScreen extends StatefulWidget {
   const DiseaseScanScreen({super.key});
@@ -11,15 +12,7 @@ class DiseaseScanScreen extends StatefulWidget {
 
 class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     with SingleTickerProviderStateMixin {
-  final ImagePicker _picker = ImagePicker();
-  File? _selectedImage;
-  bool _isAnalyzing = false;
-  bool _hasResult = false;
-  double _analysisProgress = 0.0;
   late AnimationController _animationController;
-
-  // Mock result data (will be replaced with real ML model results)
-  Map<String, dynamic>? _analysisResult;
 
   @override
   void initState() {
@@ -36,124 +29,52 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     super.dispose();
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: source,
-        maxWidth: 1920,
-        maxHeight: 1080,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-          _hasResult = false;
-        });
-      }
-    } catch (e) {
-      if (context.mounted) {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lỗi khi chọn ảnh: $e')),
-        );
-      }
-    }
-  }
-
-  Future<void> _analyzeImage() async {
-    if (_selectedImage == null) return;
-
-    setState(() {
-      _isAnalyzing = true;
-      _hasResult = false;
-      _analysisProgress = 0.0;
-    });
-
-    // Simulate analysis progress
-    for (int i = 0; i <= 100; i += 5) {
-      await Future.delayed(const Duration(milliseconds: 150));
-      if (mounted) {
-        setState(() {
-          _analysisProgress = i / 100;
-        });
-      }
-    }
-
-    // Mock ML result (replace with actual ML model API call)
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    setState(() {
-      _isAnalyzing = false;
-      _hasResult = true;
-      _analysisResult = {
-        'disease_name': 'Đạo ôn lúa',
-        'confidence': 0.98,
-        'severity': 'Trung bình',
-        'description':
-            'Đạo ôn lúa là bệnh do nấm Pyricularia oryzae gây ra, thường xuất hiện khi độ ẩm cao và nhiệt độ từ 25-28°C.',
-        'symptoms': [
-          'Lá có các đốm màu nâu, hình thoi',
-          'Đốm lan rộng và làm lá chết',
-          'Cổ bông bị gãy, hạt lép',
-        ],
-        'treatment': [
-          'Phun thuốc Tricyclazole 75% WP (3-4g/lít nước)',
-          'Sử dụng Isoprothiolane 40% EC',
-          'Tăng cường thông thoáng ruộng',
-          'Bón phân cân đối, tránh bón quá nhiều đạm',
-        ],
-        'prevention': [
-          'Chọn giống kháng bệnh',
-          'Luân canh cây trồng',
-          'Làm sạch cỏ dại và tàn dư cây trồng',
-          'Quản lý nước tưới hợp lý',
-        ],
-      };
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F8F6),
-      appBar: AppBar(
-        title: const Text('Chẩn đoán bệnh'),
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    _buildUploadSection(),
-                    if (_selectedImage != null) ...[
-                      const SizedBox(height: 24),
-                      _buildImagePreview(),
-                    ],
-                    if (_isAnalyzing) ...[
-                      const SizedBox(height: 32),
-                      _buildAnalysisSection(),
-                    ],
-                    if (_hasResult && _analysisResult != null) ...[
-                      const SizedBox(height: 32),
-                      _buildResultSection(),
-                    ],
-                    const SizedBox(height: 40),
-                  ],
-                ),
-              ),
-            ],
+    return Consumer<DiseaseScanViewModel>(
+      builder: (context, viewModel, child) {
+        return Scaffold(
+          backgroundColor: const Color(0xFFF6F8F6),
+          appBar: AppBar(
+            title: const Text('Chẩn đoán bệnh'),
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            automaticallyImplyLeading: false,
           ),
-        ),
-      ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        _buildUploadSection(viewModel),
+                        if (viewModel.selectedImage != null) ...[
+                          const SizedBox(height: 24),
+                          _buildImagePreview(viewModel),
+                        ],
+                        if (viewModel.isAnalyzing) ...[
+                          const SizedBox(height: 32),
+                          _buildAnalysisSection(viewModel),
+                        ],
+                        if (viewModel.hasResult &&
+                            viewModel.analysisResult != null) ...[
+                          const SizedBox(height: 32),
+                          _buildResultSection(viewModel),
+                        ],
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -210,7 +131,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     );
   }
 
-  Widget _buildUploadSection() {
+  Widget _buildUploadSection(DiseaseScanViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
@@ -257,7 +178,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
                 child: _buildActionButton(
                   icon: Icons.photo_library_outlined,
                   label: 'Chọn ảnh',
-                  onPressed: () => _pickImage(ImageSource.gallery),
+                  onPressed: () => viewModel.pickImage(ImageSource.gallery),
                 ),
               ),
               const SizedBox(width: 16),
@@ -265,7 +186,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
                 child: _buildActionButton(
                   icon: Icons.camera_alt_outlined,
                   label: 'Chụp ảnh',
-                  onPressed: () => _pickImage(ImageSource.camera),
+                  onPressed: () => viewModel.pickImage(ImageSource.camera),
                   isPrimary: true,
                 ),
               ),
@@ -326,7 +247,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     );
   }
 
-  Widget _buildImagePreview() {
+  Widget _buildImagePreview(DiseaseScanViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -345,7 +266,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.file(
-              _selectedImage!,
+              viewModel.selectedImage!,
               height: 300,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -356,13 +277,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _selectedImage = null;
-                      _hasResult = false;
-                      _analysisResult = null;
-                    });
-                  },
+                  onPressed: viewModel.clearImage,
                   icon: const Icon(Icons.close, size: 18),
                   label: const Text('Hủy'),
                   style: OutlinedButton.styleFrom(
@@ -376,7 +291,8 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
               Expanded(
                 flex: 2,
                 child: ElevatedButton.icon(
-                  onPressed: _isAnalyzing ? null : _analyzeImage,
+                  onPressed:
+                      viewModel.isAnalyzing ? null : viewModel.analyzeImage,
                   icon: const Icon(Icons.analytics_outlined, size: 20),
                   label: const Text('Phân tích ngay'),
                   style: ElevatedButton.styleFrom(
@@ -394,7 +310,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     );
   }
 
-  Widget _buildAnalysisSection() {
+  Widget _buildAnalysisSection(DiseaseScanViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
@@ -427,7 +343,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
                   ),
                 ),
                 Text(
-                  '${(_analysisProgress * 100).toInt()}%',
+                  '${(viewModel.analysisProgress * 100).toInt()}%',
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -460,8 +376,8 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     );
   }
 
-  Widget _buildResultSection() {
-    final result = _analysisResult!;
+  Widget _buildResultSection(DiseaseScanViewModel viewModel) {
+    final result = viewModel.analysisResult!;
     final confidence = (result['confidence'] * 100).toInt();
 
     return Column(
@@ -591,13 +507,7 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
 
         // Action Buttons
         ElevatedButton.icon(
-          onPressed: () {
-            setState(() {
-              _selectedImage = null;
-              _hasResult = false;
-              _analysisResult = null;
-            });
-          },
+          onPressed: viewModel.clearImage,
           icon: const Icon(Icons.refresh, size: 20),
           label: const Text('Phân tích ảnh khác'),
           style: ElevatedButton.styleFrom(
