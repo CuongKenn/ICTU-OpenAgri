@@ -78,6 +78,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
 
       // Fetch NDVI
       final ndviRequest = NDVIRequest(
+        farmId: int.tryParse(field.id),
         bbox: bbox,
         startDate:
             _selectedDate.subtract(const Duration(days: 30)).toIso8601String(),
@@ -122,7 +123,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
         ndviHistory: ndviResponse.chartData.map((d) {
           return NDVIDataPoint(
             date: DateTime.parse(d['date']),
-            value: (d['mean'] as num).toDouble(),
+            value: (d['value'] as num).toDouble(),
           );
         }).toList(),
         imageUrl: field.imageUrl,
