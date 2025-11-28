@@ -128,6 +128,7 @@ class WeatherService {
       'wind_speed_10m': hourlyList.map((e) => e.windSpeed10m).toList(),
       'precipitation_probability':
           hourlyList.map((e) => (e.precipitation > 0 ? 60 : 0)).toList(),
+      'soil_moisture': hourlyList.map((e) => e.soilMoisture).toList(),
     };
 
     // Generate daily data from hourly (simplified aggregation)
