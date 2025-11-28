@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 import 'api_service.dart';
 
@@ -6,44 +8,72 @@ class AuthService {
   factory AuthService() => _instance;
   AuthService._internal();
 
-  // ignore: unused_field
   final ApiService _apiService = ApiService();
   User? _currentUser;
   User? get currentUser => _currentUser;
 
-  // Login - supports email, phone number, or username
-  Future<User> login(String emailOrPhoneOrUsername, String password) async {
+  static const String _tokenKey = 'auth_token';
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_tokenKey);
+  }
+
+  Future<void> _saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_tokenKey, token);
+  }
+
+  Future<void> logout() async {
+    _currentUser = null;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_tokenKey);
+  }
+
+  // Login - supports email
+  Future<User> login(String email, String password) async {
     try {
-      // Example API call:
-      // final response = await _apiService.post('/auth/login', data: {
-      //   'username': emailOrPhoneOrUsername,
-      //   'password': password,
-      // });
-      // _currentUser = User.fromJson(response.data);
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Detect input type
-      final bool isEmail = emailOrPhoneOrUsername.contains('@');
-      final bool isPhone =
-          RegExp(r'^0[0-9]{9}$').hasMatch(emailOrPhoneOrUsername);
-
-      _currentUser = User(
-        id: '123',
-        email: isEmail
-            ? emailOrPhoneOrUsername
-            : isPhone
-                ? 'user@example.com'
-                : '$emailOrPhoneOrUsername@example.com',
-        username: !isEmail && !isPhone ? emailOrPhoneOrUsername : null,
-        phoneNumber: isPhone ? emailOrPhoneOrUsername : null,
-        displayName: 'Test User',
-        createdAt: DateTime.now(),
+      // 1. Login to get token
+      final response = await _apiService.client.post(
+        '/users/login',
+        data: {
+          'username': email, // OAuth2 expects 'username' field
+          'password': password,
+        },
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
       );
 
+      final token = response.data['access_token'];
+      await _saveToken(token);
+
+      // 2. Get user info
+      return await _fetchCurrentUser();
+    } catch (e) {
+      if (e is DioException) {
+        throw Exception(e.response?.data['detail'] ?? 'Đăng nhập thất bại');
+      }
+      throw Exception('Đăng nhập thất bại: ${e.toString()}');
+    }
+  }
+
+  Future<User> _fetchCurrentUser() async {
+    try {
+      final token = await getToken();
+      if (token == null) throw Exception('No token found');
+
+      final response = await _apiService.client.get(
+        '/users/me',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      _currentUser = User.fromJson(response.data);
       return _currentUser!;
     } catch (e) {
-      throw Exception('Đăng nhập thất bại: ${e.toString()}');
+      throw Exception('Failed to fetch user info: $e');
     }
   }
 
@@ -55,30 +85,28 @@ class AuthService {
     required String password,
   }) async {
     try {
-      // Example API call:
-      // final response = await _apiService.post('/auth/register', data: {
-      //   'full_name': fullName,
-      //   'email': email,
-      //   'phone_number': phoneNumber,
-      //   'password': password,
-      // });
-      // _currentUser = User.fromJson(response.data);
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Check if email already exists (mock)
-      // In real app, backend will handle this
-
-      _currentUser = User(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        email: email,
-        displayName: fullName,
-        phoneNumber: phoneNumber,
-        createdAt: DateTime.now(),
+      // ignore: unused_local_variable
+      final response = await _apiService.client.post(
+        '/users/register',
+        data: {
+          'email': email,
+          'username': email.split('@')[0], // Generate username from email
+          'password': password,
+          'full_name': fullName,
+          // 'phone_number': phoneNumber, // Backend DTO does not support phone_number yet
+        },
       );
 
-      return _currentUser!;
+      // After register, login automatically
+      return await login(email, password);
     } catch (e) {
+      if (e is DioException) {
+        // Check if it's a validation error
+        if (e.response?.statusCode == 422) {
+          throw Exception('Dữ liệu không hợp lệ: ${e.response?.data}');
+        }
+        throw Exception(e.response?.data['detail'] ?? 'Đăng ký thất bại');
+      }
       throw Exception('Đăng ký thất bại: ${e.toString()}');
     }
   }
@@ -99,16 +127,6 @@ class AuthService {
       return _currentUser!;
     } catch (e) {
       throw Exception('Đăng nhập Google thất bại: ${e.toString()}');
-    }
-  }
-
-  // Logout
-  Future<void> logout() async {
-    try {
-      await Future.delayed(const Duration(milliseconds: 500));
-      _currentUser = null;
-    } catch (e) {
-      throw Exception('Đăng xuất thất bại: ${e.toString()}');
     }
   }
 
