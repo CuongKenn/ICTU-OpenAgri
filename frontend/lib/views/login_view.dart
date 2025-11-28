@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../screens/main_layout.dart';
 import '../viewmodels/login_viewmodel.dart';
-import 'dashboard_view.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -302,7 +303,7 @@ class LoginView extends StatelessWidget {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DashboardView(),
+                        builder: (context) => const MainLayout(),
                       ),
                     );
                   },
