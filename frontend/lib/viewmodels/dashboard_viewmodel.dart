@@ -13,6 +13,7 @@ class DashboardViewModel extends ChangeNotifier {
   List<ActivityLog> _activities = [];
   WeatherData _weather = WeatherData.getMockData();
   String? _selectedFarmId;
+  List<double> _soilMoistureHistory = [];
 
   // Getters
   bool get isLoading => _isLoading;
@@ -78,14 +79,20 @@ class DashboardViewModel extends ChangeNotifier {
       totalNdvi = totalNdvi / _fields.length;
     }
 
+    double currentSoilMoisture = 0;
+    if (_soilMoistureHistory.isNotEmpty) {
+      currentSoilMoisture = _soilMoistureHistory.first;
+    }
+
     _stats = DashboardStats(
       totalFields: _fields.length,
       totalArea: totalArea,
       averageNDVI: totalNdvi,
       activeAlerts: 0, // Placeholder
-      soilMoisture: 0, // Placeholder
+      soilMoisture: currentSoilMoisture,
       weatherCondition: _weather.condition,
       temperature: _weather.temperature,
+      soilMoistureHistory: _soilMoistureHistory,
     );
   }
 
@@ -113,6 +120,32 @@ class DashboardViewModel extends ChangeNotifier {
         position.longitude,
       );
       _weather = _mapToWeatherData(weatherData);
+
+      if (weatherData['hourly'] != null &&
+          weatherData['hourly']['soil_moisture'] != null) {
+        final soilMoistureList =
+            (weatherData['hourly']['soil_moisture'] as List).cast<double>();
+        _soilMoistureHistory = [];
+        // Aggregate to daily (assuming 24 hours per day)
+        for (int i = 0; i < 7; i++) {
+          double sum = 0;
+          int count = 0;
+          for (int j = 0; j < 24; j++) {
+            final int index = i * 24 + j;
+            if (index < soilMoistureList.length) {
+              sum += soilMoistureList[index];
+              count++;
+            }
+          }
+          if (count > 0) {
+            // Convert m³/m³ to percentage (approximate, assuming 0.5 is saturation)
+            _soilMoistureHistory.add((sum / count) * 200);
+          } else {
+            _soilMoistureHistory.add(0);
+          }
+        }
+      }
+
       _updateStats();
       notifyListeners();
     } catch (e) {
