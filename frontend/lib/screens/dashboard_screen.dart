@@ -1,8 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import '../models/dashboard_data.dart';
+import '../viewmodels/dashboard_viewmodel.dart';
 import 'satellite_monitoring_screen.dart';
 import 'weather_screen.dart';
 
@@ -18,16 +19,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
-  DashboardStats stats = DashboardStats.getMockData();
-  List<FieldStatus> fields = [];
-  List<ActivityLog> activities = [];
-  WeatherData weather = WeatherData.getMockData();
-
   @override
   void initState() {
     super.initState();
-    fields = FieldStatus.getMockList();
-    activities = ActivityLog.getMockList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DashboardViewModel>().initData();
+    });
 
     _animationController = AnimationController(
       vsync: this,
@@ -60,28 +57,43 @@ class _DashboardScreenState extends State<DashboardScreen>
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
       ),
-      body: SafeArea(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isDesktop ? 40 : (isTablet ? 24 : 16),
-                vertical: isDesktop ? 32 : 24,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 24),
-                  _buildStatsGrid(isDesktop, isTablet),
-                  const SizedBox(height: 24),
-                  _buildMainContent(isDesktop, isTablet),
-                ],
+      body: Consumer<DashboardViewModel>(
+        builder: (context, viewModel, child) {
+          if (viewModel.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFF0BDA50)),
+            );
+          }
+
+          return SafeArea(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: RefreshIndicator(
+                onRefresh: viewModel.refreshData,
+                color: const Color(0xFF0BDA50),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isDesktop ? 40 : (isTablet ? 24 : 16),
+                      vertical: isDesktop ? 32 : 24,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 24),
+                        _buildStatsGrid(isDesktop, isTablet, viewModel),
+                        const SizedBox(height: 24),
+                        _buildMainContent(isDesktop, isTablet, viewModel),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -124,26 +136,27 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildStatsGrid(bool isDesktop, bool isTablet) {
+  Widget _buildStatsGrid(
+      bool isDesktop, bool isTablet, DashboardViewModel viewModel) {
     final stats = [
       _StatCardData(
         icon: Icons.agriculture,
         label: 'Tổng vùng trồng',
-        value: '${this.stats.totalFields}',
+        value: '${viewModel.stats.totalFields}',
         unit: 'vùng',
         color: const Color(0xFF0BDA50),
       ),
       _StatCardData(
         icon: Icons.terrain,
         label: 'Tổng diện tích',
-        value: '${this.stats.totalArea}',
+        value: '${viewModel.stats.totalArea}',
         unit: 'ha',
         color: const Color(0xFF3B82F6),
       ),
       _StatCardData(
         icon: Icons.eco,
         label: 'NDVI trung bình',
-        value: this.stats.averageNDVI.toStringAsFixed(2),
+        value: viewModel.stats.averageNDVI.toStringAsFixed(2),
         unit: '',
         color: const Color(0xFF10B981),
         onTap: () {
@@ -158,7 +171,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       _StatCardData(
         icon: Icons.warning_amber_rounded,
         label: 'Cảnh báo',
-        value: '${this.stats.activeAlerts}',
+        value: '${viewModel.stats.activeAlerts}',
         unit: 'thông báo',
         color: const Color(0xFFFBBF24),
       ),
@@ -280,7 +293,8 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildMainContent(bool isDesktop, bool isTablet) {
+  Widget _buildMainContent(
+      bool isDesktop, bool isTablet, DashboardViewModel viewModel) {
     if (isDesktop) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,7 +303,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             flex: 2,
             child: Column(
               children: [
-                _buildFieldStatusList(),
+                _buildFieldStatusList(viewModel),
                 const SizedBox(height: 24),
                 _buildSoilMoistureChart(),
               ],
@@ -300,9 +314,9 @@ class _DashboardScreenState extends State<DashboardScreen>
             flex: 1,
             child: Column(
               children: [
-                _buildWeatherCard(),
+                _buildWeatherCard(viewModel),
                 const SizedBox(height: 24),
-                _buildActivityFeed(),
+                _buildActivityFeed(viewModel),
               ],
             ),
           ),
@@ -311,19 +325,19 @@ class _DashboardScreenState extends State<DashboardScreen>
     } else {
       return Column(
         children: [
-          _buildWeatherCard(),
+          _buildWeatherCard(viewModel),
           const SizedBox(height: 24),
-          _buildFieldStatusList(),
+          _buildFieldStatusList(viewModel),
           const SizedBox(height: 24),
           _buildSoilMoistureChart(),
           const SizedBox(height: 24),
-          _buildActivityFeed(),
+          _buildActivityFeed(viewModel),
         ],
       );
     }
   }
 
-  Widget _buildWeatherCard() {
+  Widget _buildWeatherCard(DashboardViewModel viewModel) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -384,7 +398,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${weather.temperature.toStringAsFixed(1)}°C',
+                        '${viewModel.weather.temperature.toStringAsFixed(1)}°C',
                         style: const TextStyle(
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
@@ -393,13 +407,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        weather.condition,
+                        viewModel.weather.condition,
                         style:
                             const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ],
                   ),
-                  Text(weather.icon, style: const TextStyle(fontSize: 64)),
+                  Text(viewModel.weather.icon,
+                      style: const TextStyle(fontSize: 64)),
                 ],
               ),
               const SizedBox(height: 20),
@@ -409,17 +424,17 @@ class _DashboardScreenState extends State<DashboardScreen>
                   _buildWeatherDetail(
                     Icons.water_drop,
                     'Độ ẩm',
-                    '${weather.humidity}%',
+                    '${viewModel.weather.humidity}%',
                   ),
                   _buildWeatherDetail(
                     Icons.umbrella,
                     'Mưa',
-                    '${weather.rainfall}mm',
+                    '${viewModel.weather.rainfall}mm',
                   ),
                   _buildWeatherDetail(
                     Icons.opacity,
                     'Ẩm đất',
-                    '${stats.soilMoisture}%',
+                    '${viewModel.stats.soilMoisture}%',
                   ),
                 ],
               ),
@@ -455,7 +470,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildFieldStatusList() {
+  Widget _buildFieldStatusList(DashboardViewModel viewModel) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 1000),
@@ -507,10 +522,10 @@ class _DashboardScreenState extends State<DashboardScreen>
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: fields.length,
+              itemCount: viewModel.fields.length,
               separatorBuilder: (context, index) => const Divider(height: 24),
               itemBuilder: (context, index) {
-                final field = fields[index];
+                final field = viewModel.fields[index];
                 return Row(
                   children: [
                     Container(
@@ -689,7 +704,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildActivityFeed() {
+  Widget _buildActivityFeed(DashboardViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -719,10 +734,10 @@ class _DashboardScreenState extends State<DashboardScreen>
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: activities.length,
+            itemCount: viewModel.activities.length,
             separatorBuilder: (context, index) => const SizedBox(height: 16),
             itemBuilder: (context, index) {
-              final activity = activities[index];
+              final activity = viewModel.activities[index];
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
