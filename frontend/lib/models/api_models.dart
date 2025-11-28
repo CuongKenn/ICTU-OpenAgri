@@ -415,6 +415,7 @@ class HourlyWeatherDTO {
   final int weatherCode;
   final double windSpeed10m;
   final double precipitation;
+  final double soilMoisture;
 
   HourlyWeatherDTO({
     required this.time,
@@ -423,16 +424,18 @@ class HourlyWeatherDTO {
     required this.weatherCode,
     required this.windSpeed10m,
     required this.precipitation,
+    this.soilMoisture = 0.0,
   });
 
   factory HourlyWeatherDTO.fromJson(Map<String, dynamic> json) {
     return HourlyWeatherDTO(
       time: json['time'],
-      temperature2m: json['temperature_2m'],
+      temperature2m: (json['temperature_2m'] as num).toDouble(),
       relativeHumidity2m: json['relative_humidity_2m'],
       weatherCode: json['weather_code'],
-      windSpeed10m: json['wind_speed_10m'],
-      precipitation: json['precipitation'],
+      windSpeed10m: (json['wind_speed_10m'] as num).toDouble(),
+      precipitation: (json['precipitation'] as num).toDouble(),
+      soilMoisture: (json['soil_moisture_0_to_1cm'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }
