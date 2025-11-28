@@ -24,6 +24,21 @@ class AuthService {
     await prefs.setString(_tokenKey, token);
   }
 
+  // Try to auto login with saved token
+  Future<bool> tryAutoLogin() async {
+    try {
+      final token = await getToken();
+      if (token == null) return false;
+
+      await _fetchCurrentUser();
+      return true;
+    } catch (e) {
+      // Token might be invalid or expired
+      await logout();
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     _currentUser = null;
     final prefs = await SharedPreferences.getInstance();
