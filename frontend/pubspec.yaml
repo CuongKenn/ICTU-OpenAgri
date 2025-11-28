@@ -27,7 +27,7 @@ dependencies:
 
   # HTTP Client (for API calls)
   http: ^1.1.2
-  
+
   # Image Picker (for Plant Health feature)
   image_picker: ^1.0.4
 
@@ -39,6 +39,27 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/image/OpenAgri.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/image/OpenAgri.png"
+  web:
+    generate: true
+    image_path: "assets/image/OpenAgri.png"
+    background_color: "#hex_code"
+    theme_color: "#hex_code"
+  windows:
+    generate: true
+    image_path: "assets/image/OpenAgri.png"
+    icon_size: 256 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/image/OpenAgri.png"
 
 flutter:
   uses-material-design: true
