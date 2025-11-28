@@ -17,53 +17,53 @@ class SignUpView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Logo and Title
                 _buildHeader(),
-                
+
                 // Title and Subtitle
                 _buildTitleSection(),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Full Name Field
                 _buildFullNameField(),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Email Field
                 _buildEmailField(),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Phone Field
                 _buildPhoneField(),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Password Field
                 _buildPasswordField(),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Confirm Password Field
                 _buildConfirmPasswordField(),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Error Message
                 _buildErrorMessage(),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Sign Up Button
                 _buildSignUpButton(),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Login Link
                 _buildLoginLink(),
-                
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -400,9 +400,8 @@ class SignUpView extends StatelessWidget {
         return SizedBox(
           height: 52,
           child: ElevatedButton(
-            onPressed: viewModel.isLoading
-                ? null
-                : () => viewModel.signUp(context),
+            onPressed:
+                viewModel.isLoading ? null : () => viewModel.signUp(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF00C853),
               foregroundColor: Colors.white,
