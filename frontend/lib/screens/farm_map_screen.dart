@@ -341,6 +341,31 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                           ),
                         );
                       }),
+                    // Current Location Marker
+                    if (viewModel.currentLocation != null)
+                      Marker(
+                        point: viewModel.currentLocation!,
+                        width: 40,
+                        height: 40,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.my_location,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],
@@ -351,6 +376,32 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
               right: 16,
               child: Column(
                 children: [
+                  // My Location Button
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: _buildMapButton(
+                      Icons.my_location,
+                      () {
+                        if (viewModel.currentLocation != null) {
+                          _mapController.move(viewModel.currentLocation!, 15);
+                        }
+                      },
+                      color: viewModel.currentLocation != null
+                          ? Colors.blue
+                          : Colors.grey,
+                    ),
+                  ),
                   _buildMapButton(Icons.add, () {
                     _mapController.move(
                       _mapController.camera.center,
