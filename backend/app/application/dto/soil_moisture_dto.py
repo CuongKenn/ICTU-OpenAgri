@@ -9,3 +9,4 @@ class SoilMoistureResponse(BaseModel):
     status: str
     soil_moisture_map: str
     image_base64: str
+    mean_value: float = 0.0
