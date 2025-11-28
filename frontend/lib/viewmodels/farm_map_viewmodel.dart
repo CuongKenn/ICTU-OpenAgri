@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../models/api_models.dart';
 import '../models/crop_field.dart';
+import '../services/farm_service.dart';
 import '../services/location_service.dart';
 
 class FarmMapViewModel extends ChangeNotifier {
   final LocationService _locationService = LocationService();
+  final FarmService _farmService = FarmService();
+
   List<CropField> _fields = [];
   CropField? _selectedField;
   List<LatLng> _newFieldPoints = [];
   bool _isDrawingMode = false;
   bool _isDrawingComplete = false;
   LatLng? _currentLocation;
+  bool _isLoading = false;
 
   // Getters
   List<CropField> get fields => _fields;
@@ -19,12 +25,49 @@ class FarmMapViewModel extends ChangeNotifier {
   bool get isDrawingMode => _isDrawingMode;
   bool get isDrawingComplete => _isDrawingComplete;
   LatLng? get currentLocation => _currentLocation;
+  bool get isLoading => _isLoading;
 
   // Initialize
-  void initData() {
-    _fields = CropField.getMockFields();
-    _getCurrentLocation();
+  Future<void> initData() async {
+    _isLoading = true;
     notifyListeners();
+
+    await _getCurrentLocation();
+    await _fetchFarms();
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> _fetchFarms() async {
+    try {
+      final farmDtos = await _farmService.getMyFarms();
+      _fields = farmDtos.map((dto) => _mapDtoToCropField(dto)).toList();
+    } catch (e) {
+      debugPrint('Error fetching farms: $e');
+      // Fallback to mock data if fetch fails? Or empty?
+      // _fields = CropField.getMockFields();
+    }
+  }
+
+  CropField _mapDtoToCropField(FarmAreaResponseDTO dto) {
+    final center = dto.coordinates.isNotEmpty
+        ? _calculateCenter(dto.coordinates)
+        : const LatLng(0, 0);
+
+    return CropField(
+      id: dto.id.toString(),
+      name: dto.name,
+      cropType: dto.cropType ?? 'Khác',
+      area: dto.areaSize ?? 0.0,
+      ndviValue: 0.0, // Not available in farm DTO yet
+      trendDirection: 'stable',
+      lastUpdated: DateTime.now(), // Not available
+      ndviHistory: [], // Not available
+      imageUrl: '',
+      polygonPoints: dto.coordinates,
+      center: center,
+    );
   }
 
   Future<void> _getCurrentLocation() async {
@@ -75,26 +118,34 @@ class FarmMapViewModel extends ChangeNotifier {
   }
 
   // Save new field
-  void saveNewField(String name, String cropType, double area) {
-    final newField = CropField(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: name,
-      cropType: cropType,
-      area: area,
-      ndviValue: 0.0, // Default
-      trendDirection: 'stable',
-      lastUpdated: DateTime.now(),
-      ndviHistory: [],
-      imageUrl: '',
-      polygonPoints: List.from(_newFieldPoints),
-      center: _calculateCenter(_newFieldPoints),
-    );
-
-    _fields.add(newField);
-    _isDrawingMode = false;
-    _newFieldPoints = [];
-    _isDrawingComplete = false;
+  Future<void> saveNewField(String name, String cropType, double area) async {
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      final createDto = FarmAreaCreateDTO(
+        name: name,
+        cropType: cropType,
+        areaSize: area,
+        coordinates: _newFieldPoints,
+        description: 'Created from mobile app',
+      );
+
+      final newFarm = await _farmService.createFarm(createDto);
+
+      // Add to local list
+      _fields.add(_mapDtoToCropField(newFarm));
+
+      _isDrawingMode = false;
+      _newFieldPoints = [];
+      _isDrawingComplete = false;
+    } catch (e) {
+      debugPrint('Error creating farm: $e');
+      // Handle error (show toast/snackbar via UI)
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   // Helpers
