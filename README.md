@@ -179,6 +179,11 @@ Chúng tôi rất hoan nghênh mọi đóng góp từ cộng đồng! Để đó
 
 Vui lòng xem file `CONTRIBUTING.md` để biết thêm chi tiết quy tắc ứng xử.
 
+## 🐛 Báo Lỗi (Bug Tracker)
+
+Nếu bạn phát hiện lỗi hoặc muốn yêu cầu tính năng mới, vui lòng tạo issue tại:
+[https://github.com/CuongKenn/ICTU-OpenAgri/issues](https://github.com/CuongKenn/ICTU-OpenAgri/issues)
+
 ## 📄 Giấy Phép (License)
 
 Dự án này được phân phối dưới giấy phép **MIT License**. Xem file `LICENSE` để biết thêm chi tiết.
