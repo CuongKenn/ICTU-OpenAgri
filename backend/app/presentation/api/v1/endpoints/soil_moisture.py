@@ -1,3 +1,6 @@
+# Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 from fastapi import APIRouter, Depends
 from app.application.dto.soil_moisture_dto import SoilMoistureRequest, SoilMoistureResponse
 from app.application.use_cases.soil_moisture_use_cases import CalculateSoilMoistureUseCase

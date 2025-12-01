@@ -1,3 +1,6 @@
+# Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
