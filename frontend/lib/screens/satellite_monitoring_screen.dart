@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
@@ -227,7 +230,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                         },
                         color: Colors.black,
                       ),
-                      Container(height: 1, width: 40, color: Colors.grey.shade300),
+                      Container(
+                          height: 1, width: 40, color: Colors.grey.shade300),
                       IconButton(
                         icon: const Icon(Icons.remove, size: 28),
                         onPressed: () {

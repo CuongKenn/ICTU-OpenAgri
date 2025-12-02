@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import 'package:latlong2/latlong.dart';
 
 // --- Farm Models ---
@@ -103,11 +106,13 @@ class AdminFarmAreaResponseDTO extends FarmAreaResponseDTO {
 // --- NDVI Models ---
 
 class NDVIRequest {
+  final int? farmId;
   final List<double> bbox; // [min_lon, min_lat, max_lon, max_lat]
   final String startDate;
   final String endDate;
 
   NDVIRequest({
+    this.farmId,
     required this.bbox,
     required this.startDate,
     required this.endDate,
@@ -115,6 +120,7 @@ class NDVIRequest {
 
   Map<String, dynamic> toJson() {
     return {
+      'farm_id': farmId,
       'bbox': bbox,
       'start_date': startDate,
       'end_date': endDate,

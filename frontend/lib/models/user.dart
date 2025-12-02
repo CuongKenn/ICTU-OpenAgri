@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 class User {
   final String id;
   final String email;
@@ -6,6 +9,8 @@ class User {
   final String? photoUrl;
   final String? phoneNumber;
   final DateTime? createdAt;
+  final bool isSuperuser;
+  final bool isActive;
 
   User({
     required this.id,
@@ -15,6 +20,8 @@ class User {
     this.photoUrl,
     this.phoneNumber,
     this.createdAt,
+    this.isSuperuser = false,
+    this.isActive = true,
   });
 
   // Convert from JSON
@@ -32,6 +39,8 @@ class User {
           : json['created_at'] != null
               ? DateTime.parse(json['created_at'])
               : null,
+      isSuperuser: json['is_superuser'] ?? false,
+      isActive: json['is_active'] ?? true,
     );
   }
 
@@ -45,6 +54,8 @@ class User {
       'photoUrl': photoUrl,
       'phoneNumber': phoneNumber,
       'createdAt': createdAt?.toIso8601String(),
+      'is_superuser': isSuperuser,
+      'is_active': isActive,
     };
   }
 
@@ -57,6 +68,8 @@ class User {
     String? photoUrl,
     String? phoneNumber,
     DateTime? createdAt,
+    bool? isSuperuser,
+    bool? isActive,
   }) {
     return User(
       id: id ?? this.id,
@@ -66,11 +79,13 @@ class User {
       photoUrl: photoUrl ?? this.photoUrl,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       createdAt: createdAt ?? this.createdAt,
+      isSuperuser: isSuperuser ?? this.isSuperuser,
+      isActive: isActive ?? this.isActive,
     );
   }
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, username: $username)';
+    return 'User(id: $id, email: $email, username: $username, isSuperuser: $isSuperuser)';
   }
 }

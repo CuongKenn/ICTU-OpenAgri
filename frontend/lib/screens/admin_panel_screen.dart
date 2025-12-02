@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../viewmodels/admin_viewmodel.dart';
 import '../models/admin_user.dart';
 import '../models/api_models.dart';
+import '../services/auth_service.dart';
+import '../viewmodels/admin_viewmodel.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({super.key});
@@ -18,8 +19,14 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AdminViewModel>().refresh();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Get auth token and set it to AdminViewModel
+      final token = await AuthService().getToken();
+      if (token != null && mounted) {
+        context.read<AdminViewModel>().setAuthToken(token);
+        // Now load data
+        context.read<AdminViewModel>().refresh();
+      }
     });
   }
 
@@ -62,6 +69,42 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 context.read<AdminViewModel>().refresh();
               },
               tooltip: 'Làm mới',
+            ),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                // Show confirmation dialog
+                final shouldLogout = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Đăng xuất'),
+                    content: const Text('Bạn có chắc chắn muốn đăng xuất?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text('Hủy'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFEF4444),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text('Đăng xuất'),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (shouldLogout == true && context.mounted) {
+                  // Import AuthService at the top if not already imported
+                  await AuthService().logout();
+                  if (context.mounted) {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  }
+                }
+              },
+              tooltip: 'Đăng xuất',
             ),
             const SizedBox(width: 8),
           ],
@@ -787,7 +830,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       ),
     );
   }
-}
 
   Widget _buildFarmsTab(bool isDesktop, bool isTablet) {
     return Consumer<AdminViewModel>(
