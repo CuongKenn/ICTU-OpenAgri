@@ -38,7 +38,7 @@ class AdminService {
     String? search,
   }) async {
     try {
-      final queryParams = {
+      final Map<String, dynamic> queryParams = {
         'page': page,
         'page_size': pageSize,
       };
