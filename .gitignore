@@ -46,7 +46,7 @@ Thumbs.db
 *.sqlite3
 
 # Docker
-.dockerignore
+
 
 # Build outputs
 dist/

@@ -90,4 +90,9 @@ class ApiService {
       rethrow;
     }
   }
+
+  // Set authentication token
+  Future<void> setAuthToken(String token) async {
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+  }
 }

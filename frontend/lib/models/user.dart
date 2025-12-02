@@ -6,6 +6,7 @@ class User {
   final String? photoUrl;
   final String? phoneNumber;
   final DateTime? createdAt;
+  final bool isSuperuser;
 
   User({
     required this.id,
@@ -15,15 +16,16 @@ class User {
     this.photoUrl,
     this.phoneNumber,
     this.createdAt,
+    this.isSuperuser = false,
   });
 
   // Convert from JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] ?? '',
+      id: json['id']?.toString() ?? '',
       email: json['email'] ?? '',
       username: json['username'],
-      displayName: json['displayName'] ?? json['display_name'],
+      displayName: json['displayName'] ?? json['display_name'] ?? json['full_name'],
       photoUrl: json['photoUrl'] ?? json['photo_url'],
       phoneNumber: json['phoneNumber'] ?? json['phone_number'],
       createdAt: json['createdAt'] != null
@@ -31,6 +33,7 @@ class User {
           : json['created_at'] != null
               ? DateTime.parse(json['created_at'])
               : null,
+      isSuperuser: json['is_superuser'] ?? false,
     );
   }
 
@@ -44,6 +47,7 @@ class User {
       'photoUrl': photoUrl,
       'phoneNumber': phoneNumber,
       'createdAt': createdAt?.toIso8601String(),
+      'is_superuser': isSuperuser,
     };
   }
 
@@ -56,6 +60,7 @@ class User {
     String? photoUrl,
     String? phoneNumber,
     DateTime? createdAt,
+    bool? isSuperuser,
   }) {
     return User(
       id: id ?? this.id,
@@ -65,6 +70,7 @@ class User {
       photoUrl: photoUrl ?? this.photoUrl,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       createdAt: createdAt ?? this.createdAt,
+      isSuperuser: isSuperuser ?? this.isSuperuser,
     );
   }
 

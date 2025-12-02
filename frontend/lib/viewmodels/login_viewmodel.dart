@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/home_screen.dart';
+import '../screens/admin_panel_screen.dart';
+import '../services/auth_service.dart';
+import '../services/admin_service.dart';
+import '../services/farm_service.dart';
 import '../views/signup_view.dart';
 import 'signup_viewmodel.dart';
 
 class LoginViewModel extends ChangeNotifier {
+  final AuthService _authService = AuthService();
+  final AdminService _adminService = AdminService();
+  final FarmService _farmService = FarmService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -65,7 +72,17 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      // Call real API
+      final user = await _authService.login(
+        emailController.text,
+        passwordController.text,
+      );
+
+      // Set auth token for admin and farm services
+      if (user.isSuperuser) {
+        // Get token from API service - we'll need to expose it
+        // For now, we'll let the services handle it through ApiService singleton
+      }
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -76,13 +93,24 @@ class LoginViewModel extends ChangeNotifier {
           ),
         );
 
-        // Navigate to HomeScreen after successful login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
+        // Route based on user role
+        if (user.isSuperuser) {
+          // Navigate to Admin Panel
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AdminPanelScreen(),
+            ),
+          );
+        } else {
+          // Navigate to HomeScreen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        }
       }
     } catch (e) {
       _errorMessage = 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';

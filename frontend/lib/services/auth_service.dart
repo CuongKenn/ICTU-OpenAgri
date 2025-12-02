@@ -14,31 +14,18 @@ class AuthService {
   // Login - supports email, phone number, or username
   Future<User> login(String emailOrPhoneOrUsername, String password) async {
     try {
-      // Example API call:
-      // final response = await _apiService.post('/auth/login', data: {
-      //   'username': emailOrPhoneOrUsername,
-      //   'password': password,
-      // });
-      // _currentUser = User.fromJson(response.data);
-      
-      await Future.delayed(const Duration(seconds: 2));
+      final response = await _apiService.post('/users/login', data: {
+        'username': emailOrPhoneOrUsername,
+        'password': password,
+      });
 
-      // Detect input type
-      bool isEmail = emailOrPhoneOrUsername.contains('@');
-      bool isPhone = RegExp(r'^0[0-9]{9}$').hasMatch(emailOrPhoneOrUsername);
+      // Store access token
+      final token = response.data['access_token'];
+      await _apiService.setAuthToken(token);
 
-      _currentUser = User(
-        id: '123',
-        email: isEmail 
-            ? emailOrPhoneOrUsername 
-            : isPhone 
-                ? 'user@example.com' 
-                : '$emailOrPhoneOrUsername@example.com',
-        username: !isEmail && !isPhone ? emailOrPhoneOrUsername : null,
-        phoneNumber: isPhone ? emailOrPhoneOrUsername : null,
-        displayName: 'Test User',
-        createdAt: DateTime.now(),
-      );
+      // Get user info
+      final userInfoResponse = await _apiService.get('/users/me');
+      _currentUser = User.fromJson(userInfoResponse.data);
 
       return _currentUser!;
     } catch (e) {

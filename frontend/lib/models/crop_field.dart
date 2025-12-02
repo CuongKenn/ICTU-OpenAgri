@@ -27,64 +27,52 @@ class CropField {
     required this.center,
   });
 
-  // Mock data for demonstration (Located in Vietnam, Mekong Delta example)
-  static List<CropField> getMockFields() {
-    return [
-      CropField(
-        id: '1',
-        name: 'Vùng trồng A1 (Lúa ST25)',
-        cropType: 'Lúa',
-        area: 12.5,
-        ndviValue: 0.82,
-        trendDirection: 'up',
-        lastUpdated: DateTime(2024, 9, 10),
-        ndviHistory: NDVIDataPoint.getMockData(),
-        imageUrl: '',
-        center: const LatLng(10.033333, 105.783333), // Can Tho approx
-        polygonPoints: [
-          const LatLng(10.033333, 105.783333),
-          const LatLng(10.034333, 105.783333),
-          const LatLng(10.034333, 105.784333),
-          const LatLng(10.033333, 105.784333),
-        ],
-      ),
-      CropField(
-        id: '2',
-        name: 'Vườn Xoài Cát Hòa Lộc',
-        cropType: 'Cây ăn trái',
-        area: 18.3,
-        ndviValue: 0.75,
-        trendDirection: 'stable',
-        lastUpdated: DateTime(2024, 9, 10),
-        ndviHistory: NDVIDataPoint.getMockData(offset: -0.05),
-        imageUrl: '',
-        center: const LatLng(10.035333, 105.785333),
-        polygonPoints: [
-          const LatLng(10.035333, 105.785333),
-          const LatLng(10.036333, 105.785333),
-          const LatLng(10.036333, 105.786333),
-          const LatLng(10.035333, 105.786333),
-        ],
-      ),
-      CropField(
-        id: '3',
-        name: 'Khu Cà phê Robusta',
-        cropType: 'Cây công nghiệp',
-        area: 9.8,
-        ndviValue: 0.68,
-        trendDirection: 'down',
-        lastUpdated: DateTime(2024, 9, 10),
-        ndviHistory: NDVIDataPoint.getMockData(offset: -0.12),
-        imageUrl: '',
-        center: const LatLng(10.031333, 105.781333),
-        polygonPoints: [
-          const LatLng(10.031333, 105.781333),
-          const LatLng(10.032333, 105.781333),
-          const LatLng(10.032333, 105.782333),
-          const LatLng(10.031333, 105.782333),
-        ],
-      ),
-    ];
+  factory CropField.fromJson(Map<String, dynamic> json) {
+    // Parse coordinates
+    List<LatLng> points = [];
+    if (json['coordinates'] != null) {
+      points = (json['coordinates'] as List).map((coord) {
+        return LatLng(coord['lat'], coord['lng']);
+      }).toList();
+    }
+
+    // Calculate center
+    double lat = 0.0;
+    double lng = 0.0;
+    if (points.isNotEmpty) {
+      for (var point in points) {
+        lat += point.latitude;
+        lng += point.longitude;
+      }
+      lat /= points.length;
+      lng /= points.length;
+    }
+
+    return CropField(
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      cropType: json['crop_type'] ?? 'Lúa',
+      area: (json['area_size'] ?? 0.0).toDouble(),
+      ndviValue: 0.5, // Default or fetch from separate endpoint if needed
+      trendDirection: 'stable',
+      lastUpdated: DateTime.now(),
+      ndviHistory: [], // Fetch separately if needed
+      imageUrl: '',
+      polygonPoints: points,
+      center: LatLng(lat, lng),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'crop_type': cropType,
+      'area_size': area,
+      'coordinates': polygonPoints.map((p) => {
+        'lat': p.latitude,
+        'lng': p.longitude,
+      }).toList(),
+    };
   }
 
   String get cropTypeColorHex {
@@ -106,14 +94,4 @@ class NDVIDataPoint {
   final double value;
 
   NDVIDataPoint({required this.date, required this.value});
-
-  static List<NDVIDataPoint> getMockData({double offset = 0}) {
-    final now = DateTime.now();
-    return List.generate(30, (index) {
-      return NDVIDataPoint(
-        date: now.subtract(Duration(days: 29 - index)),
-        value: (0.6 + (index / 30) * 0.3 + offset).clamp(0.0, 1.0),
-      );
-    });
-  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/crop_field.dart';
+import '../services/farm_service.dart';
 import '../widgets/app_navigation_bar.dart';
 
 class FieldMapScreen extends StatefulWidget {
@@ -13,10 +14,12 @@ class FieldMapScreen extends StatefulWidget {
 
 class _FieldMapScreenState extends State<FieldMapScreen> {
   final MapController _mapController = MapController();
+  final FarmService _farmService = FarmService();
   List<CropField> fields = [];
   CropField? selectedField;
   List<LatLng> newFieldPoints = [];
   bool isDrawingMode = false;
+  bool isLoading = false;
 
   // Form data for new field
   String newFieldName = '';
@@ -26,7 +29,25 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
   @override
   void initState() {
     super.initState();
-    fields = CropField.getMockFields();
+    _loadFarms();
+  }
+
+  Future<void> _loadFarms() async {
+    setState(() => isLoading = true);
+    try {
+      final loadedFarms = await _farmService.getFarms();
+      setState(() {
+        fields = loadedFarms;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi tải dữ liệu: $e')),
+        );
+      }
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
 
   void _startDrawingMode() {
@@ -337,34 +358,24 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
                         ),
                       );
                     }),
-                    // Markers cho các điểm đang vẽ
+                    // Markers cho các điểm đang vẽ - Clean style
                     if (isDrawingMode)
                       ...newFieldPoints.asMap().entries.map((entry) {
                         return Marker(
                           point: entry.value,
-                          width: 40,
-                          height: 40,
+                          width: 24,
+                          height: 24,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0BDA50),
+                              color: Colors.white,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 3),
+                              border: Border.all(color: const Color(0xFF0BDA50), width: 4),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.3),
-                                  blurRadius: 6,
+                                  color: Colors.black.withValues(alpha: 0.2),
+                                  blurRadius: 4,
                                 ),
                               ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                '${entry.key + 1}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
                             ),
                           ),
                         );
@@ -761,8 +772,9 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
             },
             child: const Text('Hủy'),
           ),
+
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (nameController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -772,36 +784,47 @@ class _FieldMapScreenState extends State<FieldMapScreen> {
                 return;
               }
 
-              final center = _calculateCenter(newFieldPoints);
-              final newField = CropField(
-                id: DateTime.now().millisecondsSinceEpoch.toString(),
-                name: nameController.text,
-                cropType: newFieldCropType,
-                area: calculatedArea,
-                ndviValue: 0.5,
-                trendDirection: 'stable',
-                lastUpdated: DateTime.now(),
-                ndviHistory: NDVIDataPoint.getMockData(),
-                imageUrl: '',
-                center: center,
-                polygonPoints: List.from(newFieldPoints),
-              );
+              try {
+                // Prepare data for API
+                final farmData = {
+                  'name': nameController.text,
+                  'crop_type': newFieldCropType,
+                  'area_size': calculatedArea,
+                  'coordinates': newFieldPoints.map((p) => {
+                    'lat': p.latitude,
+                    'lng': p.longitude,
+                  }).toList(),
+                };
 
-              setState(() {
-                fields.add(newField);
-                selectedField = newField;
-                isDrawingMode = false;
-                newFieldPoints.clear();
-              });
+                // Call API
+                final newField = await _farmService.createFarm(farmData);
 
-              Navigator.pop(context);
+                setState(() {
+                  fields.add(newField);
+                  selectedField = newField;
+                  isDrawingMode = false;
+                  newFieldPoints.clear();
+                });
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('✅ Đã thêm vùng trồng mới!'),
-                  backgroundColor: Color(0xFF0BDA50),
-                ),
-              );
+                if (mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('✅ Đã thêm vùng trồng mới!'),
+                      backgroundColor: Color(0xFF0BDA50),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Lỗi khi lưu: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0BDA50),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/crop_field.dart';
+import '../services/farm_service.dart';
 import '../widgets/app_navigation_bar.dart';
 
 class SatelliteMonitoringScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class SatelliteMonitoringScreen extends StatefulWidget {
 
 class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   final MapController _mapController = MapController();
+  final FarmService _farmService = FarmService();
 
   List<CropField> fields = [];
   CropField? selectedField;
@@ -30,8 +32,22 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   @override
   void initState() {
     super.initState();
-    fields = CropField.getMockFields();
-    selectedField = fields.first;
+    _loadFarms();
+  }
+
+  Future<void> _loadFarms() async {
+    try {
+      final loadedFarms = await _farmService.getFarms();
+      setState(() {
+        fields = loadedFarms;
+        if (fields.isNotEmpty) {
+          selectedField = fields.first;
+        }
+      });
+    } catch (e) {
+      // Handle error silently or show snackbar
+      print('Error loading farms: $e');
+    }
   }
 
   @override
