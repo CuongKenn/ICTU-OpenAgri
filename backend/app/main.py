@@ -1,3 +1,6 @@
+# Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 """
 Main FastAPI application entry point.
 """
@@ -8,7 +11,7 @@ from app.infrastructure.config.settings import get_settings
 from app.presentation.api.v1.router import api_router
 from app.infrastructure.database.database import init_db
 # Import models to register them with Base
-from app.infrastructure.database.models import user_model
+from app.infrastructure.database import models
 
 settings = get_settings()
 
