@@ -1,3 +1,6 @@
+# Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import os
 import rasterio
 import numpy as np
@@ -30,13 +33,7 @@ def compute_ndvi(red_path: str, nir_path: str, out_path: str, resampling=Resampl
     with rasterio.open(red_path) as r_red, rasterio.open(nir_path) as r_nir:
         # reproject to match if necessary
         if r_red.crs != r_nir.crs or r_red.transform != r_nir.transform or r_red.width != r_nir.width or r_red.height != r_nir.height:
-            # reproject nir to red's profile
-            # Note: In a real scenario, we might want to reproject both to a common grid or handle this more robustly
-            # For now, we align NIR to RED as per the original script
             
-            # We actually need to read the data first or setup a VRT. 
-            # The original script read into memory and assumed it could just read with out_shape.
-            # Let's follow the original logic but be careful.
             
             nir_arr = r_nir.read(1, out_shape=(r_red.count, r_red.height, r_red.width), resampling=resampling)
         else:
