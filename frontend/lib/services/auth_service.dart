@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
@@ -22,6 +25,21 @@ class AuthService {
   Future<void> _saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
+  }
+
+  // Try to auto login with saved token
+  Future<bool> tryAutoLogin() async {
+    try {
+      final token = await getToken();
+      if (token == null) return false;
+
+      await _fetchCurrentUser();
+      return true;
+    } catch (e) {
+      // Token might be invalid or expired
+      await logout();
+      return false;
+    }
   }
 
   Future<void> logout() async {

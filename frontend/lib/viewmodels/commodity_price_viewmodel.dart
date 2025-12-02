@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import 'package:flutter/foundation.dart';
 import '../models/api_models.dart';
 import '../services/commodity_price_service.dart';
