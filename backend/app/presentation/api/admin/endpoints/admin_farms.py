@@ -3,7 +3,7 @@ Admin farm management endpoints.
 """
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from app.application.dto.farm_dto import AdminFarmAreaResponseDTO
+from app.application.dto.farm_dto import AdminFarmAreaResponseDTO, CoordinateDTO
 from app.infrastructure.repositories.farm_repository_impl import SQLAlchemyFarmRepository
 from app.presentation.deps import get_farm_repository, get_current_superuser
 from app.domain.entities.user import User
@@ -31,7 +31,7 @@ async def list_all_farms(
                 id=farm.id,
                 name=farm.name,
                 description=farm.description,
-                coordinates=farm.coordinates,
+                coordinates=[CoordinateDTO(lat=c.lat, lng=c.lng) for c in farm.coordinates],
                 area_size=farm.area_size,
                 crop_type=farm.crop_type,
                 user_id=farm.user_id,
