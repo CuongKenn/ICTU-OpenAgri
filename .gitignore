@@ -68,3 +68,6 @@ backend/models/*.gguf
 
 # Output Data
 backend/output/
+
+# Flutter DevTools
+frontend/devtools_options.yaml
