@@ -173,6 +173,8 @@ class GBIFService:
         Returns:
             Pest risk forecast data with historical occurrences and warnings
         """
+        import asyncio
+        
         current_year = datetime.now().year
         start_year = current_year - years_back
         
@@ -187,55 +189,79 @@ class GBIFService:
         all_occurrences = []
         pest_summary = {}
         
-        for pest_name in default_pests:
+        async def process_pest(pest_name: str):
             try:
                 # Search for species key
                 logger.info(f"Searching for species: {pest_name}")
                 species_search = await self.search_species(pest_name, limit=1)
                 if not species_search.get("results"):
                     logger.warning(f"Species not found in GBIF: {pest_name}")
-                    continue
+                    return None
                 
                 species_key = species_search["results"][0].get("key")
                 if not species_key:
                     logger.warning(f"No species key found for: {pest_name}")
-                    continue
+                    return None
                 
                 logger.info(f"Found species key {species_key} for {pest_name}, searching occurrences...")
                 
-                # Search occurrences for each year
+                # Search occurrences for each year in parallel
                 yearly_occurrences = {}
-                for year in range(start_year, current_year + 1):
-                    occurrences = await self.search_occurrences(
+                years = range(start_year, current_year + 1)
+                
+                tasks = [
+                    self.search_occurrences(
                         latitude=latitude,
                         longitude=longitude,
                         radius_km=radius_km,
                         species_key=species_key,
                         year=year,
                         limit=50
-                    )
-                    
-                    count = occurrences.get("count", 0)
+                    ) for year in years
+                ]
+                
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                local_occurrences = []
+                for year, result in zip(years, results):
+                    if isinstance(result, Exception):
+                        logger.error(f"Error fetching data for {pest_name} in {year}: {result}")
+                        continue
+                        
+                    count = result.get("count", 0)
                     if count > 0:
                         logger.info(f"Found {count} occurrences for {pest_name} in year {year}")
                         yearly_occurrences[year] = count
-                        all_occurrences.extend(occurrences.get("results", [])[:10])
-                    else:
-                        logger.debug(f"No occurrences found for {pest_name} in year {year}")
+                        local_occurrences.extend(result.get("results", [])[:10])
                 
                 if yearly_occurrences:
-                    pest_summary[pest_name] = {
-                        "species_key": species_key,
-                        "yearly_occurrences": yearly_occurrences,
-                        "total_occurrences": sum(yearly_occurrences.values()),
-                        "most_recent_year": max(yearly_occurrences.keys()) if yearly_occurrences else None
+                    return {
+                        "pest_name": pest_name,
+                        "data": {
+                            "species_key": species_key,
+                            "yearly_occurrences": yearly_occurrences,
+                            "total_occurrences": sum(yearly_occurrences.values()),
+                            "most_recent_year": max(yearly_occurrences.keys()) if yearly_occurrences else None
+                        },
+                        "occurrences": local_occurrences
                     }
                 else:
                     logger.info(f"No historical occurrences found for {pest_name} in the specified area")
+                    return None
             
             except Exception as e:
                 logger.error(f"Error processing pest {pest_name}: {str(e)}", exc_info=True)
-                continue
+                return None
+
+        # Process all pests in parallel
+        pest_tasks = [process_pest(pest) for pest in default_pests]
+        pest_results = await asyncio.gather(*pest_tasks)
+        
+        for result in pest_results:
+            if result:
+                pest_name = result["pest_name"]
+                pest_summary[pest_name] = result["data"]
+                all_occurrences.extend(result["occurrences"])
         
         # Analyze patterns and generate warnings
         warnings = []
@@ -247,7 +273,6 @@ class GBIFService:
             # Check if pest appeared in recent years
             recent_years = [y for y in yearly.keys() if y >= current_year - 2]
             if recent_years:
-                current_month = datetime.now().month
                 # Generate warning based on historical patterns
                 warnings.append({
                     "pest_name": pest_name,
