@@ -50,3 +50,27 @@ app.include_router(api_router, prefix="/api/v1")
 async def health_check():
     """Health check endpoint."""
     return {"status": "healthy", "version": settings.VERSION}
+
+@app.on_event("startup")
+async def create_admin_user():
+    """Create an admin user on startup if it doesn't exist."""
+    from app.infrastructure.database.session import get_async_session
+    from app.infrastructure.database.models.user import User
+    from app.infrastructure.security.password_hashing import get_password_hash
+    from sqlalchemy.future import select
+
+    async with get_async_session() as session:
+        result = await session.execute(select(User).where(User.email == settings.ADMIN_EMAIL))
+        admin_user = result.scalars().first()
+        if not admin_user:
+            new_admin = User(
+                email=settings.ADMIN_EMAIL,
+                hashed_password=get_password_hash(settings.ADMIN_PASSWORD),
+                is_active=True,
+                is_superuser=True
+            )
+            session.add(new_admin)
+            await session.commit()
+            print(f"Admin user created with email: {settings.ADMIN_EMAIL}")
+        else:
+            print("Admin user already exists.")
