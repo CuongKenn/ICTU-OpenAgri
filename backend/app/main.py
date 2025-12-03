@@ -12,9 +12,11 @@ from app.presentation.api.v1.router import api_router
 from app.infrastructure.database.database import init_db, AsyncSessionLocal
 # Import models to register them with Base
 from app.infrastructure.database import models
+
 from app.infrastructure.database.models.user_model import UserModel
 from app.infrastructure.security.jwt import get_password_hash
 from sqlalchemy.future import select
+
 
 settings = get_settings()
 
