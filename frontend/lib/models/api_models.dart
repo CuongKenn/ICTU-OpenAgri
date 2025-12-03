@@ -397,7 +397,7 @@ class DiseasePredictionDTO {
 
   factory DiseasePredictionDTO.fromJson(Map<String, dynamic> json) {
     return DiseasePredictionDTO(
-      className: json['class_name'],
+      className: json['vietnamese_name'] ?? json['class'] ?? 'Unknown',
       confidence: (json['confidence'] as num).toDouble(),
       description: json['description'],
       symptoms:
