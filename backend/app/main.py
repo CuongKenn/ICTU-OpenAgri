@@ -29,8 +29,15 @@ async def lifespan(app: FastAPI):
     # Create admin user if not exists
     async with AsyncSessionLocal() as session:
         try:
-            result = await session.execute(select(UserModel).where(UserModel.email == settings.ADMIN_EMAIL))
+            # Check if admin exists by email or username
+            result = await session.execute(
+                select(UserModel).where(
+                    (UserModel.email == settings.ADMIN_EMAIL) | 
+                    (UserModel.username == "admin")
+                )
+            )
             admin_user = result.scalars().first()
+            
             if not admin_user:
                 new_admin = UserModel(
                     email=settings.ADMIN_EMAIL,
@@ -44,7 +51,7 @@ async def lifespan(app: FastAPI):
                 await session.commit()
                 print(f"Admin user created with email: {settings.ADMIN_EMAIL}")
             else:
-                print("Admin user already exists.")
+                print(f"Admin user already exists (username: {admin_user.username}, email: {admin_user.email})")
         except Exception as e:
             print(f"Error creating admin user: {e}")
             
