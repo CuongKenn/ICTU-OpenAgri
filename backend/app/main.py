@@ -4,7 +4,6 @@
 """
 Main FastAPI application entry point.
 """
-from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.config.settings import get_settings
@@ -20,9 +19,18 @@ from sqlalchemy.future import select
 
 settings = get_settings()
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Lifecycle events."""
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version=settings.VERSION,
+    description="ICTU-OpenAgri API",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json"
+)
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and create admin user on startup."""
     # Startup: Initialize database
     await init_db()
     
@@ -54,19 +62,6 @@ async def lifespan(app: FastAPI):
                 print(f"Admin user already exists (username: {admin_user.username}, email: {admin_user.email})")
         except Exception as e:
             print(f"Error creating admin user: {e}")
-            
-    yield
-    # Shutdown:
-
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    version=settings.VERSION,
-    description="ICTU-OpenAgri API",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
-    lifespan=lifespan
-)
 
 # Configure CORS
 app.add_middleware(
