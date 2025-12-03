@@ -4,7 +4,7 @@
 import os
 import numpy as np
 from PIL import Image
-# import tensorflow as tf
+import tensorflow as tf
 from pathlib import Path
 from typing import List, Dict, Any
 import io
@@ -67,13 +67,31 @@ class DiseaseDetectionService:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(DiseaseDetectionService, cls).__new__(cls)
-            # cls._instance._load_resources()
+            cls._instance._load_resources()
         return cls._instance
 
     def _load_resources(self):
         """Load the model and class names."""
-        print("Disease detection disabled: Tensorflow not installed")
-        pass
+        try:
+            # Calculate paths relative to this file
+            current_dir = Path(__file__).parent
+            # backend/app/infrastructure/image_processing/ -> backend/ml_models/
+            base_dir = current_dir.parent.parent.parent
+            model_path = base_dir / "ml_models" / "leaf_disease_model.keras"
+            class_names_path = base_dir / "ml_models" / "class_names.txt"
+
+            print(f"Loading model from: {model_path}")
+            self._model = tf.keras.models.load_model(model_path)
+            
+            print(f"Loading class names from: {class_names_path}")
+            with open(class_names_path, "r") as f:
+                self._class_names = [line.strip() for line in f.readlines()]
+                
+        except Exception as e:
+            print(f"Error loading disease detection resources: {e}")
+            # We might want to raise this or handle it gracefully depending on requirements
+            # For now, we'll let it fail if called later if resources aren't loaded
+            pass
 
     def predict(self, image_bytes: bytes) -> Dict[str, Any]:
         """
@@ -85,7 +103,48 @@ class DiseaseDetectionService:
         Returns:
             A dictionary containing the top class name and confidence score.
         """
-        raise NotImplementedError("Disease detection is temporarily disabled due to missing tensorflow dependency.")
+        if self._model is None or self._class_names is None:
+            self._load_resources()
+            if self._model is None:
+                raise RuntimeError("Model not loaded successfully")
+
+        try:
+            # Preprocess image
+            img = Image.open(io.BytesIO(image_bytes))
+            img = img.convert('RGB')
+            img = img.resize((224, 224)) # Assuming standard input size, adjust if needed
+            
+            img_array = tf.keras.preprocessing.image.img_to_array(img)
+            img_array = tf.expand_dims(img_array, 0) # Create a batch
+
+            # Predict
+            predictions = self._model.predict(img_array)
+            score = predictions[0]  # Model already has softmax activation
+
+            # Get top prediction
+            predicted_index = np.argmax(score)
+            class_name = self._class_names[predicted_index]
+            confidence = float(score[predicted_index])
+            
+            vietnamese_name = self._vietnamese_names.get(class_name, class_name)
+            disease_info = DISEASE_INFO.get(class_name, {})
+            
+            result = {
+                "vietnamese_name": vietnamese_name,
+                "class": class_name,
+                "confidence": confidence,
+                "description": disease_info.get("description", ""),
+                "symptoms": disease_info.get("symptoms", []),
+                "treatment": disease_info.get("treatment", []),
+                "prevention": disease_info.get("prevention", []),
+                "severity": disease_info.get("severity", "")
+            }
+            
+            return result
+
+        except Exception as e:
+            print(f"Error during prediction: {e}")
+            raise e
 
 # Global instance
 disease_detection_service = DiseaseDetectionService()
