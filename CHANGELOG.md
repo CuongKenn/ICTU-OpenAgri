@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Admin Panel**:
+  - Implemented comprehensive Admin Dashboard with crop distribution charts and interactive farm map.
+  - Added "Farms" (Vùng Trồng) tab with list view and "View Details" navigation.
+  - Enhanced Farm Map with satellite view, fullscreen mode, and polygon boundaries.
+  - Added owner information to farm markers and details.
+  - Implemented User Management UI.
+  - Added Planting Area management.
+  - Redesigned layout with bottom navigation bar.
+- **Backend**:
+  - Added automatic Admin Account creation on startup (configurable via env vars).
+  - Implemented historical satellite data storage (SatelliteDataModel) and retrieval.
+  - Added endpoints for crop distribution statistics and farm locations.
+  - Added `farm_id` support to NDVI analysis for farm-specific monitoring.
+  - Added `check_db` script for database diagnostics.
+- **Frontend**:
+  - Added `SplashView` for auto-login and persistent session management.
+  - Integrated `farm_id` into satellite data requests.
+  - Added license headers to all source files.
+
+### Fixed
+
+- **Backend**:
+  - Fixed Disease Detection API: corrected JSON key mismatch (`class_name` vs `vietnamese_name`) and image preprocessing.
+  - Fixed 500 error in farm locations endpoint (serialization issue).
+  - Fixed Pydantic validation errors in admin endpoints.
+- **Frontend**:
+  - Updated `DiseasePredictionDTO` to handle flexible JSON keys from backend.
+
+### Changed
+
+- **Backend**:
+  - Refactored Admin User creation to occur during application lifespan events.
+  - Updated JWT security implementation.
+  - Refactored image processing utilities.
+- **Documentation**:
+  - Updated README with bug tracker links.
+  - Added license headers to source code.
+
 ## [0.2.0] - 2025-11-28
 
 ### Added
