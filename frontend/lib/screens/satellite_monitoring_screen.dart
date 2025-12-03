@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 
 import '../models/crop_field.dart';
 import '../viewmodels/satellite_monitoring_viewmodel.dart';
+import '../viewmodels/pest_forecast_viewmodel.dart';
+import '../widgets/pest_risk_card.dart';
 
 class SatelliteMonitoringScreen extends StatefulWidget {
   final String? initialFieldId;
@@ -22,14 +24,38 @@ class SatelliteMonitoringScreen extends StatefulWidget {
 class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   final MapController _mapController = MapController();
 
+  VoidCallback? _fieldListener;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<SatelliteMonitoringViewModel>()
-          .initData(initialFieldId: widget.initialFieldId);
+      final satelliteVM = context.read<SatelliteMonitoringViewModel>();
+      satelliteVM.initData(initialFieldId: widget.initialFieldId);
+
+      _fieldListener = () {
+        if (satelliteVM.selectedField != null) {
+          context.read<PestForecastViewModel>().fetchPestRiskForecast(
+                latitude: satelliteVM.selectedField!.center.latitude,
+                longitude: satelliteVM.selectedField!.center.longitude,
+              );
+        }
+      };
+      satelliteVM.addListener(_fieldListener!);
+      
+      // Trigger initial fetch if field is already selected
+      if (satelliteVM.selectedField != null) {
+        _fieldListener!();
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    if (_fieldListener != null) {
+      context.read<SatelliteMonitoringViewModel>().removeListener(_fieldListener!);
+    }
+    super.dispose();
   }
 
   @override
@@ -293,6 +319,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildSatelliteDataCard(viewModel),
+                  const SizedBox(height: 16),
+                  _buildPestRiskSection(),
                   const SizedBox(height: 16),
                   _buildChartCard(viewModel),
                   const SizedBox(height: 24),
@@ -629,6 +657,10 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
             child: ListView(
               padding: const EdgeInsets.all(24),
               children: [
+                // 0. Pest Risk Forecast (New)
+                _buildPestRiskSection(),
+                const SizedBox(height: 24),
+
                 // 1. Field Selection
                 const Text(
                   'Khu vực giám sát',
@@ -1440,4 +1472,47 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
         return const Color(0xFF0BDA50);
     }
   }
+
+  Widget _buildPestRiskSection() {
+    return Consumer<PestForecastViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoading) {
+          return const Center(child: LinearProgressIndicator());
+        }
+        
+        final forecast = viewModel.forecast;
+        if (forecast == null || forecast.warnings.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        // Only show the highest risk warning or a summary
+        final highRisks = forecast.warnings.where((w) => w.riskLevel == 'high').toList();
+        final mediumRisks = forecast.warnings.where((w) => w.riskLevel == 'medium').toList();
+        
+        if (highRisks.isEmpty && mediumRisks.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Cảnh báo Sâu bệnh',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.red,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...highRisks.map((w) => PestRiskCard(warning: w)),
+            ...mediumRisks.map((w) => PestRiskCard(warning: w)),
+          ],
+        );
+      },
+    );
+  }
 }
+
+
