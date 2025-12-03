@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../models/admin_user.dart';
 import '../models/api_models.dart';
 import '../services/auth_service.dart';
@@ -36,113 +36,126 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     super.dispose();
   }
 
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isDesktop = width > 1024;
     final isTablet = width > 768;
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF5F8F6),
-        appBar: AppBar(
-          title: const Text(
-            'Quản Trị Hệ Thống',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          bottom: const TabBar(
-            labelColor: Color(0xFF0BDA50),
-            unselectedLabelColor: Color(0xFF608a6e),
-            indicatorColor: Color(0xFF0BDA50),
-            tabs: [
-              Tab(text: 'Người Dùng'),
-              Tab(text: 'Vùng Trồng'),
+    final List<Widget> screens = [
+      // Users Tab
+      RefreshIndicator(
+        onRefresh: () => context.read<AdminViewModel>().refresh(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.all(isDesktop ? 32 : 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Statistics Cards
+              _buildStatsSection(isDesktop, isTablet),
+              const SizedBox(height: 24),
+
+              // Search Bar
+              _buildSearchBar(),
+              const SizedBox(height: 24),
+
+              // Users Table
+              _buildUsersTable(isDesktop, isTablet),
+              const SizedBox(height: 24),
+
+              // Pagination
+              _buildPagination(),
             ],
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () {
-                context.read<AdminViewModel>().refresh();
-              },
-              tooltip: 'Làm mới',
-            ),
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () async {
-                // Show confirmation dialog
-                final shouldLogout = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Đăng xuất'),
-                    content: const Text('Bạn có chắc chắn muốn đăng xuất?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text('Hủy'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFEF4444),
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text('Đăng xuất'),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (shouldLogout == true && context.mounted) {
-                  // Import AuthService at the top if not already imported
-                  await AuthService().logout();
-                  if (context.mounted) {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  }
-                }
-              },
-              tooltip: 'Đăng xuất',
-            ),
-            const SizedBox(width: 8),
-          ],
         ),
-        body: TabBarView(
-          children: [
-            // Users Tab
-            RefreshIndicator(
-              onRefresh: () => context.read<AdminViewModel>().refresh(),
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.all(isDesktop ? 32 : 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Statistics Cards
-                    _buildStatsSection(isDesktop, isTablet),
-                    const SizedBox(height: 24),
+      ),
 
-                    // Search Bar
-                    _buildSearchBar(),
-                    const SizedBox(height: 24),
+      // Farms Tab
+      _buildFarmsTab(isDesktop, isTablet),
+    ];
 
-                    // Users Table
-                    _buildUsersTable(isDesktop, isTablet),
-                    const SizedBox(height: 24),
-
-                    // Pagination
-                    _buildPagination(),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F8F6),
+      appBar: AppBar(
+        title: const Text(
+          'Quản Trị Hệ Thống',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              context.read<AdminViewModel>().refresh();
+            },
+            tooltip: 'Làm mới',
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              // Show confirmation dialog
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Đăng xuất'),
+                  content: const Text('Bạn có chắc chắn muốn đăng xuất?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Hủy'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFEF4444),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Đăng xuất'),
+                    ),
                   ],
                 ),
-              ),
-            ),
-            
-            // Farms Tab
-            _buildFarmsTab(isDesktop, isTablet),
-          ],
-        ),
+              );
+
+              if (shouldLogout == true && context.mounted) {
+                // Import AuthService at the top if not already imported
+                await AuthService().logout();
+                if (context.mounted) {
+                  Navigator.pushReplacementNamed(context, '/login');
+                }
+              }
+            },
+            tooltip: 'Đăng xuất',
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _currentIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.people_outline),
+            selectedIcon: Icon(Icons.people),
+            label: 'Người Dùng',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.landscape_outlined),
+            selectedIcon: Icon(Icons.landscape),
+            label: 'Vùng Trồng',
+          ),
+        ],
       ),
     );
   }
@@ -258,7 +271,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           const SizedBox(width: 8),
           ElevatedButton(
             onPressed: () {
-              context.read<AdminViewModel>().searchUsers(_searchController.text);
+              context
+                  .read<AdminViewModel>()
+                  .searchUsers(_searchController.text);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0BDA50),
@@ -303,7 +318,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             ),
             child: Column(
               children: [
-                const Icon(Icons.error_outline, size: 48, color: Color(0xFFEF4444)),
+                const Icon(Icons.error_outline,
+                    size: 48, color: Color(0xFFEF4444)),
                 const SizedBox(height: 16),
                 Text(
                   viewModel.errorMessage!,
@@ -331,7 +347,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             child: const Center(
               child: Column(
                 children: [
-                  Icon(Icons.people_outline, size: 64, color: Color(0xFF9ca3af)),
+                  Icon(Icons.people_outline,
+                      size: 64, color: Color(0xFF9ca3af)),
                   SizedBox(height: 16),
                   Text(
                     'Không tìm thấy người dùng',
@@ -397,7 +414,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                   flex: 1,
                   child: _buildHeaderCell('Ngày tạo'),
                 ),
-                const SizedBox(width: 120, child: Center(child: Text('Hành động'))),
+                const SizedBox(
+                    width: 120, child: Center(child: Text('Hành động'))),
               ],
             ),
           ),
@@ -449,7 +467,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 if (user.isSuperuser) ...[
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
                       color: const Color(0xFF0BDA50).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
@@ -494,14 +513,17 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 IconButton(
                   icon: Icon(
                     user.isActive ? Icons.block : Icons.check_circle,
-                    color: user.isActive ? const Color(0xFFEF4444) : const Color(0xFF0BDA50),
+                    color: user.isActive
+                        ? const Color(0xFFEF4444)
+                        : const Color(0xFF0BDA50),
                     size: 20,
                   ),
                   onPressed: () => _showStatusDialog(user),
                   tooltip: user.isActive ? 'Vô hiệu hóa' : 'Kích hoạt',
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, color: Color(0xFFEF4444), size: 20),
+                  icon: const Icon(Icons.delete,
+                      color: Color(0xFFEF4444), size: 20),
                   onPressed: () => _showDeleteDialog(user),
                   tooltip: 'Xóa',
                 ),
@@ -569,7 +591,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.calendar_today, size: 14, color: Color(0xFF608a6e)),
+              const Icon(Icons.calendar_today,
+                  size: 14, color: Color(0xFF608a6e)),
               const SizedBox(width: 4),
               Text(
                 DateFormat('dd/MM/yyyy').format(user.createdAt),
@@ -578,7 +601,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               if (user.isSuperuser) ...[
                 const SizedBox(width: 12),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: const Color(0xFF0BDA50).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4),
@@ -607,7 +631,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 ),
                 label: Text(user.isActive ? 'Vô hiệu hóa' : 'Kích hoạt'),
                 style: TextButton.styleFrom(
-                  foregroundColor: user.isActive ? const Color(0xFFEF4444) : const Color(0xFF0BDA50),
+                  foregroundColor: user.isActive
+                      ? const Color(0xFFEF4444)
+                      : const Color(0xFF0BDA50),
                 ),
               ),
               const SizedBox(width: 8),
@@ -687,7 +713,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                         pageNumber = index + 1;
                       } else if (viewModel.currentPage <= 3) {
                         pageNumber = index + 1;
-                      } else if (viewModel.currentPage >= viewModel.totalPages - 2) {
+                      } else if (viewModel.currentPage >=
+                          viewModel.totalPages - 2) {
                         pageNumber = viewModel.totalPages - 4 + index;
                       } else {
                         pageNumber = viewModel.currentPage - 2 + index;
@@ -759,8 +786,10 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
-              final success = await context.read<AdminViewModel>().deleteUser(user.id);
-              if (mounted) {
+              final success =
+                  await context.read<AdminViewModel>().deleteUser(user.id);
+              if (!context.mounted) return;
+              if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
@@ -768,7 +797,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                           ? 'Đã xóa người dùng thành công'
                           : 'Không thể xóa người dùng',
                     ),
-                    backgroundColor: success ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+                    backgroundColor: success
+                        ? const Color(0xFF10B981)
+                        : const Color(0xFFEF4444),
                   ),
                 );
               }
@@ -789,7 +820,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(newStatus ? 'Kích hoạt người dùng' : 'Vô hiệu hóa người dùng'),
+        title:
+            Text(newStatus ? 'Kích hoạt người dùng' : 'Vô hiệu hóa người dùng'),
         content: Text(
           newStatus
               ? 'Bạn có muốn kích hoạt người dùng "${user.username}"?'
@@ -803,11 +835,13 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
-              final success = await context.read<AdminViewModel>().updateUserStatus(
-                    user.id,
-                    newStatus,
-                  );
-              if (mounted) {
+              final success =
+                  await context.read<AdminViewModel>().updateUserStatus(
+                        user.id,
+                        newStatus,
+                      );
+              if (!context.mounted) return;
+              if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
@@ -815,7 +849,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                           ? 'Đã cập nhật trạng thái thành công'
                           : 'Không thể cập nhật trạng thái',
                     ),
-                    backgroundColor: success ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+                    backgroundColor: success
+                        ? const Color(0xFF10B981)
+                        : const Color(0xFFEF4444),
                   ),
                 );
               }
@@ -867,7 +903,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           onRefresh: () => viewModel.loadFarms(refresh: true),
           child: ListView.builder(
             padding: EdgeInsets.all(isDesktop ? 32 : 16),
-            itemCount: viewModel.farms.length + (viewModel.hasMoreFarms ? 1 : 0),
+            itemCount:
+                viewModel.farms.length + (viewModel.hasMoreFarms ? 1 : 0),
             itemBuilder: (context, index) {
               if (index == viewModel.farms.length) {
                 return Padding(
@@ -918,7 +955,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0BDA50).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -948,9 +986,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             children: [
               const Icon(Icons.person, size: 16, color: Color(0xFF608a6e)),
               const SizedBox(width: 8),
-              Text(
+              const Text(
                 'Chủ sở hữu: ',
-                style: const TextStyle(color: Color(0xFF608a6e)),
+                style: TextStyle(color: Color(0xFF608a6e)),
               ),
               Text(
                 farm.userFullName ?? farm.username,
@@ -968,9 +1006,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             children: [
               const Icon(Icons.straighten, size: 16, color: Color(0xFF608a6e)),
               const SizedBox(width: 8),
-              Text(
+              const Text(
                 'Diện tích: ',
-                style: const TextStyle(color: Color(0xFF608a6e)),
+                style: TextStyle(color: Color(0xFF608a6e)),
               ),
               Text(
                 farm.areaSize != null ? '${farm.areaSize} m²' : 'Chưa xác định',
