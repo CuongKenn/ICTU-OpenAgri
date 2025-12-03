@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/disease_scan_viewmodel.dart';
+import '../views/tabs/pest_forecast_tab.dart';
 
 class DiseaseScanScreen extends StatefulWidget {
   const DiseaseScanScreen({super.key});
@@ -36,47 +37,66 @@ class _DiseaseScanScreenState extends State<DiseaseScanScreen>
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF6F8F6),
+        appBar: AppBar(
+          title: const Text('Sức khỏe cây trồng'),
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          bottom: const TabBar(
+            labelColor: Color(0xFF0BDA50),
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: Color(0xFF0BDA50),
+            tabs: [
+              Tab(text: 'Chẩn đoán bệnh'),
+              Tab(text: 'Dự báo rủi ro'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _buildScanTab(),
+            const PestForecastTab(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScanTab() {
     return Consumer<DiseaseScanViewModel>(
       builder: (context, viewModel, child) {
-        return Scaffold(
-          backgroundColor: const Color(0xFFF6F8F6),
-          appBar: AppBar(
-            title: const Text('Chẩn đoán bệnh'),
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-          ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        _buildUploadSection(viewModel),
-                        if (viewModel.selectedImage != null) ...[
-                          const SizedBox(height: 24),
-                          _buildImagePreview(viewModel),
-                        ],
-                        if (viewModel.isAnalyzing) ...[
-                          const SizedBox(height: 32),
-                          _buildAnalysisSection(viewModel),
-                        ],
-                        if (viewModel.hasResult &&
-                            viewModel.analysisResult != null) ...[
-                          const SizedBox(height: 32),
-                          _buildResultSection(viewModel),
-                        ],
-                        const SizedBox(height: 40),
-                      ],
-                    ),
-                  ),
-                ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    _buildUploadSection(viewModel),
+                    if (viewModel.selectedImage != null) ...[
+                      const SizedBox(height: 24),
+                      _buildImagePreview(viewModel),
+                    ],
+                    if (viewModel.isAnalyzing) ...[
+                      const SizedBox(height: 32),
+                      _buildAnalysisSection(viewModel),
+                    ],
+                    if (viewModel.hasResult &&
+                        viewModel.analysisResult != null) ...[
+                      const SizedBox(height: 32),
+                      _buildResultSection(viewModel),
+                    ],
+                    const SizedBox(height: 40),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         );
       },
