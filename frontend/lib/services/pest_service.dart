@@ -19,6 +19,7 @@ class PestService {
   }) async {
     try {
       final token = await _authService.getToken();
+      print('🌐 Calling /pest/forecast with params: lat=$latitude, lon=$longitude, years=$yearsBack');
       final response = await _apiService.client.get(
         '/pest/forecast',
         queryParameters: {
@@ -33,8 +34,13 @@ class PestService {
         ),
       );
 
+      print('📥 Response status: ${response.statusCode}');
+      print('📦 Response data keys: ${response.data?.keys?.toList()}');
+      print('📊 Pest summary: ${response.data?['pest_summary']?.keys?.toList()}');
+      
       return PestRiskForecastResponseDTO.fromJson(response.data);
     } catch (e) {
+      print('❌ PestService error: $e');
       throw Exception('Failed to get pest forecast: $e');
     }
   }
