@@ -487,7 +487,7 @@ class _PestForecastTabState extends State<PestForecastTab> {
       color = const Color(0xFF059669);
       bgColor = const Color(0xFFECFDF5);
       title = 'Rủi ro Thấp';
-      message = 'Không phát hiện lịch sử dịch bệnh đáng kể trong 5 năm qua.';
+      message = 'Không phát hiện lịch sử dịch bệnh đáng kể trong $_selectedYearsBack năm qua.';
       icon = Icons.check_circle_rounded;
     }
 
@@ -565,125 +565,270 @@ class _PestForecastTabState extends State<PestForecastTab> {
   }
 
   Widget _buildHistoricalChartCard(Map<String, PestSummaryDTO> pestSummary) {
-    if (pestSummary.isEmpty) {
-      return Container(
-        height: 150,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Center(
-          child: Text(
-            'Chưa có dữ liệu lịch sử',
-            style: TextStyle(color: Colors.grey.shade500),
-          ),
-        ),
-      );
-    }
-
-    final Map<int, int> yearlyTotals = {};
-    for (var pest in pestSummary.values) {
-      pest.yearlyOccurrences.forEach((yearStr, count) {
-        final year = int.tryParse(yearStr) ?? 0;
-        if (year > 0) {
-          yearlyTotals[year] = (yearlyTotals[year] ?? 0) + count;
-        }
-      });
-    }
-
-    if (yearlyTotals.isEmpty) {
-      return Container(
-        height: 150,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Center(
-          child: Text(
-            'Chưa có dữ liệu lịch sử',
-            style: TextStyle(color: Colors.grey.shade500),
-          ),
-        ),
-      );
-    }
-
-    final sortedYears = yearlyTotals.keys.toList()..sort();
-    final maxY = yearlyTotals.values.reduce((a, b) => a > b ? a : b).toDouble();
-
+  if (pestSummary.isEmpty) {
     return Container(
-      height: 220,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
       ),
-      child: BarChart(
-        BarChartData(
-          alignment: BarChartAlignment.spaceAround,
-          maxY: maxY * 1.2,
-          titlesData: FlTitlesData(
-            show: true,
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (double value, TitleMeta meta) {
-                  final index = value.toInt();
-                  if (index >= 0 && index < sortedYears.length) {
-                    return Text(
-                      sortedYears[index].toString(),
-                      style: const TextStyle(fontSize: 10),
-                    );
-                  }
-                  return const Text('');
-                },
-              ),
-            ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 30,
-                getTitlesWidget: (value, meta) {
-                  if (value == 0) return const Text('');
-                  if (value % 5 == 0 || value == maxY) {
-                    return Text(
-                      value.toInt().toString(),
-                      style: const TextStyle(fontSize: 10),
-                    );
-                  }
-                  return const Text('');
-                },
-              ),
-            ),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          ),
-          gridData: FlGridData(
-            show: true,
-            drawVerticalLine: false,
-            getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.shade200,
-              strokeWidth: 1,
+      child: Column(
+        children: [
+          Icon(Icons.info_outline, size: 48, color: Colors.grey.shade400),
+          const SizedBox(height: 12),
+          Text(
+            'Chưa có dữ liệu lịch sử',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade600,
             ),
           ),
-          borderData: FlBorderData(show: false),
-          barGroups: sortedYears.asMap().entries.map((entry) {
-            return BarChartGroupData(
-              x: entry.key,
-              barRods: [
-                BarChartRodData(
-                  toY: yearlyTotals[entry.value]!.toDouble(),
-                  color: const Color(0xFF0BDA50),
-                  width: 16,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                ),
-              ],
-            );
-          }).toList(),
-        ),
+        ],
       ),
     );
   }
+
+  final Map<int, int> yearlyTotals = {};
+  for (var pest in pestSummary.values) {
+    pest.yearlyOccurrences.forEach((yearStr, count) {
+      final year = int.tryParse(yearStr) ?? 0;
+      if (year > 0) {
+        yearlyTotals[year] = (yearlyTotals[year] ?? 0) + count;
+      }
+    });
+  }
+
+  if (yearlyTotals.isEmpty) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.info_outline, size: 48, color: Colors.grey.shade400),
+          const SizedBox(height: 12),
+          Text(
+            'Chưa có dữ liệu lịch sử',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  final sortedYears = yearlyTotals.keys.toList()..sort();
+  final maxY = yearlyTotals.values.reduce((a, b) => a > b ? a : b).toDouble();
+  final totalOccurrences = yearlyTotals.values.reduce((a, b) => a + b);
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Pest List Card
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.orange.shade50,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.orange.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.bug_report, color: Colors.orange.shade700, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'Loại sâu bệnh phát hiện',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ...pestSummary.entries.map((entry) {
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF0BDA50),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        entry.key,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade900,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade600,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${entry.value.totalOccurrences} lần',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0BDA50).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Tổng số lần phát hiện:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                  Text(
+                    '$totalOccurrences lần',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0BDA50),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 16),
+      // Chart
+      Container(
+        height: 220,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Biểu đồ theo năm',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade900,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  maxY: maxY * 1.2,
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          final index = value.toInt();
+                          if (index >= 0 && index < sortedYears.length) {
+                            return Text(
+                              sortedYears[index].toString(),
+                              style: const TextStyle(fontSize: 10),
+                            );
+                          }
+                          return const Text('');
+                        },
+                      ),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        getTitlesWidget: (value, meta) {
+                          if (value == 0) return const Text('');
+                          return Text(
+                            value.toInt().toString(),
+                            style: const TextStyle(fontSize: 10),
+                          );
+                        },
+                      ),
+                    ),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  ),
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: maxY > 10 ? 5 : 1,
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      color: Colors.grey.shade200,
+                      strokeWidth: 1,
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  barGroups: sortedYears.asMap().entries.map((entry) {
+                    return BarChartGroupData(
+                      x: entry.key,
+                      barRods: [
+                        BarChartRodData(
+                          toY: yearlyTotals[entry.value]!.toDouble(),
+                          color: const Color(0xFF0BDA50),
+                          width: 16,
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
 
   Color _getFieldColor(String cropType) {
     switch (cropType) {
