@@ -60,10 +60,18 @@ class GBIFService:
         # 1 degree latitude ≈ 111 km
         radius_degrees = radius_km / 111.0
         
+        # Create bounding box around the point
+        # GBIF uses geometry in WKT format
+        min_lat = latitude - radius_degrees
+        max_lat = latitude + radius_degrees
+        min_lng = longitude - radius_degrees
+        max_lng = longitude + radius_degrees
+        
+        # Create WKT POLYGON for the bounding box
+        geometry_wkt = f"POLYGON(({min_lng} {min_lat},{max_lng} {min_lat},{max_lng} {max_lat},{min_lng} {max_lat},{min_lng} {min_lat}))"
+        
         params = {
-            "decimalLatitude": latitude,
-            "decimalLongitude": longitude,
-            "radius": radius_degrees,
+            "geometry": geometry_wkt,
             "limit": min(limit, 300),
             "offset": 0
         }
@@ -178,12 +186,26 @@ class GBIFService:
         current_year = datetime.now().year
         start_year = current_year - years_back
         
-        # Common rice pests in Vietnam (can be expanded)
+        # Common agricultural pests (expanded for better GBIF coverage)
         default_pests = pest_scientific_names or [
-            "Nilaparvata lugens",  # Rầy nâu (Brown planthopper)
-            "Sogatella furcifera",  # Rầy lưng trắng
-            "Chilo suppressalis",  # Sâu đục thân
-            "Scirpophaga incertulas",  # Sâu cuốn lá
+            # Rice pests (Asia/India/Vietnam)
+            "Nilaparvata lugens",  # Brown planthopper
+            "Sogatella furcifera",  # White-backed planthopper
+            "Chilo suppressalis",  # Striped stem borer
+            "Scirpophaga incertulas",  # Yellow stem borer
+            "Cnaphalocrocis medinalis",  # Rice leaffolder
+            "Leptocorisa oratorius",  # Rice earhead bug
+            "Dicladispa armigera",  # Rice hispa
+            
+            # Common agricultural pests (Global/USA/Europe - good GBIF coverage)
+            "Sitophilus oryzae",  # Rice weevil
+            "Tribolium castaneum",  # Red flour beetle
+            "Acyrthosiphon pisum",  # Pea aphid
+            "Myzus persicae",  # Green peach aphid
+            "Diabrotica virgifera",  # Western corn rootworm
+            "Helicoverpa armigera",  # Cotton bollworm
+            "Spodoptera frugiperda",  # Fall armyworm
+            "Agrotis ipsilon",  # Black cutworm
         ]
         
         all_occurrences = []
@@ -205,34 +227,34 @@ class GBIFService:
                 
                 logger.info(f"Found species key {species_key} for {pest_name}, searching occurrences...")
                 
-                # Search occurrences for each year in parallel
-                yearly_occurrences = {}
-                years = range(start_year, current_year + 1)
-                
-                tasks = [
-                    self.search_occurrences(
+                # Fetch ALL occurrences in ONE request to avoid rate limiting
+                try:
+                    all_data = await self.search_occurrences(
                         latitude=latitude,
                         longitude=longitude,
                         radius_km=radius_km,
                         species_key=species_key,
-                        year=year,
-                        limit=50
-                    ) for year in years
-                ]
-                
-                results = await asyncio.gather(*tasks, return_exceptions=True)
-                
-                local_occurrences = []
-                for year, result in zip(years, results):
-                    if isinstance(result, Exception):
-                        logger.error(f"Error fetching data for {pest_name} in {year}: {result}")
-                        continue
-                        
-                    count = result.get("count", 0)
-                    if count > 0:
-                        logger.info(f"Found {count} occurrences for {pest_name} in year {year}")
-                        yearly_occurrences[year] = count
-                        local_occurrences.extend(result.get("results", [])[:10])
+                        year=None,  # Don't filter by year
+                        limit=300
+                    )
+                    
+                    # Group by year manually
+                    yearly_occurrences = {}
+                    local_occurrences = []
+                    
+                    for occurrence in all_data.get("results", []):
+                        year = occurrence.get("year")
+                        if year and start_year <= year <= current_year:
+                            yearly_occurrences[year] = yearly_occurrences.get(year, 0) + 1
+                            if len(local_occurrences) < 10:
+                                local_occurrences.append(occurrence)
+                    
+                    if yearly_occurrences:
+                        logger.info(f"Found {sum(yearly_occurrences.values())} total occurrences for {pest_name}")
+                except Exception as e:
+                    logger.error(f"Error fetching occurrences for {pest_name}: {e}")
+                    yearly_occurrences = {}
+                    local_occurrences = []
                 
                 if yearly_occurrences:
                     return {
