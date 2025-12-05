@@ -14,7 +14,7 @@ from app.infrastructure.config.settings import get_settings
 settings = get_settings()
 
 class CalculateSoilMoistureUseCase:
-    def execute(self, req: SoilMoistureRequest) -> SoilMoistureResponse:
+    async def execute(self, req: SoilMoistureRequest) -> SoilMoistureResponse:
         # validate bbox
         if len(req.bbox) != 4:
             raise HTTPException(status_code=400, detail='bbox must be [minx,miny,maxx,maxy]')
@@ -29,7 +29,7 @@ class CalculateSoilMoistureUseCase:
             date_end = (date_obj + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 
             # search products (Sentinel-1)
-            api, products = search_sentinel_products(req.bbox, req.date, date_end, platformname='SENTINEL-1')
+            api, products = await search_sentinel_products(req.bbox, req.date, date_end, platformname='SENTINEL-1')
             if not products:
                 raise HTTPException(status_code=404, detail='No Sentinel-1 product found for this bbox/date')
             
@@ -39,7 +39,7 @@ class CalculateSoilMoistureUseCase:
             print(f"Selected Sentinel-1 product: {prod['title']}")
 
             # Download
-            out = download_product(api, prod, out_dir=settings.OUTPUT_DIR)
+            out = await download_product(api, prod, out_dir=settings.OUTPUT_DIR)
             
             # find bands (VV polarization)
             vv_path = find_s1_band_path(out, polarization='vv')
