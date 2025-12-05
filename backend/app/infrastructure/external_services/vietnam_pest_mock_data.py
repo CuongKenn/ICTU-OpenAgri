@@ -171,7 +171,8 @@ def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back
         
         if yearly_data:
             pest_summary[pest_name] = {
-                "species_key": None,  # Mock data doesn't have real GBIF key
+                "pest_name": pest_name,
+                "species_key": None,  
                 "vietnamese_name": pest_info["common_name_vi"],
                 "yearly_occurrences": yearly_data,
                 "total_occurrences": sum(yearly_data.values()),
