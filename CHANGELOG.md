@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Backend**:
+  - Fixed `500 Internal Server Error` in "Create Farm" API by manually serializing coordinate objects to JSON, resolving Pydantic serialization issues.
+- **Frontend**:
+  - Fixed Admin redirection issue where reloading the page would redirect admins to the user dashboard.
+  - Robustly parsed `is_superuser` and `is_active` fields in `User` model to handle various data types (boolean, int, string).
+  - Formatted "Area" and "Soil Moisture" values to 2 decimal places in Dashboard and Satellite Monitoring screens.
+  - Fixed linter errors (deprecated `withOpacity`, `prefer_final_locals`) in `PestForecastTab`.
+
 ## [0.2.2] - 2025-12-05
 
 ### Added
