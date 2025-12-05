@@ -10,7 +10,7 @@ from app.presentation.deps import get_current_user
 router = APIRouter()
 
 @router.post("/calculate", response_model=SoilMoistureResponse)
-def calculate_soil_moisture(
+async def calculate_soil_moisture(
     request: SoilMoistureRequest,
     use_case: CalculateSoilMoistureUseCase = Depends(CalculateSoilMoistureUseCase),
     current_user: User = Depends(get_current_user)
@@ -20,4 +20,4 @@ def calculate_soil_moisture(
     Downloads Sentinel-1 GRD data and processes VV band.
     Requires authentication.
     """
-    return use_case.execute(request)
+    return await use_case.execute(request)
