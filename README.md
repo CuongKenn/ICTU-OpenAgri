@@ -175,11 +175,8 @@ flutter doctor
 flutter pub get
 ```
 
-**Bước 4: Cấu hình địa chỉ API**
-Nếu bạn chạy trên máy ảo Android (Emulator), địa chỉ `localhost` của máy tính là `10.0.2.2`.
-Nếu chạy trên thiết bị thật, hãy thay đổi IP trong file `lib/config/api_config.dart` thành IP LAN của máy tính (ví dụ: `192.168.1.x`).
 
-**Bước 5: Chạy ứng dụng**
+**Bước 4: Chạy ứng dụng**
 Kết nối điện thoại hoặc bật máy ảo, sau đó chạy:
 ```bash
 flutter run
