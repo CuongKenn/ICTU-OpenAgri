@@ -25,7 +25,7 @@ class CalculateNDVIUseCase:
         
         try:
             # search products
-            api, products = search_sentinel_products(req.bbox, req.start_date, req.end_date)
+            api, products = await search_sentinel_products(req.bbox, req.start_date, req.end_date)
             if not products:
                 raise HTTPException(status_code=404, detail='No Sentinel-2 product found for this bbox/date range')
             
@@ -47,7 +47,7 @@ class CalculateNDVIUseCase:
             print(f"Selected product: {best_product_info['title']} with cloud cover {best_product_info['cloud_cover']}%")
 
             # Download
-            out = download_product(api, best_product_info, out_dir=settings.OUTPUT_DIR)
+            out = await download_product(api, best_product_info, out_dir=settings.OUTPUT_DIR)
             
             # find bands
             red_path, nir_path = find_band_paths(out)
