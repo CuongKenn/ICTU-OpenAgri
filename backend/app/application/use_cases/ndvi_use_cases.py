@@ -77,7 +77,7 @@ class CalculateNDVIUseCase:
                         satellite_platform='SENTINEL-2',
                         mean_value=mean_val,
                         min_value=min_val,
-                        max_value=max_value,
+                        max_value=max_val,
                         cloud_cover=best_product_info['cloud_cover']
                     )
                     await repo.save_data(new_record)
