@@ -21,12 +21,19 @@ settings = get_settings()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 MOCK_DATA_PATH = os.path.join(BASE_DIR, "data", "mock_commodity_prices.json")
 
+# Cache dữ liệu để tránh đọc file nhiều lần
+_MOCK_DATA_CACHE = None
 
 def load_mock_data() -> Dict[str, Any]:
-    """Load dữ liệu từ file JSON."""
+    """Load dữ liệu từ file JSON (có caching)."""
+    global _MOCK_DATA_CACHE
+    if _MOCK_DATA_CACHE is not None:
+        return _MOCK_DATA_CACHE
+
     try:
         with open(MOCK_DATA_PATH, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            _MOCK_DATA_CACHE = json.load(f)
+            return _MOCK_DATA_CACHE
     except FileNotFoundError:
         raise RuntimeError(f"Mock data file not found at {MOCK_DATA_PATH}")
     except json.JSONDecodeError as e:
