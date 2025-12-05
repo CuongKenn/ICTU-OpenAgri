@@ -22,3 +22,4 @@ matplotlib
 aiohttp==3.9.1
 tensorflow
 pillow
+apscheduler==3.10.4
