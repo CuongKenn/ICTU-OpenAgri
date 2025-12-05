@@ -152,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       _StatCardData(
         icon: Icons.terrain,
         label: 'Tổng diện tích',
-        value: '${viewModel.stats.totalArea}',
+        value: viewModel.stats.totalArea.toStringAsFixed(2),
         unit: 'ha',
         color: const Color(0xFF3B82F6),
       ),
@@ -437,7 +437,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   _buildWeatherDetail(
                     Icons.opacity,
                     'Ẩm đất',
-                    '${viewModel.stats.soilMoisture}%',
+                    '${viewModel.stats.soilMoisture.toStringAsFixed(2)}%',
                   ),
                 ],
               ),
@@ -554,7 +554,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${field.area} ha • NDVI: ${field.ndvi.toStringAsFixed(2)}',
+                            '${field.area.toStringAsFixed(2)} ha • NDVI: ${field.ndvi.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 12,
                               color: Color(0xFF608a6e),

@@ -25,7 +25,8 @@ class PestForecastViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      debugPrint('🐛 Fetching pest forecast for: $latitude, $longitude (${yearsBack} years)');
+      debugPrint(
+          '🐛 Fetching pest forecast for: $latitude, $longitude ($yearsBack years)');
       _forecast = await _pestService.getPestRiskForecast(
         latitude: latitude,
         longitude: longitude,
@@ -33,8 +34,10 @@ class PestForecastViewModel extends ChangeNotifier {
         pestNames: pestNames,
         yearsBack: yearsBack,
       );
-      debugPrint('✅ Forecast received: ${_forecast?.pestSummary.length} pests, ${_forecast?.warnings.length} warnings');
-      debugPrint('📊 Pest summary keys: ${_forecast?.pestSummary.keys.toList()}');
+      debugPrint(
+          '✅ Forecast received: ${_forecast?.pestSummary.length} pests, ${_forecast?.warnings.length} warnings');
+      debugPrint(
+          '📊 Pest summary keys: ${_forecast?.pestSummary.keys.toList()}');
     } catch (e) {
       debugPrint('❌ Error fetching forecast: $e');
       _errorMessage = e.toString();

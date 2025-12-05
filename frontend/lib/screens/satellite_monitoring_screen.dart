@@ -8,8 +8,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../models/crop_field.dart';
-import '../viewmodels/satellite_monitoring_viewmodel.dart';
 import '../viewmodels/pest_forecast_viewmodel.dart';
+import '../viewmodels/satellite_monitoring_viewmodel.dart';
 import '../widgets/pest_risk_card.dart';
 
 class SatelliteMonitoringScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
         }
       };
       satelliteVM.addListener(_fieldListener!);
-      
+
       // Trigger initial fetch if field is already selected
       if (satelliteVM.selectedField != null) {
         _fieldListener!();
@@ -53,7 +53,9 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   @override
   void dispose() {
     if (_fieldListener != null) {
-      context.read<SatelliteMonitoringViewModel>().removeListener(_fieldListener!);
+      context
+          .read<SatelliteMonitoringViewModel>()
+          .removeListener(_fieldListener!);
     }
     super.dispose();
   }
@@ -737,7 +739,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '${field.area} ha • ${field.cropType}',
+                                      '${field.area.toStringAsFixed(2)} ha • ${field.cropType}',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey[500],
@@ -899,7 +901,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                       ),
                     ),
                     Text(
-                      '${viewModel.selectedField!.area} ha • ${viewModel.selectedField!.cropType}',
+                      '${viewModel.selectedField!.area.toStringAsFixed(2)} ha • ${viewModel.selectedField!.cropType}',
                       style: const TextStyle(
                         fontSize: 13,
                         color: Color(0xFF608a6e),
@@ -928,7 +930,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
           _buildDataRow(
             icon: Icons.radar_outlined,
             title: 'Sentinel-1 (Radar)',
-            value: soilMoisture.toStringAsFixed(0),
+            value: soilMoisture.toStringAsFixed(2),
             unit: '%',
             status: soilMoistureStatus,
             statusColor: viewModel.getMoistureColor(soilMoisture),
@@ -1479,16 +1481,18 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
         if (viewModel.isLoading) {
           return const Center(child: LinearProgressIndicator());
         }
-        
+
         final forecast = viewModel.forecast;
         if (forecast == null || forecast.warnings.isEmpty) {
           return const SizedBox.shrink();
         }
 
         // Only show the highest risk warning or a summary
-        final highRisks = forecast.warnings.where((w) => w.riskLevel == 'high').toList();
-        final mediumRisks = forecast.warnings.where((w) => w.riskLevel == 'medium').toList();
-        
+        final highRisks =
+            forecast.warnings.where((w) => w.riskLevel == 'high').toList();
+        final mediumRisks =
+            forecast.warnings.where((w) => w.riskLevel == 'medium').toList();
+
         if (highRisks.isEmpty && mediumRisks.isEmpty) {
           return const SizedBox.shrink();
         }
@@ -1514,5 +1518,3 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
     );
   }
 }
-
-

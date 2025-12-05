@@ -42,10 +42,10 @@ class PestRiskCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: iconColor.withOpacity(0.2)),
+        border: Border.all(color: iconColor.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: iconColor.withOpacity(0.05),
+            color: iconColor.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -87,11 +87,13 @@ class PestRiskCard extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
                                 color: cardColor,
                                 borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: iconColor.withOpacity(0.2)),
+                                border: Border.all(
+                                    color: iconColor.withValues(alpha: 0.2)),
                               ),
                               child: Text(
                                 riskLabel,
@@ -117,7 +119,8 @@ class PestRiskCard extends StatelessWidget {
                         if (warning.lastSeenYear != null)
                           Row(
                             children: [
-                              Icon(Icons.history, size: 14, color: Colors.grey.shade500),
+                              Icon(Icons.history,
+                                  size: 14, color: Colors.grey.shade500),
                               const SizedBox(width: 4),
                               Text(
                                 'Lần cuối: ${warning.lastSeenYear}',
@@ -128,7 +131,8 @@ class PestRiskCard extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 16),
-                              Icon(Icons.numbers, size: 14, color: Colors.grey.shade500),
+                              Icon(Icons.numbers,
+                                  size: 14, color: Colors.grey.shade500),
                               const SizedBox(width: 4),
                               Text(
                                 '${warning.occurrenceCount} lần',
