@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.2] - 2025-12-05
 
 ### Fixed
 
@@ -16,8 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Robustly parsed `is_superuser` and `is_active` fields in `User` model to handle various data types (boolean, int, string).
   - Formatted "Area" and "Soil Moisture" values to 2 decimal places in Dashboard and Satellite Monitoring screens.
   - Fixed linter errors (deprecated `withOpacity`, `prefer_final_locals`) in `PestForecastTab`.
-
-## [0.2.2] - 2025-12-05
 
 ### Added
 
