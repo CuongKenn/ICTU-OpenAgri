@@ -18,6 +18,80 @@ from app.infrastructure.database.models.satellite_data_model import SatelliteDat
 settings = get_settings()
 
 class CalculateNDVIUseCase:
+    async def sync_latest_data_for_farm(self, farm_id: int, bbox: list, db: AsyncSession):
+        """
+        Background task to sync latest NDVI data for a farm.
+        Syncs up to 10 most recent images (approx last 2 months).
+        """
+        today = datetime.date.today()
+        # Sentinel-2 revisits every 5 days. 10 images * 5 days = 50 days. Let's do 60 to be safe.
+        start_date = (today - datetime.timedelta(days=60)).strftime('%Y-%m-%d')
+        end_date = today.strftime('%Y-%m-%d')
+        
+        print(f"Syncing top 10 recent NDVI images for farm {farm_id} from {start_date} to {end_date}")
+        
+        try:
+            # search products
+            api, products = await search_sentinel_products(bbox, start_date, end_date)
+            if not products:
+                print(f"No products found for farm {farm_id}")
+                return
+
+            # Sort by ingestion date descending
+            sorted_products = sorted(
+                products.values(), 
+                key=lambda x: x['ingestiondate'], 
+                reverse=True
+            )
+            
+            # Take top 10
+            recent_products = sorted_products[:10]
+
+            for product_info in recent_products:
+                acquisition_date_str = product_info['ingestiondate'].split('T')[0]
+                acquisition_date = datetime.datetime.strptime(acquisition_date_str, '%Y-%m-%d').date()
+                
+                # Check if already exists
+                repo = SatelliteRepositoryImpl(db)
+                existing = await repo.get_existing_record(farm_id, 'NDVI', acquisition_date)
+                if existing:
+                    # print(f"Data for farm {farm_id} on {acquisition_date} already exists.")
+                    continue
+
+                print(f"Downloading and processing product for farm {farm_id}: {product_info['title']}")
+
+                # Download
+                out = await download_product(api, product_info, out_dir=settings.OUTPUT_DIR)
+                
+                # find bands
+                red_path, nir_path = find_band_paths(out)
+                
+                # Generate output path
+                out_tif = os.path.join(settings.OUTPUT_DIR, f'ndvi_{uuid.uuid4().hex}.tif')
+                
+                # Compute
+                out_tif, mean_val, min_val, max_val = compute_ndvi(red_path, nir_path, out_tif)
+                
+                # Save to DB
+                new_record = SatelliteDataModel(
+                    farm_id=farm_id,
+                    acquisition_date=acquisition_date,
+                    data_type='NDVI',
+                    satellite_platform='SENTINEL-2',
+                    mean_value=mean_val,
+                    min_value=min_val,
+                    max_value=max_val,
+                    cloud_cover=product_info['cloud_cover']
+                )
+                await repo.save_data(new_record)
+                print(f"Saved NDVI data for farm {farm_id} on {acquisition_date}")
+                
+                # Clean up (Optional: remove tif file if not needed for immediate display)
+                # os.remove(out_tif) 
+
+        except Exception as e:
+            print(f"Error syncing farm {farm_id}: {e}")
+
     async def execute(self, req: NDVIRequest, db: AsyncSession) -> NDVIResponse:
         # validate bbox
         if len(req.bbox) != 4:
