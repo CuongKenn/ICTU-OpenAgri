@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Backend**:
   - Fixed `500 Internal Server Error` in "Create Farm" API by manually serializing coordinate objects to JSON, resolving Pydantic serialization issues.
+  - Restored missing Vietnamese disease names (`_vietnamese_names`) in `DiseaseDetectionService` that were accidentally removed during refactoring.
+  - Fixed variable name error (`max_value` -> `max_val`) in `NDVIUseCase`.
+  - Fixed import issues in `VietnamPestService`.
 - **Frontend**:
   - Fixed Admin redirection issue where reloading the page would redirect admins to the user dashboard.
   - Robustly parsed `is_superuser` and `is_active` fields in `User` model to handle various data types (boolean, int, string).
@@ -33,13 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Refactored `NDVIUseCase`, `SoilMoistureUseCase`, and `DiseaseDetectionService` to be fully asynchronous.
   - Moved hardcoded pest mock data to `backend/data/mock_pest_data.json`.
   - Updated `DiseaseDetectionService` to run TensorFlow predictions in a thread pool to prevent blocking the event loop.
-
-### Fixed
-
-- **Backend**:
-  - Restored missing Vietnamese disease names (`_vietnamese_names`) in `DiseaseDetectionService` that were accidentally removed during refactoring.
-  - Fixed variable name error (`max_value` -> `max_val`) in `NDVIUseCase`.
-  - Fixed import issues in `VietnamPestService`.
+ 
 
 ## [0.2.1] - 2025-12-03
 
