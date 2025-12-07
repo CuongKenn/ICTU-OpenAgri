@@ -122,15 +122,18 @@ def _unzip_file(zip_path: str, extract_to: str):
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to)
 
+
+# Download retry configuration
+DOWNLOAD_MAX_RETRIES = 3
+DOWNLOAD_RETRY_DELAY = 10  # seconds
+
+
 async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=None) -> str:
-    """Download product from CDSE and unzip it."""
+    """Download product from CDSE and unzip it with retry mechanism."""
     out_dir = out_dir or settings.OUTPUT_DIR
     uuid = product_info['uuid']
     title = product_info['title']
     logger.info(f"Downloading {title} ({uuid}) ...")
-    
-    token = await get_access_token()
-    headers = {'Authorization': f'Bearer {token}'}
     
     # Download URL
     url = f"https://zipper.dataspace.copernicus.eu/odata/v1/Products({uuid})/$value"
@@ -142,14 +145,72 @@ async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=
         logger.info(f"Product already exists at {extract_path}")
         return extract_path
 
-    if not os.path.exists(local_zip):
-        logger.info(f"Downloading to {local_zip}...")
-        async with httpx.AsyncClient() as client:
-            async with client.stream('GET', url, headers=headers, timeout=None) as response:
-                response.raise_for_status()
-                with open(local_zip, 'wb') as f:
-                    async for chunk in response.aiter_bytes(chunk_size=8192):
-                        f.write(chunk)
+    # Download with retry
+    for attempt in range(1, DOWNLOAD_MAX_RETRIES + 1):
+        try:
+            # Get fresh token for each attempt
+            token = await get_access_token()
+            headers = {'Authorization': f'Bearer {token}'}
+            
+            # Check if partial download exists and get its size
+            existing_size = 0
+            if os.path.exists(local_zip):
+                existing_size = os.path.getsize(local_zip)
+                # If file seems complete (>100MB), try to extract it
+                if existing_size > 100 * 1024 * 1024:
+                    try:
+                        loop = asyncio.get_event_loop()
+                        await loop.run_in_executor(None, _unzip_file, local_zip, out_dir)
+                        if os.path.exists(extract_path):
+                            return extract_path
+                    except Exception:
+                        # Corrupt zip, delete and re-download
+                        os.remove(local_zip)
+                        existing_size = 0
+                else:
+                    # Small partial file, delete and restart
+                    os.remove(local_zip)
+                    existing_size = 0
+            
+            logger.info(f"Download attempt {attempt}/{DOWNLOAD_MAX_RETRIES} to {local_zip}...")
+            
+            # Use longer timeout for large files
+            timeout = httpx.Timeout(connect=30.0, read=300.0, write=30.0, pool=30.0)
+            
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                async with client.stream('GET', url, headers=headers) as response:
+                    response.raise_for_status()
+                    
+                    # Get expected size
+                    total_size = int(response.headers.get('content-length', 0))
+                    downloaded = 0
+                    
+                    with open(local_zip, 'wb') as f:
+                        async for chunk in response.aiter_bytes(chunk_size=65536):  # Larger chunks
+                            f.write(chunk)
+                            downloaded += len(chunk)
+                    
+                    # Verify download completed
+                    if total_size > 0 and downloaded < total_size:
+                        raise RuntimeError(f"Incomplete download: {downloaded}/{total_size} bytes")
+                    
+                    logger.info(f"Download complete: {downloaded} bytes")
+                    break  # Success, exit retry loop
+                    
+        except Exception as e:
+            logger.warning(f"Download attempt {attempt} failed: {e}")
+            # Clean up partial file
+            if os.path.exists(local_zip):
+                try:
+                    os.remove(local_zip)
+                except Exception:
+                    pass
+            
+            if attempt < DOWNLOAD_MAX_RETRIES:
+                logger.info(f"Retrying in {DOWNLOAD_RETRY_DELAY} seconds...")
+                await asyncio.sleep(DOWNLOAD_RETRY_DELAY)
+            else:
+                raise RuntimeError(f"Failed to download after {DOWNLOAD_MAX_RETRIES} attempts: {e}")
     
     # Run unzip in a thread pool to avoid blocking the event loop
     loop = asyncio.get_event_loop()
