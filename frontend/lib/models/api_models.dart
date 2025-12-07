@@ -33,6 +33,36 @@ class FarmAreaCreateDTO {
   }
 }
 
+class FarmAreaUpdateDTO {
+  final String? name;
+  final String? description;
+  final List<LatLng>? coordinates;
+  final double? areaSize;
+  final String? cropType;
+
+  FarmAreaUpdateDTO({
+    this.name,
+    this.description,
+    this.coordinates,
+    this.areaSize,
+    this.cropType,
+  });
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    if (name != null) data['name'] = name;
+    if (description != null) data['description'] = description;
+    if (coordinates != null) {
+      data['coordinates'] = coordinates!
+          .map((c) => {'lat': c.latitude, 'lng': c.longitude})
+          .toList();
+    }
+    if (areaSize != null) data['area_size'] = areaSize;
+    if (cropType != null) data['crop_type'] = cropType;
+    return data;
+  }
+}
+
 class FarmAreaResponseDTO {
   final int id;
   final int userId;
