@@ -23,23 +23,38 @@ class CalculateSoilMoistureUseCase:
             raise HTTPException(status_code=400, detail='bbox must be [minx,miny,maxx,maxy]')
         
         try:
-            # Calculate end date (next day) for single date request
+            # Calculate date range for Sentinel-1 search
+            # Sentinel-1 revisit time is 6-12 days, so we search ±7 days from requested date
             try:
                 date_obj = datetime.datetime.fromisoformat(req.date)
             except ValueError:
                 date_obj = datetime.datetime.strptime(req.date, '%Y-%m-%d')
             
-            date_end = (date_obj + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+            date_start = (date_obj - datetime.timedelta(days=7)).strftime('%Y-%m-%d')
+            date_end = (date_obj + datetime.timedelta(days=7)).strftime('%Y-%m-%d')
 
             # search products (Sentinel-1)
-            api, products = await search_sentinel_products(req.bbox, req.date, date_end, platformname='SENTINEL-1')
+            api, products = await search_sentinel_products(req.bbox, date_start, date_end, platformname='SENTINEL-1')
             if not products:
-                raise HTTPException(status_code=404, detail='No Sentinel-1 product found for this bbox/date')
+                raise HTTPException(status_code=404, detail='No Sentinel-1 product found for this bbox/date range (±7 days)')
             
-            # pick first product (Sentinel-1 is all-weather, cloud cover doesn't apply)
-            first_uuid, prod = next(iter(products.items()))
+            # pick product closest to requested date
+            target_date = date_obj.date()
+            best_product = None
+            min_diff = None
             
-            logger.info(f"Selected Sentinel-1 product: {prod['title']}")
+            for uuid_val, info in products.items():
+                prod_date_str = info['ingestiondate'].split('T')[0]
+                prod_date = datetime.datetime.strptime(prod_date_str, '%Y-%m-%d').date()
+                diff = abs((prod_date - target_date).days)
+                
+                if min_diff is None or diff < min_diff:
+                    min_diff = diff
+                    best_product = (uuid_val, info)
+            
+            first_uuid, prod = best_product
+            
+            logger.info(f"Selected Sentinel-1 product: {prod['title']} (closest to {req.date}, diff: {min_diff} days)")
 
             # Download
             out = await download_product(api, prod, out_dir=settings.OUTPUT_DIR)
