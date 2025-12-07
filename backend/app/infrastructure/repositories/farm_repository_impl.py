@@ -132,3 +132,54 @@ class SQLAlchemyFarmRepository(FarmRepository):
             }
             for row in result.all()
         ]
+
+    async def update(self, farm_id: int, user_id: int, name: Optional[str] = None,
+                     description: Optional[str] = None, coordinates: Optional[list] = None,
+                     area_size: Optional[float] = None, crop_type: Optional[str] = None) -> Optional[FarmArea]:
+        """Update a farm area. Only the owner can update."""
+        result = await self.db.execute(
+            select(FarmModel).where(FarmModel.id == farm_id, FarmModel.user_id == user_id)
+        )
+        farm = result.scalar_one_or_none()
+        
+        if not farm:
+            return None
+        
+        # Update only provided fields
+        if name is not None:
+            farm.name = name
+        if description is not None:
+            farm.description = description
+        if coordinates is not None:
+            farm.coordinates = [c.model_dump() if hasattr(c, 'model_dump') else c for c in coordinates]
+        if area_size is not None:
+            farm.area_size = area_size
+        if crop_type is not None:
+            farm.crop_type = crop_type
+        
+        await self.db.commit()
+        await self.db.refresh(farm)
+        
+        return FarmArea(
+            id=farm.id,
+            name=farm.name,
+            description=farm.description,
+            coordinates=[Coordinate(**c) for c in farm.coordinates],
+            area_size=farm.area_size,
+            crop_type=farm.crop_type,
+            user_id=farm.user_id
+        )
+
+    async def delete(self, farm_id: int, user_id: int) -> bool:
+        """Delete a farm area. Only the owner can delete."""
+        result = await self.db.execute(
+            select(FarmModel).where(FarmModel.id == farm_id, FarmModel.user_id == user_id)
+        )
+        farm = result.scalar_one_or_none()
+        
+        if not farm:
+            return False
+        
+        await self.db.delete(farm)
+        await self.db.commit()
+        return True
