@@ -37,7 +37,7 @@ class PestService {
       );
 
       debugPrint('📥 Response status: ${response.statusCode}');
-      debugPrint('📦 Response data keys: ${response.data?.keys?.toList()}');
+      // debugPrint('📦 Response data keys: ${response.data?.keys?.toList()}');
       debugPrint(
           '📊 Pest summary: ${response.data?['pest_summary']?.keys?.toList()}');
 
