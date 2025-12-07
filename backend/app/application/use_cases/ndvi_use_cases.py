@@ -1,12 +1,15 @@
 # Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
 # Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+import logging
 import random
 import datetime
 import os
 import shutil
 import uuid
 from fastapi import HTTPException
+
+logger = logging.getLogger(__name__)
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.application.dto.ndvi_dto import NDVIRequest, NDVIResponse
 from app.infrastructure.external_services.sentinel_client import search_sentinel_products, download_product
@@ -29,13 +32,13 @@ class CalculateNDVIUseCase:
         start_date = (today - datetime.timedelta(days=60)).strftime('%Y-%m-%d')
         end_date = today.strftime('%Y-%m-%d')
         
-        print(f"Syncing top 10 recent NDVI images for farm {farm_id} from {start_date} to {end_date}")
+        logger.info(f"Syncing top 10 recent NDVI images for farm {farm_id} from {start_date} to {end_date}")
         
         try:
             # search products
             api, products = await search_sentinel_products(bbox, start_date, end_date)
             if not products:
-                print(f"No products found for farm {farm_id}")
+                logger.info(f"No products found for farm {farm_id}")
                 return
 
             # Sort by ingestion date descending
@@ -59,7 +62,7 @@ class CalculateNDVIUseCase:
                     # print(f"Data for farm {farm_id} on {acquisition_date} already exists.")
                     continue
 
-                print(f"Downloading and processing product for farm {farm_id}: {product_info['title']}")
+                logger.info(f"Downloading and processing product for farm {farm_id}: {product_info['title']}")
 
                 # Download
                 out = await download_product(api, product_info, out_dir=settings.OUTPUT_DIR)
@@ -85,7 +88,7 @@ class CalculateNDVIUseCase:
                     cloud_cover=product_info['cloud_cover']
                 )
                 await repo.save_data(new_record)
-                print(f"Saved NDVI data for farm {farm_id} on {acquisition_date}")
+                logger.info(f"Saved NDVI data for farm {farm_id} on {acquisition_date}")
                 
                 # Clean up downloaded files to save space
                 try:
@@ -105,10 +108,10 @@ class CalculateNDVIUseCase:
                         os.remove(out_tif)
                         # print(f"Deleted temp result: {out_tif}")
                 except Exception as cleanup_error:
-                    print(f"Error cleaning up files for farm {farm_id}: {cleanup_error}") 
+                    logger.warning(f"Error cleaning up files for farm {farm_id}: {cleanup_error}") 
 
         except Exception as e:
-            print(f"Error syncing farm {farm_id}: {e}")
+            logger.error(f"Error syncing farm {farm_id}: {e}")
 
     async def execute(self, req: NDVIRequest, db: AsyncSession) -> NDVIResponse:
         # validate bbox
@@ -136,7 +139,7 @@ class CalculateNDVIUseCase:
                  # Fallback to first if something goes wrong
                  best_product_uuid, best_product_info = next(iter(products.items()))
 
-            print(f"Selected product: {best_product_info['title']} with cloud cover {best_product_info['cloud_cover']}%")
+            logger.info(f"Selected product: {best_product_info['title']} with cloud cover {best_product_info['cloud_cover']}%")
 
             # Download
             out = await download_product(api, best_product_info, out_dir=settings.OUTPUT_DIR)
@@ -239,6 +242,5 @@ class CalculateNDVIUseCase:
             )
             
         except Exception as e:
-            # Log error here
-            print(f"Error in CalculateNDVIUseCase: {e}")
+            logger.error(f"Error in CalculateNDVIUseCase: {e}")
             raise HTTPException(status_code=500, detail=str(e))

@@ -1,8 +1,11 @@
 # Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
 # Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+import logging
 import os
 import numpy as np
+
+logger = logging.getLogger(__name__)
 from PIL import Image
 import tensorflow as tf
 from pathlib import Path
@@ -83,15 +86,15 @@ class DiseaseDetectionService:
             model_path = base_dir / "ml_models" / "leaf_disease_model.keras"
             class_names_path = base_dir / "ml_models" / "class_names.txt"
 
-            print(f"Loading model from: {model_path}")
+            logger.info(f"Loading model from: {model_path}")
             self._model = tf.keras.models.load_model(model_path)
             
-            print(f"Loading class names from: {class_names_path}")
+            logger.info(f"Loading class names from: {class_names_path}")
             with open(class_names_path, "r") as f:
                 self._class_names = [line.strip() for line in f.readlines()]
                 
         except Exception as e:
-            print(f"Error loading disease detection resources: {e}")
+            logger.error(f"Error loading disease detection resources: {e}")
             # We might want to raise this or handle it gracefully depending on requirements
             # For now, we'll let it fail if called later if resources aren't loaded
             pass
@@ -148,7 +151,7 @@ class DiseaseDetectionService:
             return result
 
         except Exception as e:
-            print(f"Error during prediction: {e}")
+            logger.error(f"Error during prediction: {e}")
             raise e
 
 # Global instance

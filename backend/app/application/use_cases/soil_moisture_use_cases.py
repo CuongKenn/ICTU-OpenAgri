@@ -1,9 +1,12 @@
 # Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
 # Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+import logging
 import datetime
 import os
 import uuid
+
+logger = logging.getLogger(__name__)
 from fastapi import HTTPException
 from app.application.dto.soil_moisture_dto import SoilMoistureRequest, SoilMoistureResponse
 from app.infrastructure.external_services.sentinel_client import search_sentinel_products, download_product
@@ -36,7 +39,7 @@ class CalculateSoilMoistureUseCase:
             # pick first product (Sentinel-1 is all-weather, cloud cover doesn't apply)
             first_uuid, prod = next(iter(products.items()))
             
-            print(f"Selected Sentinel-1 product: {prod['title']}")
+            logger.info(f"Selected Sentinel-1 product: {prod['title']}")
 
             # Download
             out = await download_product(api, prod, out_dir=settings.OUTPUT_DIR)
@@ -61,5 +64,5 @@ class CalculateSoilMoistureUseCase:
             )
             
         except Exception as e:
-            print(f"Error in CalculateSoilMoistureUseCase: {e}")
+            logger.error(f"Error in CalculateSoilMoistureUseCase: {e}")
             raise HTTPException(status_code=500, detail=str(e))

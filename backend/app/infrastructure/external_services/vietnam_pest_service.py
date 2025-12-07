@@ -1,7 +1,9 @@
-
+import logging
 import json
 import os
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Load mock data from JSON file
 def load_mock_data():
@@ -15,7 +17,7 @@ def load_mock_data():
         with open(json_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        print(f"Error loading mock data: {e}")
+        logger.error(f"Error loading mock data: {e}")
         return {}
 
 DONG_THAP_MOCK_DATA = load_mock_data()

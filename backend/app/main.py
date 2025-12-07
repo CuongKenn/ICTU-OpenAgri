@@ -4,8 +4,11 @@
 """
 Main FastAPI application entry point.
 """
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+logger = logging.getLogger(__name__)
 from app.infrastructure.config.settings import get_settings
 from app.presentation.api.v1.router import api_router
 from app.infrastructure.database.database import init_db, AsyncSessionLocal
@@ -60,11 +63,11 @@ async def startup_event():
                 )
                 session.add(new_admin)
                 await session.commit()
-                print(f"Admin user created with email: {settings.ADMIN_EMAIL}")
+                logger.info(f"Admin user created with email: {settings.ADMIN_EMAIL}")
             else:
-                print(f"Admin user already exists (username: {admin_user.username}, email: {admin_user.email})")
+                logger.info(f"Admin user already exists (username: {admin_user.username}, email: {admin_user.email})")
         except Exception as e:
-            print(f"Error creating admin user: {e}")
+            logger.error(f"Error creating admin user: {e}")
 
 # Configure CORS
 app.add_middleware(

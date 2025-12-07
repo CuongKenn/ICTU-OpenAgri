@@ -1,8 +1,11 @@
 # Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
 # Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+import logging
 import os
 import rasterio
+
+logger = logging.getLogger(__name__)
 import numpy as np
 from rasterio.enums import Resampling
 from rasterio.warp import transform_bounds
@@ -48,7 +51,7 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str, bbox: List[float] =
                 window = from_bounds(left, bottom, right, top, src.transform)
                 transform = src.window_transform(window)
             except Exception as e:
-                print(f"Error calculating window from bbox: {e}. Reading full image.")
+                logger.warning(f"Error calculating window from bbox: {e}. Reading full image.")
                 window = None
 
         # Read data (only the window if specified)

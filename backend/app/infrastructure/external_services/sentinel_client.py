@@ -1,9 +1,12 @@
 # Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
 # Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+import logging
 import os
 import datetime
 import zipfile
+
+logger = logging.getLogger(__name__)
 import asyncio
 from typing import List, Optional, Tuple, Dict, Any
 from concurrent.futures import ThreadPoolExecutor
@@ -84,7 +87,7 @@ async def search_sentinel_products(bbox: List[float], date_start: str, date_end:
         '$orderby': 'ContentDate/Start desc'
     }
     
-    print(f"Searching CDSE: {url} with params {params}")
+    logger.info(f"Searching CDSE: {url} with params {params}")
     
     async with httpx.AsyncClient() as client:
         response = await client.get(url, params=params, headers=headers, timeout=30.0)
@@ -115,7 +118,7 @@ async def search_sentinel_products(bbox: List[float], date_start: str, date_end:
 
 def _unzip_file(zip_path: str, extract_to: str):
     """Helper function to unzip file in a thread."""
-    print(f"Extracting {zip_path}...")
+    logger.info(f"Extracting {zip_path}...")
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to)
 
@@ -124,7 +127,7 @@ async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=
     out_dir = out_dir or settings.OUTPUT_DIR
     uuid = product_info['uuid']
     title = product_info['title']
-    print(f"Downloading {title} ({uuid}) ...")
+    logger.info(f"Downloading {title} ({uuid}) ...")
     
     token = await get_access_token()
     headers = {'Authorization': f'Bearer {token}'}
@@ -136,11 +139,11 @@ async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=
     extract_path = os.path.join(out_dir, title + ".SAFE")
     
     if os.path.exists(extract_path):
-        print(f"Product already exists at {extract_path}")
+        logger.info(f"Product already exists at {extract_path}")
         return extract_path
 
     if not os.path.exists(local_zip):
-        print(f"Downloading to {local_zip}...")
+        logger.info(f"Downloading to {local_zip}...")
         async with httpx.AsyncClient() as client:
             async with client.stream('GET', url, headers=headers, timeout=None) as response:
                 response.raise_for_status()

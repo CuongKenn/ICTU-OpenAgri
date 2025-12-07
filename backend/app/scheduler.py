@@ -1,8 +1,11 @@
 # Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
 # Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+import logging
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+logger = logging.getLogger(__name__)
 from sqlalchemy import select
 from app.infrastructure.database.database import AsyncSessionLocal
 from app.infrastructure.database.models.farm_model import FarmModel
@@ -15,7 +18,7 @@ async def update_all_farms_ndvi():
     """
     Scheduled job to update NDVI data for all farms.
     """
-    print("Starting scheduled NDVI update job...")
+    logger.info("Starting scheduled NDVI update job...")
     async with AsyncSessionLocal() as db:
         try:
             # Fetch all farms
@@ -39,8 +42,8 @@ async def update_all_farms_ndvi():
                 await use_case.sync_latest_data_for_farm(farm.id, bbox, db)
                 
         except Exception as e:
-            print(f"Error in scheduled job: {e}")
-    print("Scheduled NDVI update job finished.")
+            logger.error(f"Error in scheduled job: {e}")
+    logger.info("Scheduled NDVI update job finished.")
 
 def start_scheduler():
     """
@@ -52,4 +55,4 @@ def start_scheduler():
     # scheduler.add_job(update_all_farms_ndvi, 'date', run_date=datetime.datetime.now() + datetime.timedelta(seconds=10))
     
     scheduler.start()
-    print("Scheduler started.")
+    logger.info("Scheduler started.")
