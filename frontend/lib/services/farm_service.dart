@@ -44,4 +44,36 @@ class FarmService {
       throw Exception('Failed to create farm: $e');
     }
   }
+
+  Future<FarmAreaResponseDTO> updateFarm(
+      int farmId, FarmAreaUpdateDTO farmData) async {
+    try {
+      final token = await _authService.getToken();
+      final response = await _apiService.client.put(
+        '/farms/$farmId',
+        data: farmData.toJson(),
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      return FarmAreaResponseDTO.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to update farm: $e');
+    }
+  }
+
+  Future<void> deleteFarm(int farmId) async {
+    try {
+      final token = await _authService.getToken();
+      await _apiService.client.delete(
+        '/farms/$farmId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+    } catch (e) {
+      throw Exception('Failed to delete farm: $e');
+    }
+  }
 }
