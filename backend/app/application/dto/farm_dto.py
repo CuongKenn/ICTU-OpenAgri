@@ -15,6 +15,13 @@ class FarmAreaCreateDTO(BaseModel):
     area_size: Optional[float] = None
     crop_type: Optional[str] = None
 
+class FarmAreaUpdateDTO(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    coordinates: Optional[List[CoordinateDTO]] = None
+    area_size: Optional[float] = None
+    crop_type: Optional[str] = None
+
 class FarmAreaResponseDTO(FarmAreaCreateDTO):
     id: int
     user_id: int
