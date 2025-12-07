@@ -22,3 +22,15 @@ class FarmRepository(ABC):
     async def get_all_with_user(self, skip: int = 0, limit: int = 100) -> List[tuple[FarmArea, dict]]:
         """Get all farms with user details."""
         pass
+
+    @abstractmethod
+    async def update(self, farm_id: int, user_id: int, name: Optional[str] = None, 
+                     description: Optional[str] = None, coordinates: Optional[list] = None,
+                     area_size: Optional[float] = None, crop_type: Optional[str] = None) -> Optional[FarmArea]:
+        """Update a farm area. Only the owner can update."""
+        pass
+
+    @abstractmethod
+    async def delete(self, farm_id: int, user_id: int) -> bool:
+        """Delete a farm area. Only the owner can delete."""
+        pass
