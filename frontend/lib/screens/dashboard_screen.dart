@@ -624,7 +624,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
                 maxY: 100,
-                barTouchData: BarTouchData(enabled: false),
+                barTouchData: const BarTouchData(enabled: false),
                 titlesData: FlTitlesData(
                   show: true,
                   bottomTitles: AxisTitles(
