@@ -19,6 +19,7 @@ import 'package:openagri_app/views/splash_view.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/main_layout.dart';
+import 'viewmodels/chatbot_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +43,7 @@ class AgriTechApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AdminViewModel()),
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
         ChangeNotifierProvider(create: (_) => PestForecastViewModel()),
+        ChangeNotifierProvider(create: (_) => ChatbotViewModel()),
       ],
       child: MaterialApp(
         title: 'AgriSmart - Nông Nghiệp Thông Minh',
@@ -105,6 +107,7 @@ class AgriTechApp extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFF0BDA50), width: 2),
         ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -189,6 +192,8 @@ class AgriTechApp extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFF0BDA50), width: 2),
         ),
+        labelStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Color(0xFF9ca3af)),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

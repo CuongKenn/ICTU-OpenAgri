@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 enum Environment { dev, staging, prod }
 
 class ApiConfig {
+  static const String _customBaseUrl = String.fromEnvironment('API_BASE_URL');
+
   static Environment get environment {
     // 1. Ưu tiên lấy từ tham số dòng lệnh --dart-define=ENV=...
     const env = String.fromEnvironment('ENV');
@@ -29,6 +31,10 @@ class ApiConfig {
   }
 
   static String get baseUrl {
+    if (_customBaseUrl.isNotEmpty) {
+      return _customBaseUrl;
+    }
+
     switch (environment) {
       case Environment.dev:
         return _getDevBaseUrl();

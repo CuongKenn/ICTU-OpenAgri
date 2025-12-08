@@ -4,6 +4,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: ictu-openagri-backend
+    env_file:
+    - ./backend/.env
     ports:
       - "8000:8000"
     environment:
@@ -21,10 +23,13 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        API_BASE_URL: "http://localhost:8000/api/v1"
+        FLUTTER_ENV: "dev"
     container_name: ictu-openagri-frontend
     working_dir: /app
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       - API_BASE_URL=http://localhost:8000/api/v1
     volumes:
@@ -36,7 +41,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-
 networks:
   ictu-network:
     driver: bridge

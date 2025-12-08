@@ -8,6 +8,8 @@ import 'package:openagri_app/screens/farm_map_screen.dart';
 import 'package:openagri_app/screens/market_screen.dart';
 import 'package:openagri_app/screens/profile_screen.dart';
 
+import '../widgets/chatbot_overlay.dart';
+
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
 
@@ -28,46 +30,56 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Trang chủ',
+    return Stack(
+      children: [
+        Scaffold(
+          body: IndexedStack(
+            index: _currentIndex,
+            children: _screens,
           ),
-          NavigationDestination(
-            icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map),
-            label: 'Bản đồ',
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: _currentIndex,
+            onDestinationSelected: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.dashboard_outlined),
+                selectedIcon: Icon(Icons.dashboard),
+                label: 'Trang chủ',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.map_outlined),
+                selectedIcon: Icon(Icons.map),
+                label: 'Bản đồ',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.qr_code_scanner),
+                selectedIcon: Icon(Icons.qr_code_scanner),
+                label: 'Chẩn đoán',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.storefront_outlined),
+                selectedIcon: Icon(Icons.storefront),
+                label: 'Thị trường',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                selectedIcon: Icon(Icons.person),
+                label: 'Cá nhân',
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.qr_code_scanner),
-            selectedIcon: Icon(Icons.qr_code_scanner),
-            label: 'Chẩn đoán',
+        ),
+        const Positioned.fill(
+          child: IgnorePointer(
+            ignoring: false,
+            child: ChatbotOverlay(),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.storefront_outlined),
-            selectedIcon: Icon(Icons.storefront),
-            label: 'Thị trường',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Cá nhân',
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

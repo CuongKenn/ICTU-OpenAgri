@@ -19,6 +19,14 @@ from app.scheduler import start_scheduler
 
 settings = get_settings()
 
+cors_origins = settings.CORS_ORIGINS or ["*"]
+allow_credentials = True
+
+if "*" in cors_origins:
+    # Browsers reject wildcard origins when credentials are allowed.
+    cors_origins = ["*"]
+    allow_credentials = False
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
@@ -69,8 +77,8 @@ async def startup_event():
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".*",  # Allow all origins using regex
-    allow_credentials=True,
+    allow_origins=cors_origins,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )

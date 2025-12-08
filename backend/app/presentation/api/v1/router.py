@@ -24,6 +24,10 @@ api_router.include_router(disease_detection.router, prefix="/disease-detection",
 from app.presentation.api.v1.endpoints import weather
 api_router.include_router(weather.router, prefix="/weather", tags=["weather"])
 
+# Chatbot router
+from app.presentation.api.v1.endpoints import chatbot
+api_router.include_router(chatbot.router, prefix="/chatbot", tags=["chatbot"])
+
 # Admin router - import admin endpoints
 from app.presentation.api.admin.admin_router import admin_router
 api_router.include_router(admin_router, prefix="/admin", tags=["admin"])

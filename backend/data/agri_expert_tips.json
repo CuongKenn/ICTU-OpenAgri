@@ -1,0 +1,57 @@
+[
+  {
+    "id": "rice_integrated_management",
+    "title": "Quản lý tổng hợp cho cây lúa",
+    "keywords": ["lúa", "lua", "rice", "sâu cuốn lá", "bệnh đạo ôn", "đạo ôn", "rầy nâu"],
+    "summary": "Áp dụng quản lý dịch hại tổng hợp (IPM), kết hợp giống chống chịu, gieo sạ đồng loạt, bón phân cân đối và theo dõi ngưỡng phòng trừ để tiết kiệm chi phí và giảm hóa chất.",
+    "best_practices": [
+      "Gieo sạ thưa, đồng loạt trong vùng để cắt nguồn lây sâu bệnh.",
+      "Theo dõi bẫy đèn, bẫy dính và sổ tay đồng ruộng để phát hiện sớm rầy nâu, sâu cuốn lá.",
+      "Bón phân NPK cân đối, ưu tiên bón lót hữu cơ hoai mục, không bón thừa đạm.",
+      "Chỉ phun thuốc khi sâu bệnh vượt ngưỡng kinh tế và ưu tiên hoạt chất ít độc, đúng liều lượng."],
+    "seasonal_notes": "Vụ Đông Xuân chú ý bệnh đạo ôn khi trời âm u, nhiệt độ 18-25°C; vụ Hè Thu theo dõi rầy nâu di trú sau mưa lớn."},
+  {
+    "id": "coffee_drought_management",
+    "title": "Quản lý khô hạn cho cà phê",
+    "keywords": ["cà phê", "ca phe", "coffee", "tưới", "hạn", "dry", "drought"],
+    "summary": "Cà phê cần đủ nước vào giai đoạn phân hóa mầm hoa và nuôi quả; sử dụng tưới tiết kiệm và phủ gốc để giữ ẩm, kết hợp cắt tỉa tán.",
+    "best_practices": [
+      "Tưới lần đầu sau thời kỳ khô hạn 20-25 ngày và đảm bảo đủ 600-700 lít/gốc/lần.",
+      "Phủ gốc bằng vỏ cà phê, cỏ khô dày 10-15 cm để giảm bốc hơi.",
+      "Bổ sung phân hữu cơ hoai mục, kali và trung vi lượng sau thu hoạch.",
+      "Cắt tỉa cành vô hiệu, tạo tán thông thoáng giảm sâu bệnh và tiết kiệm nước."],
+    "seasonal_notes": "Tại Tây Nguyên, chủ động tích trữ nước từ cuối mùa mưa (tháng 10-11) và kiểm tra hệ thống tưới nhỏ giọt nếu có."},
+  {
+    "id": "pepper_disease_prevention",
+    "title": "Phòng bệnh chết nhanh, chết chậm trên hồ tiêu",
+    "keywords": ["hồ tiêu", "ho tieu", "pepper", "chết nhanh", "chết chậm", "phan trừ"],
+    "summary": "Tăng cường biện pháp canh tác hữu cơ, thoát nước tốt và sử dụng chế phẩm sinh học Trichoderma để hạn chế nấm Phytophthora và Fusarium.",
+    "best_practices": [
+      "Làm luống cao, rãnh thoát nước tốt, không để nước đọng quanh gốc.",
+      "Bón vôi 1-2 kg/gốc sau thu hoạch để cải thiện pH và diệt mầm bệnh trong đất.",
+      "Sử dụng phân hữu cơ ủ với Trichoderma để bổ sung vi sinh vật đối kháng.",
+      "Tỉa bỏ rễ nổi, dây lươn, vệ sinh tàn dư để hạn chế nguồn bệnh."],
+    "seasonal_notes": "Mùa mưa cần kiểm tra chân trụ, gia cố cọc và phủ bạt che mưa to kéo dài."},
+  {
+    "id": "fruit_borer_management",
+    "title": "Kiểm soát sâu đục quả trên cây ăn trái",
+    "keywords": ["sâu đục quả", "bo re", "fruit borer", "xoài", "na", "thanh long", "mãng cầu"],
+    "summary": "Áp dụng biện pháp bao trái đúng thời điểm, dọn vệ sinh vườn và kết hợp bẫy pheromone để quản lý sâu đục quả hiệu quả.",
+    "best_practices": [
+      "Thu gom trái bị sâu hại đem tiêu hủy, tránh để trên vườn.",
+      "Bao trái sau khi đậu 20-25 ngày đối với xoài, 15-20 ngày đối với na để ngăn sâu trưởng thành đẻ trứng.",
+      "Lắp bẫy pheromone hoặc bẫy đèn vào mùa cao điểm để cắt lứa sâu.",
+      "Giữ tán cây thông thoáng, cắt bỏ cành sâu bệnh và phun thuốc sinh học (Bt, nấm xanh) theo khuyến cáo."],
+    "seasonal_notes": "Thời điểm ra hoa, đậu quả tập trung (tháng 3-6 ở Nam Bộ) là giai đoạn sâu hại phát triển mạnh."},
+  {
+    "id": "climate_smart_soil",
+    "title": "Canh tác thích ứng biến đổi khí hậu",
+    "keywords": ["biến đổi khí hậu", "thời tiết", "climate", "heat", "hạn", "ngập", "soil"],
+    "summary": "Tăng cường hữu cơ, che phủ đất, luân canh cây trồng và sử dụng giống chịu hạn/ngập để nâng cao khả năng chống chịu trước thời tiết cực đoan.",
+    "best_practices": [
+      "Giữ ẩm bằng phủ rơm rạ, cỏ khô, vật liệu sinh học hoặc trồng xen cây che phủ.",
+      "Luân canh cây họ đậu để cải thiện hữu cơ và giảm sâu bệnh đất.",
+      "Thiết kế rãnh thoát nước, mương tích nước dự phòng ngập úng và hạn hán.",
+      "Theo dõi dự báo thời tiết, chủ động điều chỉnh lịch gieo trồng và bố trí giống chịu hạn, chịu ngập."],
+    "seasonal_notes": "Kiểm tra hệ thống tưới tiêu trước mùa mưa bão, dự phòng máy bơm và vật tư gia cố bờ vùng."}
+]

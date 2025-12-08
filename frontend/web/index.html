@@ -31,6 +31,27 @@
 
   <title>OpenAgri</title>
   <link rel="manifest" href="manifest.json">
+  
+  <style>
+    /* Ensure text is always visible */
+    body, * {
+      color: inherit;
+    }
+
+    /* Force black text in input fields on white background */
+    input[type="text"],
+    input:not([type]),
+    textarea {
+      color: #000000 !important;
+      -webkit-text-fill-color: #000000 !important;
+      caret-color: #22D3EE !important;
+    }
+
+    /* Override Flutter's default styling for input */
+    input, textarea {
+      background-color: transparent !important;
+    }
+  </style>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
