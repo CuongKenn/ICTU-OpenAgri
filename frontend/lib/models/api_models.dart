@@ -277,6 +277,63 @@ class SoilMoistureResponse {
   }
 }
 
+// --- Soil Moisture Query Models (cached/scheduled data) ---
+
+class SoilMoistureQueryRequest {
+  final int? farmId;
+  final List<double> bbox;
+  final String startDate;
+  final String endDate;
+
+  SoilMoistureQueryRequest({
+    this.farmId,
+    required this.bbox,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'farm_id': farmId,
+      'bbox': bbox,
+      'start_date': startDate,
+      'end_date': endDate,
+    };
+  }
+}
+
+class SoilMoistureQueryResponse {
+  final String status;
+  final double meanValue;
+  final double minValue;
+  final double maxValue;
+  final String acquisitionDate;
+  final List<Map<String, dynamic>> chartData;
+
+  SoilMoistureQueryResponse({
+    required this.status,
+    required this.meanValue,
+    required this.minValue,
+    required this.maxValue,
+    required this.acquisitionDate,
+    required this.chartData,
+  });
+
+  factory SoilMoistureQueryResponse.fromJson(Map<String, dynamic> json) {
+    return SoilMoistureQueryResponse(
+      status: json['status'] ?? 'no_data',
+      meanValue: (json['mean_value'] as num?)?.toDouble() ?? 0.0,
+      minValue: (json['min_value'] as num?)?.toDouble() ?? 0.0,
+      maxValue: (json['max_value'] as num?)?.toDouble() ?? 1.0,
+      acquisitionDate: json['acquisition_date'] ?? '',
+      chartData: (json['chart_data'] as List<dynamic>?)
+              ?.map((e) => Map<String, dynamic>.from(e))
+              .toList() ??
+          [],
+    );
+  }
+}
+
 // --- Pest Models ---
 
 class PestRiskForecastResponseDTO {
