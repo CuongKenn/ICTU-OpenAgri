@@ -46,6 +46,9 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       final farmDtos = await _farmService.getMyFarms();
       _fields = farmDtos.map((dto) => _mapDtoToCropField(dto)).toList();
 
+      // Fetch satellite data for ALL fields in parallel
+      await _fetchAllSatelliteData();
+
       if (initialFieldId != null) {
         try {
           _selectedField = _fields.firstWhere((f) => f.id == initialFieldId);
@@ -57,10 +60,6 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       } else if (_fields.isNotEmpty) {
         _selectedField = _fields.first;
       }
-
-      if (_selectedField != null) {
-        await _fetchSatelliteData(_selectedField!);
-      }
     } catch (e) {
       // API failed - keep empty list, don't use mock data
       _fields = [];
@@ -69,6 +68,11 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> _fetchAllSatelliteData() async {
+    // Fetch satellite data for all fields in parallel
+    await Future.wait(_fields.map((field) => _fetchSatelliteData(field)));
   }
 
   Future<void> _fetchSatelliteData(CropField field) async {
@@ -209,9 +213,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   // Actions
   void selectField(CropField? field) {
     _selectedField = field;
-    if (field != null) {
-      _fetchSatelliteData(field);
-    }
+    // No need to fetch - data already loaded in initData
     notifyListeners();
   }
 
