@@ -211,7 +211,21 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
   }
 
   String _formatCategory(String category) {
+    const categoryLabels = {
+      'fruits': 'Trái cây',
+      'nuts': 'Các loại hạt',
+      'rubber': 'Cao su',
+      'spices': 'Gia vị',
+      'grains': 'Ngũ cốc',
+      'coffee': 'Cà phê',
+    };
+    final key = category.toLowerCase();
+    final translated = categoryLabels[key];
+    if (translated != null) {
+      return translated;
+    }
     return category.replaceAll('_', ' ').split(' ').map((word) {
+      if (word.isEmpty) return word;
       return word[0].toUpperCase() + word.substring(1);
     }).join(' ');
   }
