@@ -7,7 +7,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/farm_map_viewmodel.dart';
+import '../viewmodels/soil_analysis_viewmodel.dart';
+import '../widgets/soil_analysis_dialog.dart';
 import 'satellite_monitoring_screen.dart';
+import 'soil_analysis_screen.dart';
 
 class FarmMapScreen extends StatefulWidget {
   const FarmMapScreen({super.key});
@@ -693,6 +696,8 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                             } else if (value == 'delete') {
                               _showDeleteConfirmDialog(
                                   context, viewModel, field);
+                            } else if (value == 'soil_analysis') {
+                              _showSoilAnalysisDialog(context, field);
                             }
                           },
                           itemBuilder: (context) => [
@@ -721,6 +726,18 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                               ),
                             ),
                           ],
+                        ),
+                        // Soil Analysis Button
+                        PopupMenuItem<String>(
+                          value: 'soil_analysis',
+                          child: Row(
+                            children: [
+                              Icon(Icons.science,
+                                  color: Colors.brown, size: 20),
+                              SizedBox(width: 8),
+                              Text('Phân tích đất'),
+                            ],
+                          ),
                         ),
                         if (isSelected)
                           const Icon(
@@ -1053,5 +1070,18 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
     if (type == 'Lúa') return Icons.grass;
     if (type == 'Cây ăn trái') return Icons.agriculture;
     return Icons.spa;
+  }
+
+  void _showSoilAnalysisDialog(BuildContext context, dynamic field) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => SoilAnalysisDialog(
+        latitude: field.center.latitude,
+        longitude: field.center.longitude,
+        fieldName: field.name,
+      ),
+    );
   }
 }
