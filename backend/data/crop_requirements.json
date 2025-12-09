@@ -1,0 +1,149 @@
+{
+    "rice": {
+        "name": "Rice",
+        "name_vi": "Lúa",
+        "ph_range": [
+            5.0,
+            7.0
+        ],
+        "nitrogen_min": 1.5,
+        "preferred_soil_texture": [
+            "Clay",
+            "Clay Loam",
+            "Silty Clay",
+            "Silty Clay Loam"
+        ],
+        "description": "Cây lương thực chính, thích hợp đất phù sa, giữ nước tốt."
+    },
+    "coffee_robusta": {
+        "name": "Robusta Coffee",
+        "name_vi": "Cà phê Vối (Robusta)",
+        "ph_range": [
+            5.0,
+            6.5
+        ],
+        "nitrogen_min": 2.0,
+        "preferred_soil_texture": [
+            "Loam",
+            "Sandy Loam",
+            "Clay Loam"
+        ],
+        "description": "Thích hợp đất bazan, tầng đất dày, thoát nước tốt."
+    },
+    "pepper": {
+        "name": "Black Pepper",
+        "name_vi": "Hồ tiêu",
+        "ph_range": [
+            5.5,
+            7.0
+        ],
+        "nitrogen_min": 2.0,
+        "preferred_soil_texture": [
+            "Loam",
+            "Sandy Loam"
+        ],
+        "description": "Cần đất tơi xốp, thoát nước cực tốt, giàu mùn."
+    },
+    "rubber": {
+        "name": "Rubber",
+        "name_vi": "Cao su",
+        "ph_range": [
+            4.5,
+            6.5
+        ],
+        "nitrogen_min": 1.5,
+        "preferred_soil_texture": [
+            "Clay Loam",
+            "Sandy Clay Loam",
+            "Loam"
+        ],
+        "description": "Thích hợp đất xám, đất đỏ bazan, tầng đất dày trên 1m."
+    },
+    "cashew": {
+        "name": "Cashew",
+        "name_vi": "Điều",
+        "ph_range": [
+            5.0,
+            7.5
+        ],
+        "nitrogen_min": 1.0,
+        "preferred_soil_texture": [
+            "Sandy Loam",
+            "Loam",
+            "Sandy Clay Loam"
+        ],
+        "description": "Chịu hạn tốt, thích hợp đất cát pha, đất xám."
+    },
+    "cassava": {
+        "name": "Cassava",
+        "name_vi": "Sắn (Khoai mì)",
+        "ph_range": [
+            4.5,
+            7.5
+        ],
+        "nitrogen_min": 1.0,
+        "preferred_soil_texture": [
+            "Sandy Loam",
+            "Loam"
+        ],
+        "description": "Dễ tính, chịu được đất nghèo dinh dưỡng."
+    },
+    "maize": {
+        "name": "Maize",
+        "name_vi": "Ngô (Bắp)",
+        "ph_range": [
+            5.5,
+            7.5
+        ],
+        "nitrogen_min": 2.0,
+        "preferred_soil_texture": [
+            "Loam",
+            "Silty Loam",
+            "Sandy Loam"
+        ],
+        "description": "Cần đất thoát nước tốt, giàu hữu cơ."
+    },
+    "durian": {
+        "name": "Durian",
+        "name_vi": "Sầu riêng",
+        "ph_range": [
+            5.5,
+            6.5
+        ],
+        "nitrogen_min": 2.5,
+        "preferred_soil_texture": [
+            "Clay Loam",
+            "Loam",
+            "Silty Clay Loam"
+        ],
+        "description": "Kén đất, cần đất thịt nhẹ, thoát nước tốt, không chịu ngập úng."
+    },
+    "dragon_fruit": {
+        "name": "Dragon Fruit",
+        "name_vi": "Thanh long",
+        "ph_range": [
+            5.5,
+            7.0
+        ],
+        "nitrogen_min": 1.5,
+        "preferred_soil_texture": [
+            "Sandy Loam",
+            "Loam"
+        ],
+        "description": "Thích hợp đất cát pha, chịu hạn, không chịu ngập."
+    },
+    "citrus": {
+        "name": "Citrus",
+        "name_vi": "Cây có múi (Cam, Bưởi)",
+        "ph_range": [
+            5.5,
+            7.0
+        ],
+        "nitrogen_min": 2.0,
+        "preferred_soil_texture": [
+            "Loam",
+            "Clay Loam"
+        ],
+        "description": "Cần đất giàu dinh dưỡng, thoát nước tốt."
+    }
+}
