@@ -13,10 +13,12 @@ import 'package:openagri_app/viewmodels/login_viewmodel.dart';
 import 'package:openagri_app/viewmodels/pest_forecast_viewmodel.dart';
 import 'package:openagri_app/viewmodels/satellite_monitoring_viewmodel.dart';
 import 'package:openagri_app/viewmodels/weather_viewmodel.dart';
+import 'package:openagri_app/viewmodels/soil_analysis_viewmodel.dart';
 import 'package:openagri_app/views/dashboard_view.dart';
 import 'package:openagri_app/views/login_view.dart';
 import 'package:openagri_app/views/splash_view.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'screens/main_layout.dart';
 
@@ -42,6 +44,7 @@ class AgriTechApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AdminViewModel()),
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
         ChangeNotifierProvider(create: (_) => PestForecastViewModel()),
+        ChangeNotifierProvider(create: (_) => SoilAnalysisViewModel()),
       ],
       child: MaterialApp(
         title: 'AgriSmart - Nông Nghiệp Thông Minh',
@@ -113,33 +116,35 @@ class AgriTechApp extends StatelessWidget {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textStyle: GoogleFonts.notoSans(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.w900,
-          color: Color(0xFF111813),
-          letterSpacing: -0.033,
+      textTheme: GoogleFonts.notoSansTextTheme(
+        const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.w900,
+            color: Color(0xFF111813),
+            letterSpacing: -0.033,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF111813),
+          ),
+          displaySmall: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF111813),
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF111813),
+          ),
+          bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF111813)),
+          bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF608a6e)),
         ),
-        displayMedium: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF111813),
-        ),
-        displaySmall: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF111813),
-        ),
-        headlineMedium: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF111813),
-        ),
-        bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF111813)),
-        bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF608a6e)),
       ),
     );
   }
@@ -197,33 +202,35 @@ class AgriTechApp extends StatelessWidget {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textStyle: GoogleFonts.notoSans(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-          letterSpacing: -0.033,
+      textTheme: GoogleFonts.notoSansTextTheme(
+        const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            letterSpacing: -0.033,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          displaySmall: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+          bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
+          bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF9ca3af)),
         ),
-        displayMedium: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        displaySmall: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        headlineMedium: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
-        bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
-        bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF9ca3af)),
       ),
     );
   }
