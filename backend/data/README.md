@@ -4,11 +4,11 @@ Thư mục này chứa các file dữ liệu theo chuẩn **NGSI-LD** (Next Gene
 
 ## 📁 Danh sách File
 
-| File                                     | Mô tả                                | Smart Data Model                                   |
-| ---------------------------------------- | ------------------------------------ | -------------------------------------------------- |
-| `vietnam_pest_ngsi_ld.json`              | Dữ liệu sâu bệnh hại tại Việt Nam    | [AgriPest](https://smartdatamodels.org/)           |
-| `vietnam_commodity_prices_ngsi_ld.json`  | Giá nông sản Việt Nam                | [AgriCommodityPrice](https://smartdatamodels.org/) |
-| `vietnam_32_provinces_soil_ngsi_ld.json` | Phân tích đất 32 tỉnh thành Việt Nam | [AgriSoil](https://smartdatamodels.org/)           |
+| File                                    | Mô tả                                | Smart Data Model                                   |
+| --------------------------------------- | ------------------------------------ | -------------------------------------------------- |
+| `vietnam_pest_ngsi_ld.json`             | Dữ liệu sâu bệnh hại tại Việt Nam    | [AgriPest](https://smartdatamodels.org/)           |
+| `vietnam_commodity_prices_ngsi_ld.json` | Giá nông sản Việt Nam                | [AgriCommodityPrice](https://smartdatamodels.org/) |
+| `vietnam_34_province_soil_ngsi_ld.json` | Phân tích đất 34 tỉnh thành Việt Nam | [SoilAnalysis](https://smartdatamodels.org/)       |
 
 ## 🔗 NGSI-LD Context
 
@@ -53,18 +53,18 @@ Tất cả các entity đều sử dụng context chuẩn:
 }
 ```
 
-### AgriSoil (Phân tích đất)
+### SoilAnalysis (Phân tích đất)
 
 ```json
 {
-  "id": "urn:ngsi-ld:AgriSoil:vietnam-hanoi",
-  "type": "AgriSoil",
+  "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaNoi",
+  "type": "SoilAnalysis",
   "provinceName": { "type": "Property", "value": "Hà Nội" },
-  "pH": { "type": "Property", "value": 6.5 },
-  "nitrogen": { "type": "Property", "value": 0.15, "unitCode": "P1" },
+  "pH": { "type": "Property", "value": 5.6, "unitCode": "pH" },
+  "nitrogen": { "type": "Property", "value": 0.13, "unitCode": "g/kg" },
   "location": {
     "type": "GeoProperty",
-    "value": { "type": "Point", "coordinates": [105.8, 21.0] }
+    "value": { "type": "Point", "coordinates": [105.8342, 21.0278] }
   }
 }
 ```
@@ -87,5 +87,3 @@ curl -X POST 'http://localhost:1026/ngsi-ld/v1/entities' \
 - [FIWARE NGSI-LD Tutorial](https://fiware-tutorials.readthedocs.io/en/latest/linked-data/)
 
 ---
-
-> **Lưu ý**: Dữ liệu trong các file này được sử dụng cho mục đích demo và phát triển. Trong môi trường production, dữ liệu nên được lấy từ các nguồn chính thức và cập nhật định kỳ.
