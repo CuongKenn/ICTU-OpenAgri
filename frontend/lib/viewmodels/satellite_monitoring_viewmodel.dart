@@ -14,6 +14,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   final AnalysisService _analysisService = AnalysisService();
   final SoilService _soilService = SoilService();
   final Distance _distance = const Distance();
+  static const double _maxSoilMatchKm = 150.0;
 
   List<CropField> _fields = [];
   CropField? _selectedField;
@@ -240,7 +241,8 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
     double? bestDist;
     for (final item in _soilData) {
       if (item.coordinate == null) continue;
-      final d = _distance(
+      final d = _distance.as(
+        LengthUnit.Kilometer,
         center,
         LatLng(item.coordinate!.latitude, item.coordinate!.longitude),
       );
@@ -249,7 +251,19 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
         best = item;
       }
     }
+    if (bestDist != null && bestDist > _maxSoilMatchKm) {
+      return null;
+    }
     return best;
+  }
+
+  double? distanceToSoil(SoilAnalysisModel soil) {
+    if (_selectedField == null || soil.coordinate == null) return null;
+    return _distance.as(
+      LengthUnit.Kilometer,
+      _selectedField!.center,
+      LatLng(soil.coordinate!.latitude, soil.coordinate!.longitude),
+    );
   }
 
   void setMapMode(String mode) {

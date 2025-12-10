@@ -822,7 +822,7 @@ class SoilAnalysisModel {
   final double? organicMatter;
   final double? moisture;
   final String? soilType;
-  final List<dynamic>? recommendedCrops;
+  final List<String>? recommendedCrops;
   final LatLng? coordinate;
 
   SoilAnalysisModel({
@@ -869,8 +869,9 @@ class SoilAnalysisModel {
       organicMatter: _propNum('organicMatter'),
       moisture: _propNum('moisture'),
       soilType: json['soilType']?['value']?.toString(),
-      recommendedCrops:
-          (json['recommendedCrops']?['value'] as List?)?.toList(),
+      recommendedCrops: (json['recommendedCrops']?['value'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
       coordinate: coord,
     );
   }

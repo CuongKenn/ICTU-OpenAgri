@@ -811,6 +811,8 @@ class _SatelliteMonitoringScreenState
       );
     }
 
+    final distanceKm = viewModel.distanceToSoil(soil);
+
     Widget _infoRow(String label, String value) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -865,6 +867,9 @@ class _SatelliteMonitoringScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _infoRow('Tỉnh/TP', soil.provinceName),
+              if (distanceKm != null)
+                _infoRow('Khoảng cách',
+                    '${distanceKm.toStringAsFixed(1)} km'),
               _infoRow('pH', soil.pH != null ? soil.pH!.toStringAsFixed(1) : '-'),
               _infoRow(
                   'Nitơ (g/kg)', soil.nitrogen != null ? soil.nitrogen!.toStringAsFixed(2) : '-'),
@@ -892,7 +897,7 @@ class _SatelliteMonitoringScreenState
                   spacing: 8,
                   runSpacing: 8,
                   children: soil.recommendedCrops!
-                      .take(6)
+                      .take(4)
                       .map((c) => Chip(
                             backgroundColor: const Color(0xFFE8F8EE),
                             label: Text(c.toString(),
