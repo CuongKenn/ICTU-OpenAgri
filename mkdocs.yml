@@ -1,0 +1,88 @@
+site_name: ICTU-OpenAgri Documentation
+site_url: https://cuongkenn.github.io/ICTU-OpenAgri/
+site_description: Nền tảng Nông nghiệp Thông minh - Smart Agriculture Platform
+site_author: CuongKenn
+
+repo_name: CuongKenn/ICTU-OpenAgri
+repo_url: https://github.com/CuongKenn/ICTU-OpenAgri
+
+theme:
+  name: material
+  language: vi
+  palette:
+    - scheme: default
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-7
+        name: Chuyển sang chế độ tối
+    - scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-4
+        name: Chuyển sang chế độ sáng
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search:
+      lang: vi
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Trang chủ: index.md
+  - Bắt đầu:
+      - Cài đặt: getting-started/installation.md
+      - Docker: getting-started/docker.md
+      - Cấu hình: getting-started/configuration.md
+  - Kiến trúc:
+      - Tổng quan: architecture/overview.md
+      - Backend: architecture/backend.md
+      - FIWARE: architecture/fiware.md
+  - API:
+      - Xác thực: api/authentication.md
+      - Vùng trồng: api/farms.md
+      - Thời tiết: api/weather.md
+      - Vệ tinh: api/satellite.md
+  - Mô hình dữ liệu:
+      - NGSI-LD: data-models/ngsi-ld.md
+      - Smart Data Models: data-models/smart-data.md
+  - Đóng góp: contributing.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/CuongKenn/ICTU-OpenAgri
+  generator: false
+
+copyright: Copyright &copy; 2025 CuongKenn and ICTU-OpenAgri Contributors
