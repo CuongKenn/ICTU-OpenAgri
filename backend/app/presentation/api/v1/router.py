@@ -24,6 +24,10 @@ api_router.include_router(disease_detection.router, prefix="/disease-detection",
 from app.presentation.api.v1.endpoints import weather
 api_router.include_router(weather.router, prefix="/weather", tags=["weather"])
 
+# FIWARE router
+from app.presentation.api.v1.endpoints import fiware
+api_router.include_router(fiware.router, prefix="/fiware", tags=["fiware"])
+
 # Admin router - import admin endpoints
 from app.presentation.api.admin.admin_router import admin_router
 api_router.include_router(admin_router, prefix="/admin", tags=["admin"])
