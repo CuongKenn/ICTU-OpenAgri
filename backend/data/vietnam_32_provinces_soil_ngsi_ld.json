@@ -1,0 +1,3213 @@
+{
+  "@context": [
+    "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+    "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+  ],
+  "entities": [
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaNoi",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hà Nội"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HaNoi"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.8342,
+            21.0278
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.6,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất feralit đỏ vàng"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 17.4,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Cát pha"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Cây ăn quả ôn đới",
+          "Chè",
+          "Ngô",
+          "Lúa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967111+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967111+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HoChiMinh",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hồ Chí Minh"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HoChiMinh"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.6297,
+            10.8231
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.5,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.18,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phù sa ngọt"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 25.3,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Thanh long",
+          "Lúa nước",
+          "Cây ăn trái",
+          "Rau màu"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967168+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967168+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaiPhong",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hải Phòng"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HaiPhong"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.6822,
+            20.8449
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.1,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.16,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.3,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất glây"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 21.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Rau màu",
+          "Lúa",
+          "Chè"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967184+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967184+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:DaNang",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Đà Nẵng"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:DaNang"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            108.2022,
+            16.0544
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.2,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.06,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất xám bạc màu"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 18.3,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Điều",
+          "Cây ăn quả nhiệt đới",
+          "Rau màu",
+          "Lúa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967197+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967197+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:CanTho",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Cần Thơ"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:CanTho"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.7878,
+            10.0452
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.2,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.09,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.9,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phù sa ngọt"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 25.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Rau màu",
+          "Lúa nước",
+          "Dừa",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967206+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967206+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:AnGiang",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "An Giang"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:AnGiang"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.1259,
+            10.5216
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.9,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.19,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất mặn ven biển"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 28.1,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha cát"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Trung bình"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Dừa",
+          "Rau màu",
+          "Lúa nước",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967216+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967216+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BaRiaVungTau",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bà Rịa - Vũng Tàu"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BaRiaVungTau"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            107.2333,
+            10.35
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.5,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.08,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phèn nhẹ"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 28.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Lúa nước",
+          "Rau màu",
+          "Dừa",
+          "Thanh long"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967225+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967225+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BacGiang",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bắc Giang"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BacGiang"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.2,
+            21.2833
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.8,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.16,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phù sa"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 20.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Rau màu",
+          "Cây ăn quả ôn đới",
+          "Chè"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967234+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967234+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BacKan",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bắc Kạn"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BacKan"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.8333,
+            22.1333
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.5,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.08,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất feralit đỏ vàng"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 19.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Lúa",
+          "Rau màu",
+          "Cây ăn quả ôn đới"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967243+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967243+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BacNinh",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bắc Ninh"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BacNinh"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.05,
+            21.1833
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.0,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.17,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất glây"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 16.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Rau màu",
+          "Lúa",
+          "Cây ăn quả ôn đới"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967252+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967252+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BenTre",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bến Tre"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BenTre"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.3833,
+            10.2333
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.2,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.19,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phèn nhẹ"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 28.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha cát"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Lúa nước",
+          "Cây ăn trái",
+          "Rau màu",
+          "Thanh long"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967261+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967261+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BinhDinh",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bình Định"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BinhDinh"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            109.2197,
+            13.7759
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.0,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.08,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.09,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất xám bạc màu"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 20.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha cát"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Điều",
+          "Rau màu",
+          "Lúa",
+          "Cây ăn quả nhiệt đới"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967269+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967269+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BinhDuong",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bình Dương"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BinhDuong"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.65,
+            11.1667
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.6,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.16,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phù sa ngọt"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 22.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Thanh long",
+          "Dừa",
+          "Lúa nước",
+          "Rau màu"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967279+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967279+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BinhPhuoc",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bình Phước"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BinhPhuoc"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.6,
+            11.75
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.5,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.06,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.16,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Ferralsols"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 18.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Cao su",
+          "Cà phê",
+          "Ngô",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967288+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967288+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:BinhThuan",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Bình Thuận"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:BinhThuan"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            108.0413,
+            10.9289
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.7,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.08,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.09,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất cát ven biển"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 15.1,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Cát pha"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Cây ăn quả nhiệt đới",
+          "Lúa",
+          "Điều",
+          "Mía"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967299+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967299+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:CaMau",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Cà Mau"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:CaMau"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.15,
+            9.1833
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.1,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.9,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất mặn ven biển"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 31.9,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Rau màu",
+          "Dừa",
+          "Lúa nước",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967313+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967313+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:CaoBang",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Cao Bằng"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:CaoBang"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.25,
+            22.6667
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.7,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.1,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất feralit đỏ vàng"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 22.4,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Rau màu",
+          "Cây ăn quả ôn đới",
+          "Lúa",
+          "Ngô"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967321+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967321+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:DakLak",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Đắk Lắk"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:DakLak"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            108.05,
+            12.6667
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.1,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.17,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.06,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Ferralsols"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 24.1,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Cà phê",
+          "Cây ăn trái",
+          "Hồ tiêu"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967331+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967331+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:DakNong",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Đắk Nông"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:DakNong"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            107.6833,
+            12.0
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.2,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.16,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.16,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất xám trên đá bazan"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 20.9,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Cà phê",
+          "Hồ tiêu",
+          "Cao su"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967339+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967339+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:DienBien",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Điện Biên"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:DienBien"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            103.0167,
+            21.3833
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.2,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.09,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.4,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất feralit đỏ vàng"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 23.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Cát pha"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Chè",
+          "Cây ăn quả ôn đới",
+          "Rau màu",
+          "Ngô"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967522+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967522+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:DongNai",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Đồng Nai"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:DongNai"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            107.2333,
+            10.95
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.7,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.19,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.1,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phù sa ngọt"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 30.4,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Rau màu",
+          "Dừa",
+          "Thanh long",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967533+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967533+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:DongThap",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Đồng Tháp"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:DongThap"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.6309,
+            10.4933
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.1,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.18,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất phèn nhẹ"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 31.9,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Trung bình"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Thanh long",
+          "Cây ăn trái",
+          "Lúa nước",
+          "Dừa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967542+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967542+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:GiaLai",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Gia Lai"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:GiaLai"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            108.05,
+            13.9833
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.4,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất đỏ bazan"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 20.9,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Hồ tiêu",
+          "Cà phê",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967551+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967551+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaGiang",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hà Giang"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HaGiang"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            104.9833,
+            22.8333
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.1,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.17,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.12,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất feralit đỏ vàng"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 21.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha cát"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Ngô",
+          "Rau màu",
+          "Chè",
+          "Lúa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967561+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967561+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaNam",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hà Nam"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HaNam"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.9229,
+            20.5433
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.4,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.1,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất glây"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 23.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha cát"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Lúa",
+          "Chè",
+          "Ngô",
+          "Rau màu"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967574+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967574+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaTinh",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hà Tĩnh"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HaTinh"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.9055,
+            18.3428
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.9,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.06,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất cát ven biển"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 17.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Cây ăn quả nhiệt đới",
+          "Điều",
+          "Mía",
+          "Lúa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967582+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967582+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HaiDuong",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hải Dương"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HaiDuong"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.316,
+            20.9373
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.9,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.5,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất feralit đỏ vàng"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 21.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha cát"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Lúa",
+          "Rau màu",
+          "Cây ăn quả ôn đới",
+          "Chè"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967592+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967592+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HoaBinh",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hòa Bình"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HoaBinh"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.3333,
+            20.8167
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.2,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất glây"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 20.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Rau màu",
+          "Chè",
+          "Lúa",
+          "Cây ăn quả ôn đới"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967600+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967600+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:HungYen",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Hưng Yên"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:HungYen"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            106.062,
+            20.6464
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.5,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.15,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.1,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất glây"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 21.0,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Cát pha"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Trung bình"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Chè",
+          "Lúa",
+          "Cây ăn quả ôn đới",
+          "Rau màu"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967608+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967608+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:KhanhHoa",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Khánh Hòa"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:KhanhHoa"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            109.1967,
+            12.2388
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.1,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.07,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.11,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 2.7,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất cát ven biển"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 15.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Tốt"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Điều",
+          "Rau màu",
+          "Mía",
+          "Lúa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967617+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967617+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:KienGiang",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Kiên Giang"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:KienGiang"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            105.1167,
+            9.95
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 6.3,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.19,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.08,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.17,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.6,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Đất mặn ven biển"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 30.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Thịt pha sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Trung bình"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Lúa nước",
+          "Cây ăn trái",
+          "Rau màu",
+          "Dừa"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967626+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967626+00:00"
+      }
+    },
+    {
+      "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+      ],
+      "id": "urn:ngsi-ld:SoilAnalysis:Vietnam:KonTum",
+      "type": "SoilAnalysis",
+      "provinceName": {
+        "type": "Property",
+        "value": "Kon Tum"
+      },
+      "hasProvince": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Province:KonTum"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [
+            108.0,
+            14.35
+          ]
+        }
+      },
+      "pH": {
+        "type": "Property",
+        "value": 5.7,
+        "unitCode": "pH",
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "nitrogen": {
+        "type": "Property",
+        "value": 0.14,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "phosphorus": {
+        "type": "Property",
+        "value": 0.06,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "potassium": {
+        "type": "Property",
+        "value": 0.13,
+        "unitCode": "g/kg",
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "organicMatter": {
+        "type": "Property",
+        "value": 3.2,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "soilType": {
+        "type": "Property",
+        "value": "Ferralsols"
+      },
+      "moisture": {
+        "type": "Property",
+        "value": 24.8,
+        "unitCode": "%",
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "texture": {
+        "type": "Property",
+        "value": "Sét"
+      },
+      "drainage": {
+        "type": "Property",
+        "value": "Kém"
+      },
+      "recommendedCrops": {
+        "type": "Property",
+        "value": [
+          "Hồ tiêu",
+          "Cao su",
+          "Cà phê",
+          "Cây ăn trái"
+        ]
+      },
+      "fertilizerRecommendation": {
+        "type": "Property",
+        "value": {
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
+        }
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967635+00:00"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2025-12-10T07:25:44.967635+00:00"
+      }
+    }
+  ],
+  "metadata": {
+    "totalEntities": 32,
+    "generatedAt": "2025-12-10T07:25:44.967645+00:00",
+    "description": "Dữ liệu đất mô phỏng 32 tỉnh/thành (điều chỉnh theo vùng sinh thái)"
+  }
+}

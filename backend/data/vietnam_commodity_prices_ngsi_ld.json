@@ -1,0 +1,678 @@
+{
+  "@context": [
+    "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+    "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
+  ],
+  "metadata": {
+    "type": "Property",
+    "value": {
+      "lastUpdated": "2025-12-10T00:00:00Z",
+      "source": "Vietnam Ministry of Agriculture and Rural Development",
+      "description": "Agricultural commodity prices in Vietnam following NGSI-LD standard",
+      "dataProvider": "ICTU-OpenAgri",
+      "region": "Vietnam"
+    }
+  },
+  "commodities": [
+    {
+      "id": "urn:ngsi-ld:AgriCommodityPrice:VN:rice_5_percent",
+      "type": "AgriCommodityPrice",
+      "commodityId": {
+        "type": "Property",
+        "value": "rice_5_percent"
+      },
+      "name": {
+        "type": "Property",
+        "value": "Gạo 5% tấm"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Rice 5% broken"
+      },
+      "category": {
+        "type": "Property",
+        "value": "grains"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Gạo xuất khẩu loại 5% tấm, phổ biến tại Đồng bằng sông Cửu Long"
+      },
+      "priceUnit": {
+        "type": "Property",
+        "value": "VND/kg"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [105.7469, 10.0452]
+        }
+      },
+      "areaServed": {
+        "type": "Property",
+        "value": "Đồng bằng sông Cửu Long"
+      },
+      "priceHistory": {
+        "type": "Property",
+        "value": [
+          {"dateObserved": "2025-09-24T00:00:00Z", "price": 16500},
+          {"dateObserved": "2025-09-25T00:00:00Z", "price": 16900},
+          {"dateObserved": "2025-09-26T00:00:00Z", "price": 17200},
+          {"dateObserved": "2025-09-27T00:00:00Z", "price": 17400},
+          {"dateObserved": "2025-09-28T00:00:00Z", "price": 17600},
+          {"dateObserved": "2025-09-29T00:00:00Z", "price": 17800},
+          {"dateObserved": "2025-09-30T00:00:00Z", "price": 18200},
+          {"dateObserved": "2025-10-01T00:00:00Z", "price": 18100},
+          {"dateObserved": "2025-10-02T00:00:00Z", "price": 18000},
+          {"dateObserved": "2025-10-03T00:00:00Z", "price": 18200},
+          {"dateObserved": "2025-10-04T00:00:00Z", "price": 18400},
+          {"dateObserved": "2025-10-05T00:00:00Z", "price": 18900},
+          {"dateObserved": "2025-10-06T00:00:00Z", "price": 19300},
+          {"dateObserved": "2025-10-07T00:00:00Z", "price": 19800},
+          {"dateObserved": "2025-10-08T00:00:00Z", "price": 20400},
+          {"dateObserved": "2025-10-09T00:00:00Z", "price": 20600},
+          {"dateObserved": "2025-10-10T00:00:00Z", "price": 20200},
+          {"dateObserved": "2025-10-11T00:00:00Z", "price": 20400},
+          {"dateObserved": "2025-10-12T00:00:00Z", "price": 20400},
+          {"dateObserved": "2025-10-13T00:00:00Z", "price": 20500},
+          {"dateObserved": "2025-10-14T00:00:00Z", "price": 20100},
+          {"dateObserved": "2025-10-15T00:00:00Z", "price": 20100},
+          {"dateObserved": "2025-10-16T00:00:00Z", "price": 19800},
+          {"dateObserved": "2025-10-17T00:00:00Z", "price": 20500},
+          {"dateObserved": "2025-10-18T00:00:00Z", "price": 20200},
+          {"dateObserved": "2025-10-19T00:00:00Z", "price": 20200},
+          {"dateObserved": "2025-10-20T00:00:00Z", "price": 19800},
+          {"dateObserved": "2025-10-21T00:00:00Z", "price": 19900},
+          {"dateObserved": "2025-10-22T00:00:00Z", "price": 19700},
+          {"dateObserved": "2025-10-23T00:00:00Z", "price": 19200},
+          {"dateObserved": "2025-10-24T00:00:00Z", "price": 19000},
+          {"dateObserved": "2025-10-25T00:00:00Z", "price": 19100},
+          {"dateObserved": "2025-10-26T00:00:00Z", "price": 19900},
+          {"dateObserved": "2025-10-27T00:00:00Z", "price": 20400},
+          {"dateObserved": "2025-10-28T00:00:00Z", "price": 20100},
+          {"dateObserved": "2025-10-29T00:00:00Z", "price": 19600},
+          {"dateObserved": "2025-10-30T00:00:00Z", "price": 19000},
+          {"dateObserved": "2025-10-31T00:00:00Z", "price": 19400},
+          {"dateObserved": "2025-11-01T00:00:00Z", "price": 19900},
+          {"dateObserved": "2025-11-02T00:00:00Z", "price": 19400},
+          {"dateObserved": "2025-11-03T00:00:00Z", "price": 19800},
+          {"dateObserved": "2025-11-04T00:00:00Z", "price": 19500},
+          {"dateObserved": "2025-11-05T00:00:00Z", "price": 19300},
+          {"dateObserved": "2025-11-06T00:00:00Z", "price": 19200},
+          {"dateObserved": "2025-11-07T00:00:00Z", "price": 19700},
+          {"dateObserved": "2025-11-08T00:00:00Z", "price": 20100},
+          {"dateObserved": "2025-11-09T00:00:00Z", "price": 20500},
+          {"dateObserved": "2025-11-10T00:00:00Z", "price": 20300},
+          {"dateObserved": "2025-11-11T00:00:00Z", "price": 20600},
+          {"dateObserved": "2025-11-12T00:00:00Z", "price": 20400},
+          {"dateObserved": "2025-11-13T00:00:00Z", "price": 20200},
+          {"dateObserved": "2025-11-14T00:00:00Z", "price": 20000},
+          {"dateObserved": "2025-11-15T00:00:00Z", "price": 19800},
+          {"dateObserved": "2025-11-16T00:00:00Z", "price": 20100},
+          {"dateObserved": "2025-11-17T00:00:00Z", "price": 20300},
+          {"dateObserved": "2025-11-18T00:00:00Z", "price": 20500},
+          {"dateObserved": "2025-11-19T00:00:00Z", "price": 20700},
+          {"dateObserved": "2025-11-20T00:00:00Z", "price": 20400},
+          {"dateObserved": "2025-11-21T00:00:00Z", "price": 20200},
+          {"dateObserved": "2025-11-22T00:00:00Z", "price": 20000},
+          {"dateObserved": "2025-11-23T00:00:00Z", "price": 19800}
+        ]
+      },
+      "currentPrice": {
+        "type": "Property",
+        "value": 19800,
+        "observedAt": "2025-11-23T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriCommodityPrice:VN:coffee_robusta",
+      "type": "AgriCommodityPrice",
+      "commodityId": {
+        "type": "Property",
+        "value": "coffee_robusta"
+      },
+      "name": {
+        "type": "Property",
+        "value": "Cà phê Robusta"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Robusta Coffee"
+      },
+      "category": {
+        "type": "Property",
+        "value": "beverages"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Cà phê Robusta nguyên liệu, phổ biến tại Tây Nguyên"
+      },
+      "priceUnit": {
+        "type": "Property",
+        "value": "VND/kg"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [108.0507, 12.6814]
+        }
+      },
+      "areaServed": {
+        "type": "Property",
+        "value": "Tây Nguyên"
+      },
+      "priceHistory": {
+        "type": "Property",
+        "value": [
+          {"dateObserved": "2025-09-24T00:00:00Z", "price": 115000},
+          {"dateObserved": "2025-09-25T00:00:00Z", "price": 115500},
+          {"dateObserved": "2025-09-26T00:00:00Z", "price": 116000},
+          {"dateObserved": "2025-09-27T00:00:00Z", "price": 116200},
+          {"dateObserved": "2025-09-28T00:00:00Z", "price": 115800},
+          {"dateObserved": "2025-09-29T00:00:00Z", "price": 116500},
+          {"dateObserved": "2025-09-30T00:00:00Z", "price": 117000},
+          {"dateObserved": "2025-10-01T00:00:00Z", "price": 117500},
+          {"dateObserved": "2025-10-02T00:00:00Z", "price": 118000},
+          {"dateObserved": "2025-10-03T00:00:00Z", "price": 117800},
+          {"dateObserved": "2025-10-04T00:00:00Z", "price": 118200},
+          {"dateObserved": "2025-10-05T00:00:00Z", "price": 118500},
+          {"dateObserved": "2025-10-06T00:00:00Z", "price": 119000},
+          {"dateObserved": "2025-10-07T00:00:00Z", "price": 119500},
+          {"dateObserved": "2025-10-08T00:00:00Z", "price": 120000},
+          {"dateObserved": "2025-10-09T00:00:00Z", "price": 120500},
+          {"dateObserved": "2025-10-10T00:00:00Z", "price": 120200},
+          {"dateObserved": "2025-10-11T00:00:00Z", "price": 120800},
+          {"dateObserved": "2025-10-12T00:00:00Z", "price": 121000},
+          {"dateObserved": "2025-10-13T00:00:00Z", "price": 121500},
+          {"dateObserved": "2025-10-14T00:00:00Z", "price": 121200},
+          {"dateObserved": "2025-10-15T00:00:00Z", "price": 122000},
+          {"dateObserved": "2025-10-16T00:00:00Z", "price": 122500},
+          {"dateObserved": "2025-10-17T00:00:00Z", "price": 123000},
+          {"dateObserved": "2025-10-18T00:00:00Z", "price": 122800},
+          {"dateObserved": "2025-10-19T00:00:00Z", "price": 123200},
+          {"dateObserved": "2025-10-20T00:00:00Z", "price": 123500},
+          {"dateObserved": "2025-10-21T00:00:00Z", "price": 124000},
+          {"dateObserved": "2025-10-22T00:00:00Z", "price": 123800},
+          {"dateObserved": "2025-10-23T00:00:00Z", "price": 124200},
+          {"dateObserved": "2025-10-24T00:00:00Z", "price": 124500},
+          {"dateObserved": "2025-10-25T00:00:00Z", "price": 125000},
+          {"dateObserved": "2025-10-26T00:00:00Z", "price": 124800},
+          {"dateObserved": "2025-10-27T00:00:00Z", "price": 125200},
+          {"dateObserved": "2025-10-28T00:00:00Z", "price": 125500},
+          {"dateObserved": "2025-10-29T00:00:00Z", "price": 126000},
+          {"dateObserved": "2025-10-30T00:00:00Z", "price": 125800},
+          {"dateObserved": "2025-10-31T00:00:00Z", "price": 126200},
+          {"dateObserved": "2025-11-01T00:00:00Z", "price": 126500},
+          {"dateObserved": "2025-11-02T00:00:00Z", "price": 127000},
+          {"dateObserved": "2025-11-03T00:00:00Z", "price": 126800},
+          {"dateObserved": "2025-11-04T00:00:00Z", "price": 127200},
+          {"dateObserved": "2025-11-05T00:00:00Z", "price": 127500},
+          {"dateObserved": "2025-11-06T00:00:00Z", "price": 128000},
+          {"dateObserved": "2025-11-07T00:00:00Z", "price": 127800},
+          {"dateObserved": "2025-11-08T00:00:00Z", "price": 128200},
+          {"dateObserved": "2025-11-09T00:00:00Z", "price": 128500},
+          {"dateObserved": "2025-11-10T00:00:00Z", "price": 129000},
+          {"dateObserved": "2025-11-11T00:00:00Z", "price": 128800},
+          {"dateObserved": "2025-11-12T00:00:00Z", "price": 129200},
+          {"dateObserved": "2025-11-13T00:00:00Z", "price": 129500},
+          {"dateObserved": "2025-11-14T00:00:00Z", "price": 130000},
+          {"dateObserved": "2025-11-15T00:00:00Z", "price": 129800},
+          {"dateObserved": "2025-11-16T00:00:00Z", "price": 130200},
+          {"dateObserved": "2025-11-17T00:00:00Z", "price": 130500},
+          {"dateObserved": "2025-11-18T00:00:00Z", "price": 131000},
+          {"dateObserved": "2025-11-19T00:00:00Z", "price": 130800},
+          {"dateObserved": "2025-11-20T00:00:00Z", "price": 131200},
+          {"dateObserved": "2025-11-21T00:00:00Z", "price": 131500},
+          {"dateObserved": "2025-11-22T00:00:00Z", "price": 132000},
+          {"dateObserved": "2025-11-23T00:00:00Z", "price": 131800}
+        ]
+      },
+      "currentPrice": {
+        "type": "Property",
+        "value": 131800,
+        "observedAt": "2025-11-23T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriCommodityPrice:VN:pepper_black",
+      "type": "AgriCommodityPrice",
+      "commodityId": {
+        "type": "Property",
+        "value": "pepper_black"
+      },
+      "name": {
+        "type": "Property",
+        "value": "Hồ tiêu đen"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Black Pepper"
+      },
+      "category": {
+        "type": "Property",
+        "value": "spices"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Hồ tiêu đen nguyên hạt, phổ biến tại Tây Nguyên và Đông Nam Bộ"
+      },
+      "priceUnit": {
+        "type": "Property",
+        "value": "VND/kg"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [107.2429, 11.9404]
+        }
+      },
+      "areaServed": {
+        "type": "Property",
+        "value": "Đắk Lắk, Bình Phước"
+      },
+      "priceHistory": {
+        "type": "Property",
+        "value": [
+          {"dateObserved": "2025-09-24T00:00:00Z", "price": 145000},
+          {"dateObserved": "2025-09-25T00:00:00Z", "price": 145500},
+          {"dateObserved": "2025-09-26T00:00:00Z", "price": 146000},
+          {"dateObserved": "2025-09-27T00:00:00Z", "price": 146500},
+          {"dateObserved": "2025-09-28T00:00:00Z", "price": 147000},
+          {"dateObserved": "2025-09-29T00:00:00Z", "price": 146800},
+          {"dateObserved": "2025-09-30T00:00:00Z", "price": 147500},
+          {"dateObserved": "2025-10-01T00:00:00Z", "price": 148000},
+          {"dateObserved": "2025-10-02T00:00:00Z", "price": 148500},
+          {"dateObserved": "2025-10-03T00:00:00Z", "price": 149000},
+          {"dateObserved": "2025-10-04T00:00:00Z", "price": 148800},
+          {"dateObserved": "2025-10-05T00:00:00Z", "price": 149500},
+          {"dateObserved": "2025-10-06T00:00:00Z", "price": 150000},
+          {"dateObserved": "2025-10-07T00:00:00Z", "price": 150500},
+          {"dateObserved": "2025-10-08T00:00:00Z", "price": 151000},
+          {"dateObserved": "2025-10-09T00:00:00Z", "price": 150800},
+          {"dateObserved": "2025-10-10T00:00:00Z", "price": 151500},
+          {"dateObserved": "2025-10-11T00:00:00Z", "price": 152000},
+          {"dateObserved": "2025-10-12T00:00:00Z", "price": 152500},
+          {"dateObserved": "2025-10-13T00:00:00Z", "price": 153000},
+          {"dateObserved": "2025-10-14T00:00:00Z", "price": 152800},
+          {"dateObserved": "2025-10-15T00:00:00Z", "price": 153500},
+          {"dateObserved": "2025-10-16T00:00:00Z", "price": 154000},
+          {"dateObserved": "2025-10-17T00:00:00Z", "price": 154500},
+          {"dateObserved": "2025-10-18T00:00:00Z", "price": 155000},
+          {"dateObserved": "2025-10-19T00:00:00Z", "price": 154800},
+          {"dateObserved": "2025-10-20T00:00:00Z", "price": 155500},
+          {"dateObserved": "2025-10-21T00:00:00Z", "price": 156000},
+          {"dateObserved": "2025-10-22T00:00:00Z", "price": 156500},
+          {"dateObserved": "2025-10-23T00:00:00Z", "price": 157000},
+          {"dateObserved": "2025-10-24T00:00:00Z", "price": 156800},
+          {"dateObserved": "2025-10-25T00:00:00Z", "price": 157500},
+          {"dateObserved": "2025-10-26T00:00:00Z", "price": 158000},
+          {"dateObserved": "2025-10-27T00:00:00Z", "price": 158500},
+          {"dateObserved": "2025-10-28T00:00:00Z", "price": 159000},
+          {"dateObserved": "2025-10-29T00:00:00Z", "price": 158800},
+          {"dateObserved": "2025-10-30T00:00:00Z", "price": 159500},
+          {"dateObserved": "2025-10-31T00:00:00Z", "price": 160000},
+          {"dateObserved": "2025-11-01T00:00:00Z", "price": 160500},
+          {"dateObserved": "2025-11-02T00:00:00Z", "price": 161000},
+          {"dateObserved": "2025-11-03T00:00:00Z", "price": 160800},
+          {"dateObserved": "2025-11-04T00:00:00Z", "price": 161500},
+          {"dateObserved": "2025-11-05T00:00:00Z", "price": 162000},
+          {"dateObserved": "2025-11-06T00:00:00Z", "price": 162500},
+          {"dateObserved": "2025-11-07T00:00:00Z", "price": 163000},
+          {"dateObserved": "2025-11-08T00:00:00Z", "price": 162800},
+          {"dateObserved": "2025-11-09T00:00:00Z", "price": 163500},
+          {"dateObserved": "2025-11-10T00:00:00Z", "price": 164000},
+          {"dateObserved": "2025-11-11T00:00:00Z", "price": 164500},
+          {"dateObserved": "2025-11-12T00:00:00Z", "price": 165000},
+          {"dateObserved": "2025-11-13T00:00:00Z", "price": 164800},
+          {"dateObserved": "2025-11-14T00:00:00Z", "price": 165500},
+          {"dateObserved": "2025-11-15T00:00:00Z", "price": 166000},
+          {"dateObserved": "2025-11-16T00:00:00Z", "price": 166500},
+          {"dateObserved": "2025-11-17T00:00:00Z", "price": 167000},
+          {"dateObserved": "2025-11-18T00:00:00Z", "price": 166800},
+          {"dateObserved": "2025-11-19T00:00:00Z", "price": 167500},
+          {"dateObserved": "2025-11-20T00:00:00Z", "price": 168000},
+          {"dateObserved": "2025-11-21T00:00:00Z", "price": 168500},
+          {"dateObserved": "2025-11-22T00:00:00Z", "price": 169000},
+          {"dateObserved": "2025-11-23T00:00:00Z", "price": 168800}
+        ]
+      },
+      "currentPrice": {
+        "type": "Property",
+        "value": 168800,
+        "observedAt": "2025-11-23T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriCommodityPrice:VN:rubber_latex",
+      "type": "AgriCommodityPrice",
+      "commodityId": {
+        "type": "Property",
+        "value": "rubber_latex"
+      },
+      "name": {
+        "type": "Property",
+        "value": "Cao su mủ nước"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Rubber Latex"
+      },
+      "category": {
+        "type": "Property",
+        "value": "industrial_crops"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Cao su mủ nước nguyên liệu, phổ biến tại Đông Nam Bộ và Tây Nguyên"
+      },
+      "priceUnit": {
+        "type": "Property",
+        "value": "VND/kg"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [106.6167, 11.5500]
+        }
+      },
+      "areaServed": {
+        "type": "Property",
+        "value": "Bình Dương, Bình Phước, Tây Ninh"
+      },
+      "priceHistory": {
+        "type": "Property",
+        "value": [
+          {"dateObserved": "2025-09-24T00:00:00Z", "price": 42000},
+          {"dateObserved": "2025-09-25T00:00:00Z", "price": 42200},
+          {"dateObserved": "2025-09-26T00:00:00Z", "price": 42400},
+          {"dateObserved": "2025-09-27T00:00:00Z", "price": 42600},
+          {"dateObserved": "2025-09-28T00:00:00Z", "price": 42800},
+          {"dateObserved": "2025-09-29T00:00:00Z", "price": 43000},
+          {"dateObserved": "2025-09-30T00:00:00Z", "price": 43200},
+          {"dateObserved": "2025-10-01T00:00:00Z", "price": 43400},
+          {"dateObserved": "2025-10-02T00:00:00Z", "price": 43600},
+          {"dateObserved": "2025-10-03T00:00:00Z", "price": 43800},
+          {"dateObserved": "2025-10-04T00:00:00Z", "price": 44000},
+          {"dateObserved": "2025-10-05T00:00:00Z", "price": 44200},
+          {"dateObserved": "2025-10-06T00:00:00Z", "price": 44400},
+          {"dateObserved": "2025-10-07T00:00:00Z", "price": 44600},
+          {"dateObserved": "2025-10-08T00:00:00Z", "price": 44800},
+          {"dateObserved": "2025-10-09T00:00:00Z", "price": 45000},
+          {"dateObserved": "2025-10-10T00:00:00Z", "price": 44800},
+          {"dateObserved": "2025-10-11T00:00:00Z", "price": 45200},
+          {"dateObserved": "2025-10-12T00:00:00Z", "price": 45400},
+          {"dateObserved": "2025-10-13T00:00:00Z", "price": 45600},
+          {"dateObserved": "2025-10-14T00:00:00Z", "price": 45800},
+          {"dateObserved": "2025-10-15T00:00:00Z", "price": 46000},
+          {"dateObserved": "2025-10-16T00:00:00Z", "price": 45800},
+          {"dateObserved": "2025-10-17T00:00:00Z", "price": 46200},
+          {"dateObserved": "2025-10-18T00:00:00Z", "price": 46400},
+          {"dateObserved": "2025-10-19T00:00:00Z", "price": 46600},
+          {"dateObserved": "2025-10-20T00:00:00Z", "price": 46800},
+          {"dateObserved": "2025-10-21T00:00:00Z", "price": 47000},
+          {"dateObserved": "2025-10-22T00:00:00Z", "price": 46800},
+          {"dateObserved": "2025-10-23T00:00:00Z", "price": 47200},
+          {"dateObserved": "2025-10-24T00:00:00Z", "price": 47400},
+          {"dateObserved": "2025-10-25T00:00:00Z", "price": 47600},
+          {"dateObserved": "2025-10-26T00:00:00Z", "price": 47800},
+          {"dateObserved": "2025-10-27T00:00:00Z", "price": 48000},
+          {"dateObserved": "2025-10-28T00:00:00Z", "price": 47800},
+          {"dateObserved": "2025-10-29T00:00:00Z", "price": 48200},
+          {"dateObserved": "2025-10-30T00:00:00Z", "price": 48400},
+          {"dateObserved": "2025-10-31T00:00:00Z", "price": 48600},
+          {"dateObserved": "2025-11-01T00:00:00Z", "price": 48800},
+          {"dateObserved": "2025-11-02T00:00:00Z", "price": 49000},
+          {"dateObserved": "2025-11-03T00:00:00Z", "price": 48800},
+          {"dateObserved": "2025-11-04T00:00:00Z", "price": 49200},
+          {"dateObserved": "2025-11-05T00:00:00Z", "price": 49400},
+          {"dateObserved": "2025-11-06T00:00:00Z", "price": 49600},
+          {"dateObserved": "2025-11-07T00:00:00Z", "price": 49800},
+          {"dateObserved": "2025-11-08T00:00:00Z", "price": 50000},
+          {"dateObserved": "2025-11-09T00:00:00Z", "price": 49800},
+          {"dateObserved": "2025-11-10T00:00:00Z", "price": 50200},
+          {"dateObserved": "2025-11-11T00:00:00Z", "price": 50400},
+          {"dateObserved": "2025-11-12T00:00:00Z", "price": 50600},
+          {"dateObserved": "2025-11-13T00:00:00Z", "price": 50800},
+          {"dateObserved": "2025-11-14T00:00:00Z", "price": 51000},
+          {"dateObserved": "2025-11-15T00:00:00Z", "price": 50800},
+          {"dateObserved": "2025-11-16T00:00:00Z", "price": 51200},
+          {"dateObserved": "2025-11-17T00:00:00Z", "price": 51400},
+          {"dateObserved": "2025-11-18T00:00:00Z", "price": 51600},
+          {"dateObserved": "2025-11-19T00:00:00Z", "price": 51800},
+          {"dateObserved": "2025-11-20T00:00:00Z", "price": 52000},
+          {"dateObserved": "2025-11-21T00:00:00Z", "price": 51800},
+          {"dateObserved": "2025-11-22T00:00:00Z", "price": 52200},
+          {"dateObserved": "2025-11-23T00:00:00Z", "price": 52000}
+        ]
+      },
+      "currentPrice": {
+        "type": "Property",
+        "value": 52000,
+        "observedAt": "2025-11-23T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriCommodityPrice:VN:cashew_nut",
+      "type": "AgriCommodityPrice",
+      "commodityId": {
+        "type": "Property",
+        "value": "cashew_nut"
+      },
+      "name": {
+        "type": "Property",
+        "value": "Hạt điều nhân"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Cashew Nut"
+      },
+      "category": {
+        "type": "Property",
+        "value": "nuts"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Hạt điều nhân loại W320, phổ biến tại Bình Phước"
+      },
+      "priceUnit": {
+        "type": "Property",
+        "value": "VND/kg"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [106.9167, 11.7500]
+        }
+      },
+      "areaServed": {
+        "type": "Property",
+        "value": "Bình Phước, Đồng Nai"
+      },
+      "priceHistory": {
+        "type": "Property",
+        "value": [
+          {"dateObserved": "2025-09-24T00:00:00Z", "price": 285000},
+          {"dateObserved": "2025-09-25T00:00:00Z", "price": 286000},
+          {"dateObserved": "2025-09-26T00:00:00Z", "price": 287000},
+          {"dateObserved": "2025-09-27T00:00:00Z", "price": 288000},
+          {"dateObserved": "2025-09-28T00:00:00Z", "price": 289000},
+          {"dateObserved": "2025-09-29T00:00:00Z", "price": 290000},
+          {"dateObserved": "2025-09-30T00:00:00Z", "price": 291000},
+          {"dateObserved": "2025-10-01T00:00:00Z", "price": 292000},
+          {"dateObserved": "2025-10-02T00:00:00Z", "price": 293000},
+          {"dateObserved": "2025-10-03T00:00:00Z", "price": 294000},
+          {"dateObserved": "2025-10-04T00:00:00Z", "price": 295000},
+          {"dateObserved": "2025-10-05T00:00:00Z", "price": 296000},
+          {"dateObserved": "2025-10-06T00:00:00Z", "price": 297000},
+          {"dateObserved": "2025-10-07T00:00:00Z", "price": 298000},
+          {"dateObserved": "2025-10-08T00:00:00Z", "price": 299000},
+          {"dateObserved": "2025-10-09T00:00:00Z", "price": 300000},
+          {"dateObserved": "2025-10-10T00:00:00Z", "price": 299500},
+          {"dateObserved": "2025-10-11T00:00:00Z", "price": 301000},
+          {"dateObserved": "2025-10-12T00:00:00Z", "price": 302000},
+          {"dateObserved": "2025-10-13T00:00:00Z", "price": 303000},
+          {"dateObserved": "2025-10-14T00:00:00Z", "price": 304000},
+          {"dateObserved": "2025-10-15T00:00:00Z", "price": 305000},
+          {"dateObserved": "2025-10-16T00:00:00Z", "price": 304500},
+          {"dateObserved": "2025-10-17T00:00:00Z", "price": 306000},
+          {"dateObserved": "2025-10-18T00:00:00Z", "price": 307000},
+          {"dateObserved": "2025-10-19T00:00:00Z", "price": 308000},
+          {"dateObserved": "2025-10-20T00:00:00Z", "price": 309000},
+          {"dateObserved": "2025-10-21T00:00:00Z", "price": 310000},
+          {"dateObserved": "2025-10-22T00:00:00Z", "price": 309500},
+          {"dateObserved": "2025-10-23T00:00:00Z", "price": 311000},
+          {"dateObserved": "2025-10-24T00:00:00Z", "price": 312000},
+          {"dateObserved": "2025-10-25T00:00:00Z", "price": 313000},
+          {"dateObserved": "2025-10-26T00:00:00Z", "price": 314000},
+          {"dateObserved": "2025-10-27T00:00:00Z", "price": 315000},
+          {"dateObserved": "2025-10-28T00:00:00Z", "price": 314500},
+          {"dateObserved": "2025-10-29T00:00:00Z", "price": 316000},
+          {"dateObserved": "2025-10-30T00:00:00Z", "price": 317000},
+          {"dateObserved": "2025-10-31T00:00:00Z", "price": 318000},
+          {"dateObserved": "2025-11-01T00:00:00Z", "price": 319000},
+          {"dateObserved": "2025-11-02T00:00:00Z", "price": 320000},
+          {"dateObserved": "2025-11-03T00:00:00Z", "price": 319500},
+          {"dateObserved": "2025-11-04T00:00:00Z", "price": 321000},
+          {"dateObserved": "2025-11-05T00:00:00Z", "price": 322000},
+          {"dateObserved": "2025-11-06T00:00:00Z", "price": 323000},
+          {"dateObserved": "2025-11-07T00:00:00Z", "price": 324000},
+          {"dateObserved": "2025-11-08T00:00:00Z", "price": 325000},
+          {"dateObserved": "2025-11-09T00:00:00Z", "price": 324500},
+          {"dateObserved": "2025-11-10T00:00:00Z", "price": 326000},
+          {"dateObserved": "2025-11-11T00:00:00Z", "price": 327000},
+          {"dateObserved": "2025-11-12T00:00:00Z", "price": 328000},
+          {"dateObserved": "2025-11-13T00:00:00Z", "price": 329000},
+          {"dateObserved": "2025-11-14T00:00:00Z", "price": 330000},
+          {"dateObserved": "2025-11-15T00:00:00Z", "price": 329500},
+          {"dateObserved": "2025-11-16T00:00:00Z", "price": 331000},
+          {"dateObserved": "2025-11-17T00:00:00Z", "price": 332000},
+          {"dateObserved": "2025-11-18T00:00:00Z", "price": 333000},
+          {"dateObserved": "2025-11-19T00:00:00Z", "price": 334000},
+          {"dateObserved": "2025-11-20T00:00:00Z", "price": 335000},
+          {"dateObserved": "2025-11-21T00:00:00Z", "price": 334500},
+          {"dateObserved": "2025-11-22T00:00:00Z", "price": 336000},
+          {"dateObserved": "2025-11-23T00:00:00Z", "price": 335500}
+        ]
+      },
+      "currentPrice": {
+        "type": "Property",
+        "value": 335500,
+        "observedAt": "2025-11-23T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriCommodityPrice:VN:dragon_fruit",
+      "type": "AgriCommodityPrice",
+      "commodityId": {
+        "type": "Property",
+        "value": "dragon_fruit"
+      },
+      "name": {
+        "type": "Property",
+        "value": "Thanh long ruột đỏ"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Red Dragon Fruit"
+      },
+      "category": {
+        "type": "Property",
+        "value": "fruits"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Thanh long ruột đỏ loại 1, phổ biến tại Bình Thuận và Long An"
+      },
+      "priceUnit": {
+        "type": "Property",
+        "value": "VND/kg"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [108.1000, 10.9333]
+        }
+      },
+      "areaServed": {
+        "type": "Property",
+        "value": "Bình Thuận, Long An"
+      },
+      "priceHistory": {
+        "type": "Property",
+        "value": [
+          {"dateObserved": "2025-09-24T00:00:00Z", "price": 25000},
+          {"dateObserved": "2025-09-25T00:00:00Z", "price": 25500},
+          {"dateObserved": "2025-09-26T00:00:00Z", "price": 26000},
+          {"dateObserved": "2025-09-27T00:00:00Z", "price": 26500},
+          {"dateObserved": "2025-09-28T00:00:00Z", "price": 27000},
+          {"dateObserved": "2025-09-29T00:00:00Z", "price": 26800},
+          {"dateObserved": "2025-09-30T00:00:00Z", "price": 27500},
+          {"dateObserved": "2025-10-01T00:00:00Z", "price": 28000},
+          {"dateObserved": "2025-10-02T00:00:00Z", "price": 28500},
+          {"dateObserved": "2025-10-03T00:00:00Z", "price": 29000},
+          {"dateObserved": "2025-10-04T00:00:00Z", "price": 28800},
+          {"dateObserved": "2025-10-05T00:00:00Z", "price": 29500},
+          {"dateObserved": "2025-10-06T00:00:00Z", "price": 30000},
+          {"dateObserved": "2025-10-07T00:00:00Z", "price": 30500},
+          {"dateObserved": "2025-10-08T00:00:00Z", "price": 31000},
+          {"dateObserved": "2025-10-09T00:00:00Z", "price": 30800},
+          {"dateObserved": "2025-10-10T00:00:00Z", "price": 31500},
+          {"dateObserved": "2025-10-11T00:00:00Z", "price": 32000},
+          {"dateObserved": "2025-10-12T00:00:00Z", "price": 32500},
+          {"dateObserved": "2025-10-13T00:00:00Z", "price": 33000},
+          {"dateObserved": "2025-10-14T00:00:00Z", "price": 32800},
+          {"dateObserved": "2025-10-15T00:00:00Z", "price": 33500},
+          {"dateObserved": "2025-10-16T00:00:00Z", "price": 34000},
+          {"dateObserved": "2025-10-17T00:00:00Z", "price": 34500},
+          {"dateObserved": "2025-10-18T00:00:00Z", "price": 35000},
+          {"dateObserved": "2025-10-19T00:00:00Z", "price": 34800},
+          {"dateObserved": "2025-10-20T00:00:00Z", "price": 35500},
+          {"dateObserved": "2025-10-21T00:00:00Z", "price": 36000},
+          {"dateObserved": "2025-10-22T00:00:00Z", "price": 36500},
+          {"dateObserved": "2025-10-23T00:00:00Z", "price": 37000},
+          {"dateObserved": "2025-10-24T00:00:00Z", "price": 36800},
+          {"dateObserved": "2025-10-25T00:00:00Z", "price": 37500},
+          {"dateObserved": "2025-10-26T00:00:00Z", "price": 38000},
+          {"dateObserved": "2025-10-27T00:00:00Z", "price": 38500},
+          {"dateObserved": "2025-10-28T00:00:00Z", "price": 39000},
+          {"dateObserved": "2025-10-29T00:00:00Z", "price": 38800},
+          {"dateObserved": "2025-10-30T00:00:00Z", "price": 39500},
+          {"dateObserved": "2025-10-31T00:00:00Z", "price": 40000},
+          {"dateObserved": "2025-11-01T00:00:00Z", "price": 40500},
+          {"dateObserved": "2025-11-02T00:00:00Z", "price": 41000},
+          {"dateObserved": "2025-11-03T00:00:00Z", "price": 40800},
+          {"dateObserved": "2025-11-04T00:00:00Z", "price": 41500},
+          {"dateObserved": "2025-11-05T00:00:00Z", "price": 42000},
+          {"dateObserved": "2025-11-06T00:00:00Z", "price": 42500},
+          {"dateObserved": "2025-11-07T00:00:00Z", "price": 43000},
+          {"dateObserved": "2025-11-08T00:00:00Z", "price": 42800},
+          {"dateObserved": "2025-11-09T00:00:00Z", "price": 43500},
+          {"dateObserved": "2025-11-10T00:00:00Z", "price": 44000},
+          {"dateObserved": "2025-11-11T00:00:00Z", "price": 44500},
+          {"dateObserved": "2025-11-12T00:00:00Z", "price": 45000},
+          {"dateObserved": "2025-11-13T00:00:00Z", "price": 44800},
+          {"dateObserved": "2025-11-14T00:00:00Z", "price": 45500},
+          {"dateObserved": "2025-11-15T00:00:00Z", "price": 46000},
+          {"dateObserved": "2025-11-16T00:00:00Z", "price": 46500},
+          {"dateObserved": "2025-11-17T00:00:00Z", "price": 47000},
+          {"dateObserved": "2025-11-18T00:00:00Z", "price": 46800},
+          {"dateObserved": "2025-11-19T00:00:00Z", "price": 47500},
+          {"dateObserved": "2025-11-20T00:00:00Z", "price": 48000},
+          {"dateObserved": "2025-11-21T00:00:00Z", "price": 48500},
+          {"dateObserved": "2025-11-22T00:00:00Z", "price": 49000},
+          {"dateObserved": "2025-11-23T00:00:00Z", "price": 48800}
+        ]
+      },
+      "currentPrice": {
+        "type": "Property",
+        "value": 48800,
+        "observedAt": "2025-11-23T00:00:00Z"
+      }
+    }
+  ]
+}

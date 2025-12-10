@@ -10,10 +10,14 @@ services:
       - DATABASE_URL=sqlite+aiosqlite:///./ictu_openagri.db
       - CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
       - ENVIRONMENT=development
+      - ORION_URL=http://orion:1026
+      - QUANTUMLEAP_URL=http://quantumleap:8668
     volumes:
       - ./backend:/app
     networks:
       - ictu-network
+    depends_on:
+      - orion
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: unless-stopped
 
@@ -37,6 +41,101 @@ services:
       - backend
     restart: unless-stopped
 
+  # ==================== FIWARE Components ====================
+
+  # MongoDB - Database for Orion Context Broker
+  # Using MongoDB 4.4 - stable version that supports OP_QUERY required by Orion-LD
+  # MongoDB 6.0+ removed OP_QUERY support, but Orion-LD still uses legacy C++ driver
+  mongo-db:
+    image: mongo:4.4
+    hostname: mongo-db
+    container_name: fiware-mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - ictu-network
+    volumes:
+      - mongo-db-data:/data/db
+    restart: unless-stopped
+
+  # Orion Context Broker - NGSI-LD (Latest version)
+  # Using latest Orion-LD which supports modern MongoDB
+  orion:
+    image: fiware/orion-ld:latest
+    hostname: orion
+    container_name: fiware-orion
+    depends_on:
+      - mongo-db
+    ports:
+      - "1026:1026"
+    networks:
+      - ictu-network
+    environment:
+      - ORIONLD_MONGO_HOST=mongo-db
+      - ORIONLD_MONGO_DB=orionld
+      - ORIONLD_LOG_LEVEL=WARN
+    command: -dbhost mongo-db -logLevel WARN
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1026/version"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # CrateDB - Time-series database for QuantumLeap (Latest version)
+  crate-db:
+    image: crate:latest
+    hostname: crate-db
+    container_name: fiware-crate
+    ports:
+      - "4200:4200"
+      - "4300:4300"
+    networks:
+      - ictu-network
+    command: crate -Cauth.host_based.enabled=false -Ccluster.name=openagri-cluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    volumes:
+      - crate-db-data:/data
+    environment:
+      - CRATE_HEAP_SIZE=1g
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # QuantumLeap - Time-series data handler (Latest version)
+  quantumleap:
+    image: orchestracities/quantumleap:latest
+    hostname: quantumleap
+    container_name: fiware-quantumleap
+    depends_on:
+      crate-db:
+        condition: service_healthy
+      orion:
+        condition: service_healthy
+    ports:
+      - "8668:8668"
+    networks:
+      - ictu-network
+    environment:
+      - CRATE_HOST=crate-db
+      - CRATE_PORT=4200
+      - LOGLEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8668/v2/version"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
 networks:
   ictu-network:
     driver: bridge
+
+volumes:
+  mongo-db-data:
+  crate-db-data:

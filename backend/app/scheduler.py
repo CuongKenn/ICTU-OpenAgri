@@ -16,21 +16,92 @@ from app.infrastructure.external_services.sentinel_client import search_sentinel
 from app.infrastructure.image_processing.soil_moisture_processing import find_s1_band_path, compute_soil_moisture_proxy
 from app.infrastructure.repositories.satellite_repository_impl import SatelliteRepositoryImpl
 from app.domain.entities.farm import Coordinate
+from app.infrastructure.config.settings import get_settings
+from app.infrastructure.external_services.fiware_client import (
+    FiwareClient,
+    sync_farm_to_fiware,
+    sync_observation_to_fiware
+)
 
 scheduler = AsyncIOScheduler()
+settings = get_settings()
 
 # Retry configuration
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 60  # Wait 1 minute between retries
 
 
-async def sync_farm_with_retry(use_case: CalculateNDVIUseCase, farm_id: int, bbox: list, db):
+async def sync_to_fiware_if_enabled(
+    farm,
+    data_type: str,
+    value: float,
+    acquisition_date: datetime.date
+):
+    """
+    Sync observation data to FIWARE if enabled in settings.
+    
+    Args:
+        farm: Farm model instance
+        data_type: Type of data ('ndvi' or 'soilMoisture')
+        value: Measured value
+        acquisition_date: Date of observation
+    """
+    if not settings.FIWARE_ENABLED:
+        return
+    
+    try:
+        fiware = FiwareClient()
+        
+        # Check FIWARE health first
+        if not await fiware.health_check():
+            logger.warning("FIWARE Orion is not available, skipping sync")
+            return
+        
+        # Sync farm entity
+        coords = farm.coordinates if hasattr(farm, 'coordinates') else []
+        await sync_farm_to_fiware(
+            fiware_client=fiware,
+            farm_id=farm.id,
+            farm_name=farm.name,
+            coordinates=coords,
+            crop_type=getattr(farm, 'crop_type', None)
+        )
+        
+        # Sync observation
+        observation_datetime = datetime.datetime.combine(
+            acquisition_date,
+            datetime.time(12, 0, 0)  # Default to noon
+        )
+        await sync_observation_to_fiware(
+            fiware_client=fiware,
+            farm_id=farm.id,
+            observation_type=data_type,
+            value=value,
+            observed_at=observation_datetime
+        )
+        
+        logger.info(f"Synced {data_type} to FIWARE for farm {farm.id}")
+    except Exception as e:
+        logger.warning(f"Failed to sync to FIWARE for farm {farm.id}: {e}")
+
+
+async def sync_farm_with_retry(use_case: CalculateNDVIUseCase, farm_id: int, bbox: list, db, farm=None):
     """
     Sync NDVI data for a single farm with retry mechanism.
     """
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            await use_case.sync_latest_data_for_farm(farm_id, bbox, db)
+            result = await use_case.sync_latest_data_for_farm(farm_id, bbox, db)
+            
+            # Sync to FIWARE if we have the farm and valid result
+            if farm and result and hasattr(result, 'mean_value'):
+                await sync_to_fiware_if_enabled(
+                    farm=farm,
+                    data_type='ndvi',
+                    value=result.mean_value,
+                    acquisition_date=result.acquisition_date
+                )
+            
             return True
         except Exception as e:
             logger.warning(f"Attempt {attempt}/{MAX_RETRIES} failed for farm {farm_id}: {e}")
@@ -41,7 +112,7 @@ async def sync_farm_with_retry(use_case: CalculateNDVIUseCase, farm_id: int, bbo
                 return False
 
 
-async def sync_soil_moisture_for_farm(farm_id: int, bbox: list, db):
+async def sync_soil_moisture_for_farm(farm_id: int, bbox: list, db, farm=None):
     """
     Sync Soil Moisture data for a single farm using Sentinel-1.
     """
@@ -102,6 +173,15 @@ async def sync_soil_moisture_for_farm(farm_id: int, bbox: list, db):
             await repo.save_data(new_record)
             logger.info(f"Saved Soil Moisture data for farm {farm_id} on {acquisition_date}")
             
+            # Sync to FIWARE
+            if farm:
+                await sync_to_fiware_if_enabled(
+                    farm=farm,
+                    data_type='soilMoisture',
+                    value=mean_val,
+                    acquisition_date=acquisition_date
+                )
+            
             # Cleanup
             import shutil
             try:
@@ -154,7 +234,7 @@ async def update_all_farms_ndvi():
                 lngs = [c['lng'] for c in coords]
                 bbox = [min(lngs), min(lats), max(lngs), max(lats)]
                 
-                success = await sync_farm_with_retry(use_case, farm.id, bbox, db)
+                success = await sync_farm_with_retry(use_case, farm.id, bbox, db, farm=farm)
                 if success:
                     success_count += 1
                 else:
@@ -190,7 +270,7 @@ async def update_all_farms_soil_moisture():
                 lngs = [c['lng'] for c in coords]
                 bbox = [min(lngs), min(lats), max(lngs), max(lats)]
                 
-                success = await sync_soil_moisture_for_farm(farm.id, bbox, db)
+                success = await sync_soil_moisture_for_farm(farm.id, bbox, db, farm=farm)
                 if success:
                     success_count += 1
                 else:

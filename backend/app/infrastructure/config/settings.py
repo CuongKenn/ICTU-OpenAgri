@@ -52,6 +52,13 @@ class Settings(BaseSettings):
     OUTPUT_DIR: str = "./output"
     MAX_PRODUCTS: int = 20
 
+    # FIWARE Configuration
+    ORION_URL: str = "http://localhost:1026"
+    QUANTUMLEAP_URL: str = "http://localhost:8668"
+    FIWARE_SERVICE: str = "openagri"
+    FIWARE_SERVICEPATH: str = "/farms"
+    FIWARE_ENABLED: bool = True
+
 
 @lru_cache()
 def get_settings() -> Settings:

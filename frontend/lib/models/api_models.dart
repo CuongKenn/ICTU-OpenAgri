@@ -810,3 +810,69 @@ class CommodityPriceDetailResponse {
     );
   }
 }
+
+// ---------------- Soil Data ----------------
+
+class SoilAnalysisModel {
+  final String provinceName;
+  final double? pH;
+  final double? nitrogen;
+  final double? phosphorus;
+  final double? potassium;
+  final double? organicMatter;
+  final double? moisture;
+  final String? soilType;
+  final List<String>? recommendedCrops;
+  final LatLng? coordinate;
+
+  SoilAnalysisModel({
+    required this.provinceName,
+    this.pH,
+    this.nitrogen,
+    this.phosphorus,
+    this.potassium,
+    this.organicMatter,
+    this.moisture,
+    this.soilType,
+    this.recommendedCrops,
+    this.coordinate,
+  });
+
+  factory SoilAnalysisModel.fromNgsiEntity(Map<String, dynamic> json) {
+    final location = json['location']?['value'];
+    LatLng? coord;
+    if (location is Map && location['coordinates'] is List) {
+      final coords = location['coordinates'] as List;
+      if (coords.length == 2) {
+        coord = LatLng(
+          (coords[1] as num).toDouble(),
+          (coords[0] as num).toDouble(),
+        );
+      }
+    }
+
+    double? _propNum(String key) {
+      final prop = json[key];
+      if (prop is Map && prop['value'] != null) {
+        return (prop['value'] as num).toDouble();
+      }
+      return null;
+    }
+
+    return SoilAnalysisModel(
+      provinceName:
+          json['provinceName']?['value']?.toString() ?? 'Không rõ địa phương',
+      pH: _propNum('pH'),
+      nitrogen: _propNum('nitrogen'),
+      phosphorus: _propNum('phosphorus'),
+      potassium: _propNum('potassium'),
+      organicMatter: _propNum('organicMatter'),
+      moisture: _propNum('moisture'),
+      soilType: json['soilType']?['value']?.toString(),
+      recommendedCrops: (json['recommendedCrops']?['value'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
+      coordinate: coord,
+    );
+  }
+}

@@ -7,9 +7,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
-import '../viewmodels/pest_forecast_viewmodel.dart';
 import '../viewmodels/satellite_monitoring_viewmodel.dart';
-import '../widgets/pest_risk_card.dart';
 
 class SatelliteMonitoringScreen extends StatefulWidget {
   final String? initialFieldId;
@@ -27,7 +25,6 @@ class _SatelliteMonitoringScreenState
       DraggableScrollableController();
   VoidCallback? _fieldListener;
   SatelliteMonitoringViewModel? _satelliteVM;
-  PestForecastViewModel? _pestVM;
 
   @override
   void initState() {
@@ -35,17 +32,10 @@ class _SatelliteMonitoringScreenState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _satelliteVM = context.read<SatelliteMonitoringViewModel>();
-      _pestVM = context.read<PestForecastViewModel>();
       _satelliteVM!.initData(initialFieldId: widget.initialFieldId);
 
       _fieldListener = () {
         if (!mounted) return;
-        if (_satelliteVM!.selectedField != null && _pestVM != null) {
-          _pestVM!.fetchPestRiskForecast(
-            latitude: _satelliteVM!.selectedField!.center.latitude,
-            longitude: _satelliteVM!.selectedField!.center.longitude,
-          );
-        }
       };
       _satelliteVM!.addListener(_fieldListener!);
 
@@ -547,8 +537,8 @@ class _SatelliteMonitoringScreenState
                     _buildNDVIChart(viewModel),
                     const SizedBox(height: 24),
 
-                    // Pest Warnings
-                    _buildPestWarnings(),
+                    // Soil Data (replace pest warnings)
+                    _buildSoilDataSection(viewModel),
                     const SizedBox(height: 24),
 
                     // Field Details
@@ -805,63 +795,122 @@ class _SatelliteMonitoringScreenState
     );
   }
 
-  Widget _buildPestWarnings() {
-    return Consumer<PestForecastViewModel>(
-      builder: (context, viewModel, child) {
-        if (viewModel.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+  Widget _buildSoilDataSection(SatelliteMonitoringViewModel viewModel) {
+    final soil = viewModel.nearestSoilData();
+    if (soil == null) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Text(
+          'Chưa có dữ liệu đất cho khu vực này',
+          style: TextStyle(color: Colors.grey),
+        ),
+      );
+    }
 
-        final forecast = viewModel.forecast;
-        if (forecast == null || forecast.warnings.isEmpty) {
-          return const SizedBox.shrink();
-        }
+    final distanceKm = viewModel.distanceToSoil(soil);
 
-        final warnings = forecast.warnings
-            .where((w) => w.riskLevel == 'high' || w.riskLevel == 'medium')
-            .toList();
-
-        if (warnings.isEmpty) return const SizedBox.shrink();
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    Widget _infoRow(String label, String value) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                const Icon(Icons.warning_amber, color: Colors.orange, size: 20),
-                const SizedBox(width: 8),
+            Text(label,
+                style: TextStyle(
+                    fontSize: 13, color: Colors.grey[700], height: 1.2)),
+            const SizedBox(width: 12),
+            Flexible(
+              child: Text(
+                value,
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF111813),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: const [
+            Icon(Icons.terrain, color: Color(0xFF0BDA50), size: 20),
+            SizedBox(width: 8),
+            Text(
+              'Dữ liệu đất (gần nhất)',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF111813),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _infoRow('Tỉnh/TP', soil.provinceName),
+              if (distanceKm != null)
+                _infoRow('Khoảng cách',
+                    '${distanceKm.toStringAsFixed(1)} km'),
+              _infoRow('pH', soil.pH != null ? soil.pH!.toStringAsFixed(1) : '-'),
+              _infoRow(
+                  'Nitơ (g/kg)', soil.nitrogen != null ? soil.nitrogen!.toStringAsFixed(2) : '-'),
+              _infoRow('Lân (g/kg)',
+                  soil.phosphorus != null ? soil.phosphorus!.toStringAsFixed(2) : '-'),
+              _infoRow('Kali (g/kg)',
+                  soil.potassium != null ? soil.potassium!.toStringAsFixed(2) : '-'),
+              _infoRow('% hữu cơ',
+                  soil.organicMatter != null ? soil.organicMatter!.toStringAsFixed(1) : '-'),
+              _infoRow('Độ ẩm (%)',
+                  soil.moisture != null ? soil.moisture!.toStringAsFixed(1) : '-'),
+              _infoRow('Loại đất', soil.soilType ?? '-'),
+              if (soil.recommendedCrops != null && soil.recommendedCrops!.isNotEmpty) ...[
+                const SizedBox(height: 8),
                 const Text(
-                  'Cảnh báo sâu bệnh',
+                  'Cây trồng khuyến nghị',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                     color: Color(0xFF111813),
                   ),
                 ),
-                const Spacer(),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.orange.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${warnings.length} cảnh báo',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Colors.orange,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: soil.recommendedCrops!
+                      .take(4)
+                      .map((c) => Chip(
+                            backgroundColor: const Color(0xFFE8F8EE),
+                            label: Text(c.toString(),
+                                style: const TextStyle(
+                                    color: Color(0xFF0BDA50), fontSize: 12)),
+                          ))
+                      .toList(),
                 ),
               ],
-            ),
-            const SizedBox(height: 12),
-            ...warnings.map((w) => PestRiskCard(warning: w)),
-          ],
-        );
-      },
+            ],
+          ),
+        ),
+      ],
     );
   }
 
