@@ -13,7 +13,7 @@ class SatelliteDataModel(Base):
     __tablename__ = "satellite_data"
 
     id = Column(Integer, primary_key=True, index=True)
-    farm_id = Column(Integer, ForeignKey("farms.id"), nullable=False, index=True)
+    farm_id = Column(Integer, ForeignKey("farms.id", ondelete="CASCADE"), nullable=False, index=True)
     
     # Date of the satellite image acquisition
     acquisition_date = Column(Date, nullable=False, index=True)
