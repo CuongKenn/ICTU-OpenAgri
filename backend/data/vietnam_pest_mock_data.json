@@ -1,145 +1,1124 @@
 {
-  "location": {
-    "name": "Đồng Tháp",
-    "latitude": 10.4938,
-    "longitude": 105.6881,
-    "region": "Đồng bằng sông Cửu Long"
-  },
-  "pest_data": {
-    "Nilaparvata lugens": {
-      "common_name_vi": "Rầy nâu",
-      "common_name_en": "Brown planthopper",
-      "severity": "high",
-      "yearly_occurrences": {
-        "2015": 45,
-        "2016": 28,
-        "2017": 52,
-        "2018": 31,
-        "2019": 38,
-        "2020": 67,
-        "2021": 42,
-        "2022": 35,
-        "2023": 48,
-        "2024": 29,
-        "2025": 15
-      },
-      "peak_seasons": [
-        "Vụ Đông Xuân (tháng 12-3)",
-        "Vụ Hè Thu (tháng 6-8)"
-      ],
-      "damage_level": "Rất nghiêm trọng - có thể gây mất trắng"
-    },
-    "Sogatella furcifera": {
-      "common_name_vi": "Rầy lưng trắng",
-      "common_name_en": "White-backed planthopper",
-      "severity": "medium",
-      "yearly_occurrences": {
-        "2015": 22,
-        "2016": 18,
-        "2017": 31,
-        "2018": 25,
-        "2019": 28,
-        "2020": 35,
-        "2021": 27,
-        "2022": 23,
-        "2023": 29,
-        "2024": 21,
-        "2025": 12
-      },
-      "peak_seasons": [
-        "Vụ Hè Thu"
-      ],
-      "damage_level": "Trung bình - gây vàng lá, chết bông"
-    },
-    "Chilo suppressalis": {
-      "common_name_vi": "Sâu đục thân lúa",
-      "common_name_en": "Striped stem borer",
-      "severity": "high",
-      "yearly_occurrences": {
-        "2015": 38,
-        "2016": 42,
-        "2017": 35,
-        "2018": 48,
-        "2019": 41,
-        "2020": 33,
-        "2021": 45,
-        "2022": 39,
-        "2023": 37,
-        "2024": 32,
-        "2025": 18
-      },
-      "peak_seasons": [
-        "Vụ Đông Xuân",
-        "Vụ Hè Thu"
-      ],
-      "damage_level": "Nghiêm trọng - gây lóng đòng, chết bông"
-    },
-    "Scirpophaga incertulas": {
-      "common_name_vi": "Sâu cuốn lá nhỏ",
-      "common_name_en": "Yellow stem borer",
-      "severity": "medium",
-      "yearly_occurrences": {
-        "2015": 15,
-        "2016": 19,
-        "2017": 23,
-        "2018": 18,
-        "2019": 21,
-        "2020": 26,
-        "2021": 22,
-        "2022": 24,
-        "2023": 20,
-        "2024": 17,
-        "2025": 9
-      },
-      "peak_seasons": [
-        "Vụ Hè Thu"
-      ],
-      "damage_level": "Trung bình - làm héo lá, giảm năng suất"
-    },
-    "Cnaphalocrocis medinalis": {
-      "common_name_vi": "Sâu cuốn lá lúa",
-      "common_name_en": "Rice leaf folder",
-      "severity": "medium",
-      "yearly_occurrences": {
-        "2016": 12,
-        "2017": 16,
-        "2018": 14,
-        "2019": 19,
-        "2020": 21,
-        "2021": 18,
-        "2022": 15,
-        "2023": 17,
-        "2024": 13,
-        "2025": 7
-      },
-      "peak_seasons": [
-        "Vụ Hè Thu"
-      ],
-      "damage_level": "Trung bình - cuốn lá, giảm quang hợp"
+  "@context": [
+    "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+    "https://smartdatamodels.org/context.jsonld",
+    {
+      "AgriPest": "https://smartdatamodels.org/dataModel.Agrifood/AgriPest",
+      "AgriDisease": "https://smartdatamodels.org/dataModel.Agrifood/AgriDisease",
+      "AgriFarm": "https://smartdatamodels.org/dataModel.Agrifood/AgriFarm",
+      "PestObservation": "https://smartdatamodels.org/dataModel.Agrifood/PestObservation",
+      "scientificName": "https://smartdatamodels.org/dataModel.Agrifood/scientificName",
+      "commonName": "https://smartdatamodels.org/dataModel.Agrifood/commonName",
+      "pestStatus": "https://smartdatamodels.org/dataModel.Agrifood/pestStatus",
+      "harmfulEffect": "https://smartdatamodels.org/dataModel.Agrifood/harmfulEffect",
+      "affectedCrop": "https://smartdatamodels.org/dataModel.Agrifood/affectedCrop",
+      "severity": "https://smartdatamodels.org/dataModel.Agrifood/severity",
+      "taxonomy": "https://smartdatamodels.org/dataModel.Agrifood/taxonomy"
     }
-  },
-  "risk_warnings": {
-    "high_risk_pests": [
-      "Nilaparvata lugens",
-      "Chilo suppressalis"
-    ],
-    "outbreak_years": [
-      2015,
-      2017,
-      2018,
-      2020
-    ],
-    "recommendations": [
-      "Theo dõi sát sao vụ Đông Xuân và Hè Thu",
-      "Sử dụng giống lúa kháng sâu bệnh",
-      "Áp dụng IPM (Quản lý dịch hại tổng hợp)",
-      "Phun thuốc đúng thời điểm khi phát hiện sớm"
-    ]
-  },
-  "data_sources": [
-    "Viện Bảo vệ Thực vật Việt Nam",
-    "Sở Nông nghiệp và Phát triển Nông thôn Đồng Tháp",
-    "Báo cáo dịch hại hàng năm 2015-2025"
   ],
-  "notes": "Dữ liệu dựa trên mô hình dịch hại thực tế tại Đồng bằng sông Cửu Long. Các năm bùng phát (2015, 2017, 2020) phù hợp với chu kỳ dịch hại thực tế."
+  "entities": [
+    {
+      "id": "urn:ngsi-ld:AgriFarm:DongThap:001",
+      "type": "AgriFarm",
+      "name": {
+        "type": "Property",
+        "value": "Vùng trồng lúa Đồng Tháp"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Vùng sản xuất lúa trọng điểm tại tỉnh Đồng Tháp, Đồng bằng sông Cửu Long, Việt Nam"
+      },
+      "location": {
+        "type": "GeoProperty",
+        "value": {
+          "type": "Point",
+          "coordinates": [105.6881, 10.4938]
+        }
+      },
+      "address": {
+        "type": "Property",
+        "value": {
+          "addressRegion": "Đồng bằng sông Cửu Long",
+          "addressLocality": "Đồng Tháp",
+          "addressCountry": "Việt Nam"
+        }
+      },
+      "landArea": {
+        "type": "Property",
+        "value": 234000,
+        "unitCode": "HAR"
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      },
+      "dataSource": {
+        "type": "Property",
+        "value": [
+          "https://www.mard.gov.vn",
+          "https://sonnptnt.dongthap.gov.vn"
+        ]
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriPest:NilaparvataLugens:001",
+      "type": "AgriPest",
+      "name": {
+        "type": "Property",
+        "value": "Rầy nâu"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Brown planthopper"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Rầy nâu là loài sâu hại nguy hiểm nhất trên lúa tại Việt Nam. Chúng hút nhựa cây lúa gây hiện tượng cháy rầy, đồng thời truyền bệnh virus lùn xoắn lá và lùn sọc đen."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Nilaparvata lugens"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Animalia",
+          "phylum": "Arthropoda",
+          "class": "Insecta",
+          "order": "Hemiptera",
+          "family": "Delphacidae",
+          "genus": "Nilaparvata",
+          "species": "Nilaparvata lugens"
+        }
+      },
+      "pestStatus": {
+        "type": "Property",
+        "value": "quarantine"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "high"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Hút nhựa cây lúa gây hiện tượng vàng lá, héo cây",
+          "Gây cháy rầy khi mật độ cao (trên 3000 con/m2)",
+          "Truyền bệnh virus lùn xoắn lá (Rice ragged stunt virus)",
+          "Truyền bệnh virus lùn sọc đen phía Nam (SRBSDV)",
+          "Có thể gây mất trắng 100% năng suất"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Đông Xuân",
+            "months": "12-3",
+            "riskLevel": "high"
+          },
+          {
+            "season": "Vụ Hè Thu",
+            "months": "6-8",
+            "riskLevel": "very_high"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Sử dụng giống lúa kháng rầy (IR50404, OM5451)",
+          "Áp dụng IPM - Quản lý dịch hại tổng hợp",
+          "Gieo trồng đồng loạt, tránh giao vụ",
+          "Phun thuốc khi mật độ vượt ngưỡng (3 con/dảnh lúa)",
+          "Bảo vệ thiên địch (nhện, ong ký sinh)"
+        ]
+      },
+      "economicThreshold": {
+        "type": "Property",
+        "value": {
+          "vegetativeStage": "3 con/dảnh lúa",
+          "reproductiveStage": "5 con/dảnh lúa",
+          "unit": "con/dảnh lúa"
+        }
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "FAO",
+            "applicationUrl": "https://www.fao.org/4/i3253e/i3253e.pdf"
+          },
+          {
+            "application": "IRRI",
+            "applicationUrl": "https://www.irri.org/brown-planthopper"
+          },
+          {
+            "application": "Cục Bảo vệ Thực vật Việt Nam",
+            "applicationUrl": "https://www.ppd.gov.vn"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriPest:SogatellaFurcifera:001",
+      "type": "AgriPest",
+      "name": {
+        "type": "Property",
+        "value": "Rầy lưng trắng"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "White-backed planthopper"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Rầy lưng trắng là loài sâu hại quan trọng trên lúa, truyền bệnh virus lùn sọc đen phía Nam (SRBSDV). Thường xuất hiện cùng rầy nâu nhưng mật độ thấp hơn."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Sogatella furcifera"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Animalia",
+          "phylum": "Arthropoda",
+          "class": "Insecta",
+          "order": "Hemiptera",
+          "family": "Delphacidae",
+          "genus": "Sogatella",
+          "species": "Sogatella furcifera"
+        }
+      },
+      "pestStatus": {
+        "type": "Property",
+        "value": "regulated"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "medium"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Hút nhựa cây lúa gây vàng lá",
+          "Truyền bệnh virus lùn sọc đen phía Nam (SRBSDV)",
+          "Gây hiện tượng chết bông khi mật độ cao",
+          "Giảm năng suất 10-30%"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Hè Thu",
+            "months": "6-9",
+            "riskLevel": "high"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Quản lý đồng ruộng, vệ sinh đồng ruộng",
+          "Sử dụng giống kháng",
+          "Phun thuốc khi vượt ngưỡng kinh tế"
+        ]
+      },
+      "economicThreshold": {
+        "type": "Property",
+        "value": {
+          "vegetativeStage": "5 con/dảnh lúa",
+          "reproductiveStage": "10 con/dảnh lúa",
+          "unit": "con/dảnh lúa"
+        }
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "IRRI",
+            "applicationUrl": "https://rbi.irri.org"
+          },
+          {
+            "application": "Cục Bảo vệ Thực vật Việt Nam",
+            "applicationUrl": "https://www.ppd.gov.vn"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriPest:ChiloSuppressalis:001",
+      "type": "AgriPest",
+      "name": {
+        "type": "Property",
+        "value": "Sâu đục thân lúa 2 chấm"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Striped stem borer"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Sâu đục thân lúa 2 chấm là một trong những loài sâu hại quan trọng nhất trên lúa tại Việt Nam và Châu Á. Sâu non đục vào thân lúa gây hiện tượng nõn héo (deadheart) và bông bạc (whitehead)."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Chilo suppressalis"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Animalia",
+          "phylum": "Arthropoda",
+          "class": "Insecta",
+          "order": "Lepidoptera",
+          "family": "Crambidae",
+          "genus": "Chilo",
+          "species": "Chilo suppressalis"
+        }
+      },
+      "pestStatus": {
+        "type": "Property",
+        "value": "regulated"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "high"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Gây hiện tượng nõn héo (deadheart) giai đoạn mạ",
+          "Gây hiện tượng bông bạc (whitehead) giai đoạn trổ bông",
+          "Sâu đục làm gãy đổ cây lúa",
+          "Giảm năng suất 20-70% khi nhiễm nặng"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Đông Xuân",
+            "months": "1-3",
+            "riskLevel": "high"
+          },
+          {
+            "season": "Vụ Hè Thu",
+            "months": "7-9",
+            "riskLevel": "high"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Vệ sinh đồng ruộng, tiêu hủy tàn dư",
+          "Dùng bẫy đèn bắt bướm trưởng thành",
+          "Thả ong mắt đỏ Trichogramma",
+          "Phun thuốc sinh học Bt (Bacillus thuringiensis)",
+          "Phun thuốc hóa học khi cần thiết"
+        ]
+      },
+      "economicThreshold": {
+        "type": "Property",
+        "value": {
+          "eggMass": "0.5 ổ trứng/m2",
+          "whiteheadRate": "5% bông bạc",
+          "unit": "% bông bị hại"
+        }
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "FAO AGRIS",
+            "applicationUrl": "https://agris.fao.org"
+          },
+          {
+            "application": "PestGenomics",
+            "applicationUrl": "https://www.pestgenomics.org/species/chilo-suppressalis"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriPest:ScirpophagaIncertulas:001",
+      "type": "AgriPest",
+      "name": {
+        "type": "Property",
+        "value": "Sâu đục thân bướm vàng"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Yellow stem borer"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Sâu đục thân bướm vàng là loài sâu hại phổ biến trên lúa tại vùng nhiệt đới Châu Á. Gây hại tương tự sâu đục thân 2 chấm nhưng thường xuất hiện muộn hơn trong vụ."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Scirpophaga incertulas"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Animalia",
+          "phylum": "Arthropoda",
+          "class": "Insecta",
+          "order": "Lepidoptera",
+          "family": "Crambidae",
+          "genus": "Scirpophaga",
+          "species": "Scirpophaga incertulas"
+        }
+      },
+      "pestStatus": {
+        "type": "Property",
+        "value": "regulated"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "medium"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Gây nõn héo giai đoạn mạ",
+          "Gây bông bạc giai đoạn trổ",
+          "Giảm năng suất 15-40%"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Hè Thu",
+            "months": "7-9",
+            "riskLevel": "medium"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Thả ong ký sinh Trichogramma japonicum",
+          "Sử dụng giống lúa kháng Bt",
+          "Vệ sinh đồng ruộng sau thu hoạch"
+        ]
+      },
+      "economicThreshold": {
+        "type": "Property",
+        "value": {
+          "eggMass": "1 ổ trứng/m2",
+          "whiteheadRate": "5% bông bạc",
+          "unit": "% bông bị hại"
+        }
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "FAO AGRIS",
+            "applicationUrl": "https://agris.fao.org"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriPest:CnaphalocrocisMedinalis:001",
+      "type": "AgriPest",
+      "name": {
+        "type": "Property",
+        "value": "Sâu cuốn lá nhỏ"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Rice leaffolder"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Sâu cuốn lá nhỏ là loài sâu hại phổ biến trên lúa tại Châu Á và Châu Phi. Sâu non cuốn lá lúa thành ống để ăn và giảm diện tích quang hợp của cây."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Cnaphalocrocis medinalis"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Animalia",
+          "phylum": "Arthropoda",
+          "class": "Insecta",
+          "order": "Lepidoptera",
+          "family": "Crambidae",
+          "genus": "Cnaphalocrocis",
+          "species": "Cnaphalocrocis medinalis"
+        }
+      },
+      "pestStatus": {
+        "type": "Property",
+        "value": "non-quarantine"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "medium"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Sâu cuốn lá thành ống để ăn và trú ẩn",
+          "Giảm diện tích quang hợp 20-50%",
+          "Lá bị hại trở nên trắng bạc",
+          "Giảm năng suất 10-25%"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Hè Thu",
+            "months": "6-9",
+            "riskLevel": "high"
+          },
+          {
+            "season": "Vụ Mùa",
+            "months": "8-10",
+            "riskLevel": "medium"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Không bón quá nhiều phân đạm",
+          "Bảo vệ thiên địch (nhện, ong ký sinh)",
+          "Phun thuốc khi tỷ lệ lá bị hại vượt 10%"
+        ]
+      },
+      "economicThreshold": {
+        "type": "Property",
+        "value": {
+          "vegetativeStage": "10% lá bị hại",
+          "reproductiveStage": "5% lá đòng bị hại",
+          "unit": "% lá bị hại"
+        }
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "FAO AGRIS",
+            "applicationUrl": "https://agris.fao.org"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriDisease:PyriculariaOryzae:001",
+      "type": "AgriDisease",
+      "name": {
+        "type": "Property",
+        "value": "Bệnh đạo ôn"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Rice blast"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Bệnh đạo ôn do nấm Pyricularia oryzae (đồng nghĩa Magnaporthe oryzae) gây ra, là một trong những bệnh nguy hiểm nhất trên lúa trên toàn thế giới. Bệnh gây hại trên lá, cổ bông, cổ lóng và hạt."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Pyricularia oryzae"
+      },
+      "synonymName": {
+        "type": "Property",
+        "value": "Magnaporthe oryzae"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Fungi",
+          "phylum": "Ascomycota",
+          "class": "Sordariomycetes",
+          "order": "Magnaporthales",
+          "family": "Pyriculariaceae",
+          "genus": "Pyricularia",
+          "species": "Pyricularia oryzae"
+        }
+      },
+      "diseaseType": {
+        "type": "Property",
+        "value": "fungal"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "very_high"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Gây vết bệnh hình mắt chim trên lá",
+          "Gây thối cổ bông, gãy đổ",
+          "Gây lép hạt, giảm chất lượng gạo",
+          "Có thể gây mất trắng 100% khi nhiễm nặng"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "favorableConditions": {
+        "type": "Property",
+        "value": {
+          "temperature": "20-28 độ C",
+          "humidity": "Trên 90%",
+          "weather": "Âm u, có sương mù",
+          "fertilizer": "Bón nhiều phân đạm"
+        }
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Đông Xuân",
+            "months": "2-3",
+            "riskLevel": "very_high"
+          },
+          {
+            "season": "Vụ Hè Thu",
+            "months": "8-9",
+            "riskLevel": "high"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Sử dụng giống kháng bệnh",
+          "Xử lý hạt giống trước khi gieo",
+          "Bón phân cân đối, tránh bón nhiều đạm",
+          "Phun thuốc phòng trị Tricyclazole, Isoprothiolane",
+          "Tiêu hủy tàn dư sau thu hoạch"
+        ]
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "NCBI PubMed",
+            "applicationUrl": "https://pubmed.ncbi.nlm.nih.gov/25492987/"
+          },
+          {
+            "application": "Plant Biosecurity Diagnostics",
+            "applicationUrl": "https://www.plantbiosecuritydiagnostics.net.au"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:AgriDisease:RhizoctoniaSolani:001",
+      "type": "AgriDisease",
+      "name": {
+        "type": "Property",
+        "value": "Bệnh khô vằn"
+      },
+      "alternateName": {
+        "type": "Property",
+        "value": "Sheath blight"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Bệnh khô vằn do nấm Rhizoctonia solani (giai đoạn hữu tính Thanatephorus cucumeris) gây ra. Bệnh phổ biến ở vùng nhiệt đới và cận nhiệt đới, gây hại nặng trong điều kiện nóng ẩm."
+      },
+      "scientificName": {
+        "type": "Property",
+        "value": "Rhizoctonia solani"
+      },
+      "synonymName": {
+        "type": "Property",
+        "value": "Thanatephorus cucumeris"
+      },
+      "taxonomy": {
+        "type": "Property",
+        "value": {
+          "kingdom": "Fungi",
+          "phylum": "Basidiomycota",
+          "class": "Agaricomycetes",
+          "order": "Cantharellales",
+          "family": "Ceratobasidiaceae",
+          "genus": "Rhizoctonia",
+          "species": "Rhizoctonia solani",
+          "anastomosisGroup": "AG-1 IA"
+        }
+      },
+      "diseaseType": {
+        "type": "Property",
+        "value": "fungal"
+      },
+      "severity": {
+        "type": "Property",
+        "value": "high"
+      },
+      "harmfulEffect": {
+        "type": "Property",
+        "value": [
+          "Gây vết bệnh hình bầu dục màu xám trắng trên bẹ lá",
+          "Làm khô lá sớm, giảm quang hợp",
+          "Gây đổ ngã khi nhiễm nặng",
+          "Giảm năng suất 20-50%"
+        ]
+      },
+      "affectedCrop": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriCrop:Rice:OryzaSativa"
+      },
+      "favorableConditions": {
+        "type": "Property",
+        "value": {
+          "temperature": "28-32 độ C",
+          "humidity": "Trên 95%",
+          "weather": "Nóng ẩm, mưa nhiều",
+          "density": "Gieo cấy dày"
+        }
+      },
+      "peakSeasons": {
+        "type": "Property",
+        "value": [
+          {
+            "season": "Vụ Hè Thu",
+            "months": "7-9",
+            "riskLevel": "very_high"
+          },
+          {
+            "season": "Vụ Mùa",
+            "months": "8-10",
+            "riskLevel": "high"
+          }
+        ]
+      },
+      "managementMethods": {
+        "type": "Property",
+        "value": [
+          "Gieo cấy mật độ hợp lý",
+          "Bón phân cân đối",
+          "Phun thuốc Validamycin, Hexaconazole",
+          "Vệ sinh đồng ruộng"
+        ]
+      },
+      "relatedSource": {
+        "type": "Property",
+        "value": [
+          {
+            "application": "NCBI PMC",
+            "applicationUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6950361/"
+          },
+          {
+            "application": "Wikipedia",
+            "applicationUrl": "https://en.wikipedia.org/wiki/Rhizoctonia_solani"
+          }
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:PestObservation:DongThap:NilaparvataLugens:2023",
+      "type": "PestObservation",
+      "observedAt": {
+        "type": "Property",
+        "value": "2023-08-15T00:00:00Z"
+      },
+      "refPest": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriPest:NilaparvataLugens:001"
+      },
+      "refFarm": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriFarm:DongThap:001"
+      },
+      "affectedArea": {
+        "type": "Property",
+        "value": 15200,
+        "unitCode": "HAR"
+      },
+      "infestationLevel": {
+        "type": "Property",
+        "value": "moderate_to_severe"
+      },
+      "populationDensity": {
+        "type": "Property",
+        "value": {
+          "average": 1500,
+          "max": 5000,
+          "unit": "con/m2"
+        }
+      },
+      "cropStage": {
+        "type": "Property",
+        "value": "reproductive"
+      },
+      "season": {
+        "type": "Property",
+        "value": "Hè Thu 2023"
+      },
+      "dataSource": {
+        "type": "Property",
+        "value": "Cục Bảo vệ Thực vật - Báo cáo định kỳ tháng 8/2023"
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2023-08-15T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:PestObservation:DongThap:ChiloSuppressalis:2023",
+      "type": "PestObservation",
+      "observedAt": {
+        "type": "Property",
+        "value": "2023-09-10T00:00:00Z"
+      },
+      "refPest": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriPest:ChiloSuppressalis:001"
+      },
+      "refFarm": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriFarm:DongThap:001"
+      },
+      "affectedArea": {
+        "type": "Property",
+        "value": 8500,
+        "unitCode": "HAR"
+      },
+      "infestationLevel": {
+        "type": "Property",
+        "value": "moderate"
+      },
+      "damageRate": {
+        "type": "Property",
+        "value": {
+          "whiteheadRate": 3.5,
+          "unit": "percent"
+        }
+      },
+      "cropStage": {
+        "type": "Property",
+        "value": "heading"
+      },
+      "season": {
+        "type": "Property",
+        "value": "Hè Thu 2023"
+      },
+      "dataSource": {
+        "type": "Property",
+        "value": "Cục Bảo vệ Thực vật - Báo cáo định kỳ tháng 9/2023"
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2023-09-10T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:PestObservation:DongThap:PyriculariaOryzae:2024",
+      "type": "PestObservation",
+      "observedAt": {
+        "type": "Property",
+        "value": "2024-03-05T00:00:00Z"
+      },
+      "refPest": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriDisease:PyriculariaOryzae:001"
+      },
+      "refFarm": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriFarm:DongThap:001"
+      },
+      "affectedArea": {
+        "type": "Property",
+        "value": 12000,
+        "unitCode": "HAR"
+      },
+      "infestationLevel": {
+        "type": "Property",
+        "value": "light_to_moderate"
+      },
+      "diseaseIncidence": {
+        "type": "Property",
+        "value": {
+          "average": 5,
+          "max": 15,
+          "unit": "percent"
+        }
+      },
+      "cropStage": {
+        "type": "Property",
+        "value": "tillering"
+      },
+      "season": {
+        "type": "Property",
+        "value": "Đông Xuân 2023-2024"
+      },
+      "dataSource": {
+        "type": "Property",
+        "value": "Sở Nông nghiệp và PTNT Đồng Tháp - Báo cáo tháng 3/2024"
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-03-05T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:PestObservation:DongThap:CnaphalocrocisMedinalis:2023",
+      "type": "PestObservation",
+      "observedAt": {
+        "type": "Property",
+        "value": "2023-09-13T00:00:00Z"
+      },
+      "refPest": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriPest:CnaphalocrocisMedinalis:001"
+      },
+      "refFarm": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriFarm:DongThap:001"
+      },
+      "affectedArea": {
+        "type": "Property",
+        "value": 6200,
+        "unitCode": "HAR"
+      },
+      "infestationLevel": {
+        "type": "Property",
+        "value": "high"
+      },
+      "damageRate": {
+        "type": "Property",
+        "value": {
+          "leafDamage": 15,
+          "unit": "percent"
+        }
+      },
+      "cropStage": {
+        "type": "Property",
+        "value": "vegetative"
+      },
+      "season": {
+        "type": "Property",
+        "value": "Vụ Mùa 2023"
+      },
+      "dataSource": {
+        "type": "Property",
+        "value": "Báo Tin tức - Kiểm soát sâu bệnh dịch hại trên lúa Mùa 2023"
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2023-09-13T00:00:00Z"
+      }
+    },
+    {
+      "id": "urn:ngsi-ld:RiskWarning:DongThap:2024",
+      "type": "RiskWarning",
+      "name": {
+        "type": "Property",
+        "value": "Cảnh báo dịch hại lúa Đồng Tháp 2024"
+      },
+      "description": {
+        "type": "Property",
+        "value": "Cảnh báo và khuyến cáo phòng trừ sâu bệnh hại lúa tại vùng Đồng Tháp năm 2024"
+      },
+      "validFrom": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "validTo": {
+        "type": "Property",
+        "value": "2024-12-31T23:59:59Z"
+      },
+      "refFarm": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:AgriFarm:DongThap:001"
+      },
+      "highRiskPests": {
+        "type": "Relationship",
+        "object": [
+          "urn:ngsi-ld:AgriPest:NilaparvataLugens:001",
+          "urn:ngsi-ld:AgriPest:ChiloSuppressalis:001",
+          "urn:ngsi-ld:AgriDisease:PyriculariaOryzae:001"
+        ]
+      },
+      "recommendations": {
+        "type": "Property",
+        "value": [
+          {
+            "priority": 1,
+            "content": "Theo dõi sát sao rầy nâu và rầy lưng trắng trong vụ Đông Xuân và Hè Thu",
+            "relatedPest": "urn:ngsi-ld:AgriPest:NilaparvataLugens:001"
+          },
+          {
+            "priority": 2,
+            "content": "Sử dụng giống lúa kháng sâu bệnh đã được khuyến cáo (OM5451, OM18, Đài Thơm 8)",
+            "relatedPest": null
+          },
+          {
+            "priority": 3,
+            "content": "Áp dụng IPM - Quản lý dịch hại tổng hợp, hạn chế sử dụng thuốc hóa học",
+            "relatedPest": null
+          },
+          {
+            "priority": 4,
+            "content": "Giám sát bệnh đạo ôn trong thời kỳ có sương mù ẩm ướt (tháng 2-3)",
+            "relatedPest": "urn:ngsi-ld:AgriDisease:PyriculariaOryzae:001"
+          },
+          {
+            "priority": 5,
+            "content": "Vệ sinh đồng ruộng, tiêu hủy tàn dư sau thu hoạch để giảm nguồn sâu bệnh",
+            "relatedPest": null
+          }
+        ]
+      },
+      "dataSource": {
+        "type": "Property",
+        "value": [
+          "Cục Bảo vệ Thực vật Việt Nam (https://www.ppd.gov.vn)",
+          "Sở Nông nghiệp và PTNT Đồng Tháp",
+          "IRRI - International Rice Research Institute (https://www.irri.org)",
+          "FAO - Food and Agriculture Organization (https://www.fao.org)"
+        ]
+      },
+      "dateCreated": {
+        "type": "Property",
+        "value": "2024-01-01T00:00:00Z"
+      },
+      "dateModified": {
+        "type": "Property",
+        "value": "2024-12-10T00:00:00Z"
+      }
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "generatedAt": "2024-12-10T00:00:00Z",
+    "dataStandard": "NGSI-LD",
+    "schemaVersion": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+    "dataModels": [
+      "https://smartdatamodels.org/dataModel.Agrifood/AgriPest",
+      "https://smartdatamodels.org/dataModel.Agrifood/AgriDisease",
+      "https://smartdatamodels.org/dataModel.Agrifood/AgriFarm"
+    ],
+    "dataSources": [
+      {
+        "name": "Bộ Nông nghiệp và Phát triển Nông thôn Việt Nam (MARD)",
+        "url": "https://www.mard.gov.vn",
+        "type": "government"
+      },
+      {
+        "name": "Cục Bảo vệ Thực vật Việt Nam",
+        "url": "https://www.ppd.gov.vn",
+        "type": "government"
+      },
+      {
+        "name": "Food and Agriculture Organization (FAO)",
+        "url": "https://www.fao.org",
+        "type": "international_organization"
+      },
+      {
+        "name": "International Rice Research Institute (IRRI)",
+        "url": "https://www.irri.org",
+        "type": "research_institute"
+      },
+      {
+        "name": "FIWARE Smart Data Models",
+        "url": "https://smartdatamodels.org",
+        "type": "data_standard"
+      },
+      {
+        "name": "ETSI NGSI-LD",
+        "url": "https://www.etsi.org",
+        "type": "data_standard"
+      }
+    ],
+    "notes": "Dữ liệu được tổng hợp từ các nguồn chính thống bao gồm Bộ NN&PTNT, Cục BVTV Việt Nam, FAO, IRRI và tuân thủ chuẩn NGSI-LD của ETSI và Smart Data Models của FIWARE."
+  }
 }
