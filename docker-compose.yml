@@ -44,8 +44,10 @@ services:
   # ==================== FIWARE Components ====================
 
   # MongoDB - Database for Orion Context Broker
+  # Using MongoDB 4.4 - stable version that supports OP_QUERY required by Orion-LD
+  # MongoDB 6.0+ removed OP_QUERY support, but Orion-LD still uses legacy C++ driver
   mongo-db:
-    image: mongo:6.0
+    image: mongo:4.4
     hostname: mongo-db
     container_name: fiware-mongo
     ports:
@@ -54,21 +56,16 @@ services:
       - ictu-network
     volumes:
       - mongo-db-data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     restart: unless-stopped
 
-  # Orion Context Broker - NGSI-LD
+  # Orion Context Broker - NGSI-LD (Latest version)
+  # Using latest Orion-LD which supports modern MongoDB
   orion:
-    image: fiware/orion-ld:1.5.1
+    image: fiware/orion-ld:latest
     hostname: orion
     container_name: fiware-orion
     depends_on:
-      mongo-db:
-        condition: service_healthy
+      - mongo-db
     ports:
       - "1026:1026"
     networks:
@@ -83,11 +80,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     restart: unless-stopped
 
-  # CrateDB - Time-series database for QuantumLeap
+  # CrateDB - Time-series database for QuantumLeap (Latest version)
   crate-db:
-    image: crate:5.4
+    image: crate:latest
     hostname: crate-db
     container_name: fiware-crate
     ports:
@@ -100,16 +98,24 @@ services:
       - crate-db-data:/data
     environment:
       - CRATE_HEAP_SIZE=1g
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     restart: unless-stopped
 
-  # QuantumLeap - Time-series data handler
+  # QuantumLeap - Time-series data handler (Latest version)
   quantumleap:
-    image: orchestracities/quantumleap:0.9.0
+    image: orchestracities/quantumleap:latest
     hostname: quantumleap
     container_name: fiware-quantumleap
     depends_on:
-      - crate-db
-      - orion
+      crate-db:
+        condition: service_healthy
+      orion:
+        condition: service_healthy
     ports:
       - "8668:8668"
     networks:
@@ -118,6 +124,12 @@ services:
       - CRATE_HOST=crate-db
       - CRATE_PORT=4200
       - LOGLEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8668/v2/version"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     restart: unless-stopped
 
 networks:
