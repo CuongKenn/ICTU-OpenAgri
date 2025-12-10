@@ -211,9 +211,32 @@ class _MarketScreenState extends State<MarketScreen> {
   }
 
   String _formatCategory(String category) {
-    return category.replaceAll('_', ' ').split(' ').map((word) {
-      return word[0].toUpperCase() + word.substring(1);
-    }).join(' ');
+    // Map category từ tiếng Anh sang tiếng Việt
+    final categoryMap = {
+      'grains': 'Ngũ cốc',
+      'fruits': 'Trái cây',
+      'spices': 'Gia vị',
+      'rubber': 'Cao su',
+      'nuts': 'Hạt',
+      'coffee': 'Cà phê',
+      'vegetables': 'Rau củ',
+      'legumes': 'Đậu',
+      'oilseeds': 'Hạt có dầu',
+      'sugar': 'Đường',
+      'tea': 'Trà',
+      'tobacco': 'Thuốc lá',
+      'cotton': 'Bông',
+      'all': 'Tất cả',
+    };
+    
+    // Chuyển về lowercase để so sánh
+    final lowerCategory = category.toLowerCase().replaceAll('_', ' ');
+    
+    // Trả về tiếng Việt nếu có trong map, nếu không thì format title case
+    return categoryMap[lowerCategory] ?? 
+           category.replaceAll('_', ' ').split(' ').map((word) {
+             return word[0].toUpperCase() + word.substring(1);
+           }).join(' ');
   }
 }
 
