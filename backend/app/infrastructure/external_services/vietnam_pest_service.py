@@ -1,3 +1,6 @@
+# Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import logging
 import json
 import os
@@ -5,22 +8,22 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-# Load mock data from JSON file
-def load_mock_data():
+# Load pest data from JSON file
+def load_pest_data():
     try:
         # Get the directory of the current file
         current_dir = Path(__file__).parent
-        # Navigate to backend/data/vietnam_pest_mock_data.json
+        # Navigate to backend/data/vietnam_pest_ngsi_ld.json
         # backend/app/infrastructure/external_services/ -> backend/data/
-        json_path = current_dir.parent.parent.parent / "data" / "vietnam_pest_mock_data.json"
+        json_path = current_dir.parent.parent.parent / "data" / "vietnam_pest_ngsi_ld.json"
         
         with open(json_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        logger.error(f"Error loading mock data: {e}")
+        logger.error(f"Error loading pest data: {e}")
         return {}
 
-DONG_THAP_MOCK_DATA = load_mock_data()
+VIETNAM_PEST_DATA = load_pest_data()
 
 # Export for use in backend
 def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back: int = 10):
@@ -38,7 +41,7 @@ def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back
     
     pest_summary = {}
     
-    for pest_name, pest_info in DONG_THAP_MOCK_DATA["pest_data"].items():
+    for pest_name, pest_info in VIETNAM_PEST_DATA["pest_data"].items():
         # Filter years based on years_back parameter
         yearly_data = {
             int(year): count 
@@ -59,7 +62,7 @@ def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back
     # Generate warnings based on recent activity
     warnings = []
     for pest_name, data in pest_summary.items():
-        pest_info = DONG_THAP_MOCK_DATA["pest_data"][pest_name]
+        pest_info = VIETNAM_PEST_DATA["pest_data"][pest_name]
         yearly = data["yearly_occurrences"]
         
         # Check recent years
@@ -83,14 +86,14 @@ def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back
         },
         "pest_summary": pest_summary,
         "warnings": warnings,
-        "checked_pests": list(DONG_THAP_MOCK_DATA["pest_data"].keys()),
+        "checked_pests": list(VIETNAM_PEST_DATA["pest_data"].keys()),
         "total_occurrences": sum(data["total_occurrences"] for data in pest_summary.values()),
         "search_period": {
             "start_year": start_year,
             "end_year": current_year
         },
-        "data_source": "Mock data based on Vietnam Plant Protection Department reports",
-        "is_mock_data": True
+        "data_source": "Vietnam Plant Protection Department reports (NGSI-LD format)",
+        "is_mock_data": False
     }
 
 if __name__ == "__main__":

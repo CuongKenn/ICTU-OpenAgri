@@ -3,7 +3,7 @@
 
 """
 Client để lấy dữ liệu giá nông sản.
-Hiện tại đọc từ file JSON mock data, sau này có thể thay thế bằng API thật.
+Đọc từ file JSON theo chuẩn NGSI-LD, sau này có thể thay thế bằng API thật hoặc FIWARE.
 """
 import json
 import os
@@ -14,28 +14,28 @@ from app.infrastructure.config.settings import get_settings
 
 settings = get_settings()
 
-# Đường dẫn đến file mock data
+# Đường dẫn đến file NGSI-LD data
 # Tính từ: backend/app/infrastructure/external_services/commodity_price_client.py
 # Lên 4 cấp: backend/
-# Thêm data/mock_commodity_prices.json
+# Thêm data/vietnam_commodity_prices_ngsi_ld.json
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-MOCK_DATA_PATH = os.path.join(BASE_DIR, "data", "mock_commodity_prices.json")
+NGSI_LD_DATA_PATH = os.path.join(BASE_DIR, "data", "vietnam_commodity_prices_ngsi_ld.json")
 
 # Cache dữ liệu để tránh đọc file nhiều lần
-_MOCK_DATA_CACHE = None
+_DATA_CACHE = None
 
-def load_mock_data() -> Dict[str, Any]:
-    """Load dữ liệu từ file JSON (có caching)."""
-    global _MOCK_DATA_CACHE
-    if _MOCK_DATA_CACHE is not None:
-        return _MOCK_DATA_CACHE
+def load_commodity_data() -> Dict[str, Any]:
+    """Load dữ liệu từ file JSON NGSI-LD (có caching)."""
+    global _DATA_CACHE
+    if _DATA_CACHE is not None:
+        return _DATA_CACHE
 
     try:
-        with open(MOCK_DATA_PATH, 'r', encoding='utf-8') as f:
-            _MOCK_DATA_CACHE = json.load(f)
-            return _MOCK_DATA_CACHE
+        with open(NGSI_LD_DATA_PATH, 'r', encoding='utf-8') as f:
+            _DATA_CACHE = json.load(f)
+            return _DATA_CACHE
     except FileNotFoundError:
-        raise RuntimeError(f"Mock data file not found at {MOCK_DATA_PATH}")
+        raise RuntimeError(f"NGSI-LD data file not found at {NGSI_LD_DATA_PATH}")
     except json.JSONDecodeError as e:
         raise RuntimeError(f"Error parsing JSON: {str(e)}")
 
@@ -46,26 +46,39 @@ def get_all_commodities(
     end_date: Optional[str] = None
 ) -> List[CommodityPriceDTO]:
     """
-    Lấy tất cả các loại nông sản.
+    Lấy tất cả các loại nông sản từ dữ liệu NGSI-LD.
     
     Args:
-        category: Lọc theo danh mục (lúa_gạo, cà_phê, etc.)
+        category: Lọc theo danh mục (grains, beverages, spices, etc.)
         start_date: Ngày bắt đầu (YYYY-MM-DD)
         end_date: Ngày kết thúc (YYYY-MM-DD)
     
     Returns:
         Danh sách CommodityPriceDTO
     """
-    data = load_mock_data()
+    data = load_commodity_data()
     commodities = []
     
     for item in data.get("commodities", []):
+        # Extract data from NGSI-LD format
+        item_category = item.get("category", {}).get("value", "")
+        commodity_id = item.get("commodityId", {}).get("value", "")
+        
         # Lọc theo category nếu có
-        if category and item.get("category") != category:
+        if category and item_category != category:
             continue
         
+        # Extract price history from NGSI-LD format
+        price_history = item.get("priceHistory", {}).get("value", [])
+        
+        # Convert NGSI-LD price format to simple format
+        prices = []
+        for price_entry in price_history:
+            date_str = price_entry.get("dateObserved", "").split("T")[0]
+            price_val = price_entry.get("price", 0)
+            prices.append({"date": date_str, "price": price_val})
+        
         # Lọc giá theo ngày nếu có
-        prices = item.get("prices", [])
         if start_date or end_date:
             filtered_prices = []
             for price in prices:
@@ -101,11 +114,11 @@ def get_all_commodities(
         ]
         
         commodity = CommodityPriceDTO(
-            id=item["id"],
-            name=item["name"],
-            name_en=item["name_en"],
-            unit=item["unit"],
-            category=item["category"],
+            id=commodity_id,
+            name=item.get("name", {}).get("value", ""),
+            name_en=item.get("alternateName", {}).get("value", ""),
+            unit=item.get("priceUnit", {}).get("value", "VND/kg"),
+            category=item_category,
             prices=price_points,
             current_price=current_price,
             price_change_24h=round(price_change_24h, 2) if price_change_24h is not None else None,
@@ -183,10 +196,10 @@ def get_chart_data(commodity_id: str) -> List[Dict[str, Any]]:
     return chart_data
 
 
-# TODO: Khi có API thật, thay thế các function trên bằng các API call
+# TODO: Khi có API thật hoặc FIWARE, thay thế các function trên bằng các API call
 # Ví dụ:
-# async def get_all_commodities_from_api(...) -> List[CommodityPriceDTO]:
+# async def get_all_commodities_from_fiware(...) -> List[CommodityPriceDTO]:
 #     async with httpx.AsyncClient() as client:
-#         response = await client.get(f"{API_BASE_URL}/commodities", params={...})
-#         return parse_response(response.json())
+#         response = await client.get(f"{ORION_URL}/ngsi-ld/v1/entities", params={"type": "AgriCommodityPrice"})
+#         return parse_ngsi_ld_response(response.json())
 

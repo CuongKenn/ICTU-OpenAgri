@@ -38,6 +38,7 @@ class CurrentWeatherDTO(BaseModel):
     """Current weather data."""
     time: str
     temperature_2m: float
+    apparent_temperature: float
     relative_humidity_2m: int
     weather_code: int
     wind_speed_10m: float
