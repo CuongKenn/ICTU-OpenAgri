@@ -50,7 +50,7 @@ class OpenMeteoService:
                     params={
                         "latitude": latitude,
                         "longitude": longitude,
-                        "current": "temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation,is_day",
+                        "current": "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation,is_day",
                         "hourly": "temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation,soil_moisture_0_to_1cm",
                         "forecast_days": (hours_ahead // 24) + 1,
                         "timezone": "auto"

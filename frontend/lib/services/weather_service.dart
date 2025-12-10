@@ -112,6 +112,7 @@ class WeatherService {
   Map<String, dynamic> _transformBackendData(ForecastResponseDTO dto) {
     final current = {
       'temperature_2m': dto.current.temperature2m,
+      'apparent_temperature': dto.current.apparentTemperature,
       'relative_humidity_2m': dto.current.relativeHumidity2m,
       'weather_code': dto.current.weatherCode,
       'wind_speed_10m': dto.current.windSpeed10m,

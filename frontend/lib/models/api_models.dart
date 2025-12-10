@@ -559,6 +559,7 @@ class LocationDTO {
 class CurrentWeatherDTO {
   final String time;
   final double temperature2m;
+  final double apparentTemperature;
   final int relativeHumidity2m;
   final int weatherCode;
   final double windSpeed10m;
@@ -568,6 +569,7 @@ class CurrentWeatherDTO {
   CurrentWeatherDTO({
     required this.time,
     required this.temperature2m,
+    required this.apparentTemperature,
     required this.relativeHumidity2m,
     required this.weatherCode,
     required this.windSpeed10m,
@@ -579,6 +581,8 @@ class CurrentWeatherDTO {
     return CurrentWeatherDTO(
       time: json['time'],
       temperature2m: json['temperature_2m'],
+      apparentTemperature:
+          json['apparent_temperature'] ?? json['temperature_2m'],
       relativeHumidity2m: json['relative_humidity_2m'],
       weatherCode: json['weather_code'],
       windSpeed10m: json['wind_speed_10m'],
@@ -851,7 +855,7 @@ class SoilAnalysisModel {
       }
     }
 
-    double? _propNum(String key) {
+    double? propNum(String key) {
       final prop = json[key];
       if (prop is Map && prop['value'] != null) {
         return (prop['value'] as num).toDouble();
@@ -862,12 +866,12 @@ class SoilAnalysisModel {
     return SoilAnalysisModel(
       provinceName:
           json['provinceName']?['value']?.toString() ?? 'Không rõ địa phương',
-      pH: _propNum('pH'),
-      nitrogen: _propNum('nitrogen'),
-      phosphorus: _propNum('phosphorus'),
-      potassium: _propNum('potassium'),
-      organicMatter: _propNum('organicMatter'),
-      moisture: _propNum('moisture'),
+      pH: propNum('pH'),
+      nitrogen: propNum('nitrogen'),
+      phosphorus: propNum('phosphorus'),
+      potassium: propNum('potassium'),
+      organicMatter: propNum('organicMatter'),
+      moisture: propNum('moisture'),
       soilType: json['soilType']?['value']?.toString(),
       recommendedCrops: (json['recommendedCrops']?['value'] as List?)
           ?.map((e) => e.toString())

@@ -81,6 +81,7 @@ class GetWeatherForecastUseCase:
             current_weather = CurrentWeatherDTO(
                 time=current.get("time", ""),
                 temperature_2m=current.get("temperature_2m", 0.0),
+                apparent_temperature=current.get("apparent_temperature", current.get("temperature_2m", 0.0)),
                 relative_humidity_2m=current.get("relative_humidity_2m", 0),
                 weather_code=current.get("weather_code", 0),
                 wind_speed_10m=current.get("wind_speed_10m", 0.0),
