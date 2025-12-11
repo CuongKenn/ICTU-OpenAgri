@@ -14,6 +14,14 @@ from app.infrastructure.config.settings import get_settings
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
+
+class FiwareClientError(Exception):
+    """Raised when FIWARE returns a non-success response."""
+
+    def __init__(self, status_code: int, message: str):
+        self.status_code = status_code
+        super().__init__(message)
+
 # FIWARE Smart Data Models for Agriculture
 CONTEXT = [
     "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
@@ -26,9 +34,14 @@ class FiwareClient:
     
     def __init__(self, orion_url: str = None):
         self.orion_url = orion_url or settings.ORION_URL
+        service_path = settings.FIWARE_SERVICEPATH or "/"
+        if not service_path.startswith("/"):
+            service_path = f"/{service_path}"
         self.headers = {
             "Content-Type": "application/ld+json",
-            "Accept": "application/ld+json"
+            "Accept": "application/ld+json",
+            "FIWARE-Service": settings.FIWARE_SERVICE,
+            "FIWARE-ServicePath": service_path
         }
     
     async def health_check(self) -> bool:
@@ -58,10 +71,12 @@ class FiwareClient:
                     return await self.update_entity(entity["id"], entity)
                 else:
                     logger.error(f"Failed to create entity: {response.status_code} - {response.text}")
-                    return False
+                    raise FiwareClientError(response.status_code, response.text)
             except Exception as e:
+                if isinstance(e, FiwareClientError):
+                    raise
                 logger.error(f"Error creating entity: {e}")
-                return False
+                raise FiwareClientError(500, str(e))
     
     async def update_entity(self, entity_id: str, attrs: Dict[str, Any]) -> bool:
         """Update entity attributes."""
@@ -72,7 +87,9 @@ class FiwareClient:
             try:
                 headers = {
                     "Content-Type": "application/json",
-                    "Link": f'<{CONTEXT[0]}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+                    "Link": f'<{CONTEXT[0]}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"',
+                    "FIWARE-Service": self.headers["FIWARE-Service"],
+                    "FIWARE-ServicePath": self.headers["FIWARE-ServicePath"],
                 }
                 response = await client.patch(
                     f"{self.orion_url}/ngsi-ld/v1/entities/{entity_id}/attrs",
@@ -84,10 +101,12 @@ class FiwareClient:
                     return True
                 else:
                     logger.error(f"Failed to update entity: {response.status_code} - {response.text}")
-                    return False
+                    raise FiwareClientError(response.status_code, response.text)
             except Exception as e:
+                if isinstance(e, FiwareClientError):
+                    raise
                 logger.error(f"Error updating entity: {e}")
-                return False
+                raise FiwareClientError(500, str(e))
     
     async def get_entity(self, entity_id: str) -> Optional[Dict[str, Any]]:
         """Get entity by ID."""
@@ -99,22 +118,33 @@ class FiwareClient:
                 )
                 if response.status_code == 200:
                     return response.json()
-                return None
+                if response.status_code == 404:
+                    return None
+                raise FiwareClientError(response.status_code, response.text)
             except Exception as e:
+                if isinstance(e, FiwareClientError):
+                    raise
                 logger.error(f"Error getting entity: {e}")
-                return None
+                raise FiwareClientError(500, str(e))
     
     async def delete_entity(self, entity_id: str) -> bool:
         """Delete entity by ID."""
         async with httpx.AsyncClient(timeout=30.0) as client:
             try:
                 response = await client.delete(
-                    f"{self.orion_url}/ngsi-ld/v1/entities/{entity_id}"
+                    f"{self.orion_url}/ngsi-ld/v1/entities/{entity_id}",
+                    headers=self.headers
                 )
-                return response.status_code in [200, 204]
+                if response.status_code in [200, 204]:
+                    return True
+                if response.status_code == 404:
+                    return False
+                raise FiwareClientError(response.status_code, response.text)
             except Exception as e:
+                if isinstance(e, FiwareClientError):
+                    raise
                 logger.error(f"Error deleting entity: {e}")
-                return False
+                raise FiwareClientError(500, str(e))
     
     async def query_entities(
         self, 
@@ -135,10 +165,14 @@ class FiwareClient:
                 )
                 if response.status_code == 200:
                     return response.json()
-                return []
+                if response.status_code == 404:
+                    return []
+                raise FiwareClientError(response.status_code, response.text)
             except Exception as e:
+                if isinstance(e, FiwareClientError):
+                    raise
                 logger.error(f"Error querying entities: {e}")
-                return []
+                raise FiwareClientError(500, str(e))
     
     async def subscribe_to_entity(
         self,
@@ -472,6 +506,9 @@ async def sync_farm_to_fiware(
             crop_type=crop_type
         )
         return await fiware_client.create_entity(entity)
+    except FiwareClientError:
+        # Propagate FIWARE-specific errors to allow API layer to return proper status
+        raise
     except Exception as e:
         logger.error(f"Failed to sync farm {farm_id} to FIWARE: {e}")
         return False
@@ -508,6 +545,9 @@ async def sync_observation_to_fiware(
             unit_code=unit_code
         )
         return await fiware_client.create_entity(entity)
+    except FiwareClientError:
+        # Propagate FIWARE-specific errors to allow API layer to return proper status
+        raise
     except Exception as e:
         logger.error(f"Failed to sync observation for farm {farm_id} to FIWARE: {e}")
         return False

@@ -12,6 +12,7 @@ from datetime import datetime
 from app.infrastructure.config.settings import get_settings
 from app.infrastructure.external_services.fiware_client import (
     FiwareClient,
+    FiwareClientError,
     create_agriparcel_entity,
     create_agriparcel_record,
     create_weather_observed,
@@ -102,6 +103,11 @@ async def create_farm_entity(request: SyncFarmRequest):
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="FIWARE integration is disabled"
         )
+    if not request.coordinates or len(request.coordinates) < 3:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="coordinates must include at least 3 points to form a polygon"
+        )
     
     fiware = FiwareClient()
     
@@ -113,13 +119,16 @@ async def create_farm_entity(request: SyncFarmRequest):
     
     coords = [{"lat": c.lat, "lng": c.lng} for c in request.coordinates]
     
-    success = await sync_farm_to_fiware(
-        fiware_client=fiware,
-        farm_id=request.farm_id,
-        farm_name=request.farm_name,
-        coordinates=coords,
-        crop_type=request.crop_type
-    )
+    try:
+        success = await sync_farm_to_fiware(
+            fiware_client=fiware,
+            farm_id=request.farm_id,
+            farm_name=request.farm_name,
+            coordinates=coords,
+            crop_type=request.crop_type
+        )
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     if success:
         entity_id = f"urn:ngsi-ld:AgriParcel:OpenAgri:{request.farm_id}"
@@ -155,14 +164,16 @@ async def create_observation_entity(request: SyncObservationRequest):
         )
     
     observed_at = request.observed_at or datetime.utcnow()
-    
-    success = await sync_observation_to_fiware(
-        fiware_client=fiware,
-        farm_id=request.farm_id,
-        observation_type=request.observation_type,
-        value=request.value,
-        observed_at=observed_at
-    )
+    try:
+        success = await sync_observation_to_fiware(
+            fiware_client=fiware,
+            farm_id=request.farm_id,
+            observation_type=request.observation_type,
+            value=request.value,
+            observed_at=observed_at
+        )
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     if success:
         timestamp_str = observed_at.strftime('%Y%m%dT%H%M%S')
@@ -209,7 +220,10 @@ async def create_weather_entity(request: WeatherObservationRequest):
         observed_at=request.observed_at
     )
     
-    success = await fiware.create_entity(entity)
+    try:
+        success = await fiware.create_entity(entity)
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     if success:
         return FiwareEntityResponse(
@@ -243,7 +257,10 @@ async def get_entity(entity_id: str):
             detail="FIWARE Orion is not available"
         )
     
-    entity = await fiware.get_entity(entity_id)
+    try:
+        entity = await fiware.get_entity(entity_id)
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     if entity:
         return entity
@@ -273,7 +290,10 @@ async def delete_entity(entity_id: str):
             detail="FIWARE Orion is not available"
         )
     
-    success = await fiware.delete_entity(entity_id)
+    try:
+        success = await fiware.delete_entity(entity_id)
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     if success:
         return FiwareEntityResponse(
@@ -316,7 +336,10 @@ async def query_entities(
             detail="FIWARE Orion is not available"
         )
     
-    entities = await fiware.query_entities(entity_type, q=q, limit=limit)
+    try:
+        entities = await fiware.query_entities(entity_type, q=q, limit=limit)
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     return FiwareQueryResponse(
         success=True,
@@ -347,14 +370,17 @@ async def get_farm_entities(farm_id: int):
     
     # Get the farm entity
     farm_entity_id = f"urn:ngsi-ld:AgriParcel:OpenAgri:{farm_id}"
-    farm_entity = await fiware.get_entity(farm_entity_id)
-    
-    # Query related observation records
-    observations = await fiware.query_entities(
-        "AgriParcelRecord",
-        q=f'hasAgriParcel=={farm_entity_id}',
-        limit=100
-    )
+    try:
+        farm_entity = await fiware.get_entity(farm_entity_id)
+        
+        # Query related observation records
+        observations = await fiware.query_entities(
+            "AgriParcelRecord",
+            q=f'hasAgriParcel=={farm_entity_id}',
+            limit=100
+        )
+    except FiwareClientError as e:
+        raise HTTPException(status_code=e.status_code, detail=f"FIWARE error: {e}") from e
     
     return {
         "farm_id": farm_id,
