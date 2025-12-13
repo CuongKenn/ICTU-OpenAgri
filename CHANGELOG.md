@@ -5,6 +5,98 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2025-12-11
+
+### Added
+
+- **FIWARE Integration**:
+  - Added FIWARE services stack (Orion Context Broker, MongoDB, QuantumLeap, CrateDB) to docker-compose.
+  - Implemented FIWARE client service with full NGSI-LD support.
+  - Added FIWARE configuration settings for environment-based setup.
+  - Added REST API endpoints for FIWARE entity management.
+  - Integrated FIWARE sync into scheduler for automatic NDVI and soil moisture data publishing.
+
+- **NGSI-LD Data Format**:
+  - Added NGSI-LD soil data for 32 Vietnamese provinces.
+  - Converted commodity prices data to NGSI-LD format.
+  - Refactored pest/disease data structure to NGSI-LD format.
+
+- **Farm Management**:
+  - Added PUT and DELETE endpoints for farm API.
+  - Implemented `UpdateFarmAreaUseCase` and `DeleteFarmAreaUseCase`.
+  - Added `FarmAreaUpdateDTO` for partial farm updates.
+  - Added edit/delete UI dialogs for farm management in frontend.
+  - Added `updateFarm` and `deleteFarm` service methods.
+
+- **Satellite Data Improvements**:
+  - Added `/soil-moisture/get` endpoint for cached soil moisture data.
+  - Added `GetSoilMoistureUseCase` for database queries.
+  - Added `SoilMoistureQuery` DTOs and models for cached data retrieval.
+  - Added Sentinel-1 Soil Moisture scheduled job to scheduler.
+  - Expanded Sentinel-1 search range to ±7 days for better data availability.
+
+- **Frontend Enhancements**:
+  - Redesigned satellite monitoring screen with modern layout.
+  - Translated commodity categories to Vietnamese.
+  - Replaced pest warnings with soil data display.
+
+### Fixed
+
+- **Backend**:
+  - Fixed FIWARE service endpoint configuration.
+  - Added CASCADE DELETE for `satellite_data` foreign key constraints.
+  - Fixed operator precedence in B04 band detection.
+  - Fixed band path finder to use `IMG_DATA` instead of `QI_DATA` for NDVI calculation.
+  - Added exponential backoff and 429 rate limit handling for CDSE downloads.
+  - Added retry mechanism for large Sentinel file downloads.
+  - Filtered NDVI images by cloud cover < 30%.
+  - Added `Attributes` expand to CDSE query for cloud cover filtering.
+  - Improved soil matching and crop suggestions algorithm.
+  - Adjusted soil moisture calibration for raw Sentinel-1 GRD data.
+  - Enabled matplotlib for TIFF to PNG conversion in NDVI processing.
+
+- **Frontend**:
+  - Fixed RenderFlex overflow in `PestRiskCard` with Expanded and Wrap widgets.
+  - Fixed RenderFlex overflow in `_buildDetailRow` with Flexible wrapper.
+  - Fixed deactivated widget lookup by storing ViewModel references.
+  - Fetched real NDVI values for dashboard stats.
+  - Removed mock data fallback in satellite monitoring.
+  - Fixed deprecated `tooltipRoundedRadius` → `tooltipBorderRadius`.
+
+### Changed
+
+- **Backend**:
+  - Replaced `print()` statements with proper logging throughout backend.
+  - Updated commodity price service to use NGSI-LD format.
+  - Renamed `vietnam_pest_mock_data` to `vietnam_pest_ngsi_ld`.
+  - Updated FIWARE stack to latest versions with stable MongoDB.
+
+- **Frontend**:
+  - Renamed `SatelliteMonitoringScreenV2` to `SatelliteMonitoringScreen`.
+  - Updated viewmodel to use cached soil moisture API.
+  - Fetched all satellite data in parallel on initialization.
+  - Upgraded `fl_chart` from 0.69.0 to 1.1.1.
+  - Removed all `debugPrint` statements for production readiness.
+
+### Performance
+
+- Added coordinate-based cache for pest forecast API.
+- Parallel fetching of satellite data on screen initialization.
+- Added retry mechanism and job improvements to scheduler.
+
+### Documentation
+
+- Updated README with FIWARE integration and NGSI-LD documentation.
+- Added build/compile instructions for mobile app in README.
+- Added `MAX_PRODUCTS` to environment example file.
+
+### Chores
+
+- Added `pyproj` dependency for bbox cropping.
+- Updated license headers across source files.
+- Removed old `mock_commodity_prices.json` file.
+- Increased `MAX_PRODUCTS` default to 20.
+
 ## [0.2.2] - 2025-12-05
 
 ### Fixed
@@ -36,7 +128,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Refactored `NDVIUseCase`, `SoilMoistureUseCase`, and `DiseaseDetectionService` to be fully asynchronous.
   - Moved hardcoded pest mock data to `backend/data/mock_pest_data.json`.
   - Updated `DiseaseDetectionService` to run TensorFlow predictions in a thread pool to prevent blocking the event loop.
- 
 
 ## [0.2.1] - 2025-12-03
 
