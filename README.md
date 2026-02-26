@@ -1,6 +1,6 @@
 
 <img width="2560" height="1707" alt="image" src="https://github.com/user-attachments/assets/a403ffd4-ce1c-4a5b-a8f5-184f46ecdd77" />
-  --------------------------------------------------------🥉Top 3 OLP'25 - Open Source Hackathon ----------------------------------
+  --------------------------------------------------------🥉Top 3 OLP'25 - Open Source Hackathon ------------------------
 
  # ICTU-OpenAgri - Nền Tảng Nông Nghiệp Thông Minh
 
