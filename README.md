@@ -1,4 +1,8 @@
-# ICTU-OpenAgri - Nền Tảng Nông Nghiệp Thông Minh
+
+<img width="2560" height="1707" alt="image" src="https://github.com/user-attachments/assets/a403ffd4-ce1c-4a5b-a8f5-184f46ecdd77" />
+ 🥉Top 3 OLP - Open Source Hackathon 2025-2026
+
+ # ICTU-OpenAgri - Nền Tảng Nông Nghiệp Thông Minh
 
 ![Project Status](https://img.shields.io/badge/status-active-success.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
